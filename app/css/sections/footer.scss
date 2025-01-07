@@ -1,0 +1,7 @@
+.footer {
+    margin-top: 40px;
+    background-color: var(--background-sec);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    min-height: 300px;
+}
