@@ -1,6 +1,8 @@
 import React from 'react'
 import "../css/sections/footer.scss";
 import Link from 'next/link';
+import { SocialIcon } from 'react-social-icons';
+import { footerLinks, socialDetails } from '../../configs';
 
 const Footer = () => {
   return (
@@ -8,11 +10,11 @@ const Footer = () => {
       <div className="footer-in">
         <h1>Links</h1>
         <ul>
-          <li><Link href={'#'}>Link 1</Link></li>
-          <li><Link href={'#'}>Link 2</Link></li>
-          <li><Link href={'#'}>Link 3</Link></li>
-          <li><Link href={'#'}>Link 4</Link></li>
-          <li><Link href={'#'}>Link 5</Link></li>
+          {footerLinks.map((x, index) => (
+            <li key={index}>
+              <Link href={x.url}>{x.text}</Link>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="footer-in">
@@ -21,6 +23,13 @@ const Footer = () => {
       </div>
       <div className="footer-in">
         <h1>Socials</h1>
+        <ul className="socials">
+          {socialDetails.map((x, index) => (
+            <li className="socials-icon" key={index}>
+              <SocialIcon url={x.url} />
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   )

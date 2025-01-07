@@ -19,7 +19,16 @@
                 a {
                     // border-bottom: 1px solid var(--theme-main);
                     padding: 0 20px;
+                    font-size: 17px;
                 }
+            }
+        }
+
+        .socials {
+            display: flex;
+            margin-top: 10px;
+            &-icon {
+                margin: 0 10px;
             }
         }
     }
