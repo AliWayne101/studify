@@ -1,15 +1,17 @@
 import React from 'react'
 import './css/home.scss'
+import "./css/sections/hero.scss";
 import Link from 'next/link'
 import Footer from './sections/footer'
+import { WebDetails } from '@/configs';
 
 const Home = () => {
   return (
     <>
       <main>
         <div className="hero">
-          <h1>Studify</h1>
-          <p>Stay connected to your child&apos;s academic journey with real-time updates. Empower their success with instant access to grades, attendance, and progress.</p>
+          <h1>{WebDetails.webName}</h1>
+          <p>{WebDetails.webMotto}</p>
         </div>
         <div className="cards">
           <div className="cards-cont">
@@ -23,7 +25,7 @@ const Home = () => {
               <li>Four</li>
             </ul>
             <div className="cards-cont-cta">
-              <Link href={'#'} className='cta bg'>Login</Link>
+              <Link href={'/login'} className='cta bg'>Login</Link>
             </div>
           </div>
           <div className="cards-cont">
@@ -37,7 +39,7 @@ const Home = () => {
               <li>Four</li>
             </ul>
             <div className="cards-cont-cta">
-              <Link href={'#'} className='cta bg'>Login</Link>
+              <Link href={'/login'} className='cta bg'>Login</Link>
             </div>
           </div>
           <div className="cards-cont">
@@ -51,7 +53,7 @@ const Home = () => {
               <li>Four</li>
             </ul>
             <div className="cards-cont-cta">
-              <Link href={'#'} className='cta bg'>Login</Link>
+              <Link href={'/login'} className='cta bg'>Login</Link>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@
   --theme-accent: rgb(180, 7, 180);
   --foreground: white;
   --font-lora: 'Lora', serif;
+  --font-poppins: 'Poppins', serif;
 }
 
 html,
@@ -17,7 +18,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-lora);
+  font-family: var(--font-poppins);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
