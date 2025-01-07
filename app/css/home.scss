@@ -41,6 +41,9 @@
         &:hover {
             width: 200%;
             background-color: var(--theme-main);
+            h3 {
+                color: white;
+            }
         }
         &:not(:hover) {
             width: 50%;
