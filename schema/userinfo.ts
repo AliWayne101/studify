@@ -5,7 +5,8 @@ export interface IUserInfo {
     Name: string;
     Email: string;
     Image: string;
-    Role: string; //teacher student parent
+    Role: string; //teacher student parent owner
+    SchoolName: string;
     Gender: string;
     Password: string;
     Phone: string;
@@ -31,7 +32,8 @@ const Users = new Schema<IUserInfo>({
     Gender: String,
     Password: String,
     Phone: String,
-    Role: String
+    Role: String,
+    SchoolName: String
 });
 
 let UserModel: Model<IUserInfo>;
