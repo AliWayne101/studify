@@ -1,8 +1,18 @@
+'use client';
+
 import React from 'react'
 import { WebDetails } from '@/configs';
 import "../css/login.scss";
+import "../css/sections/hero.scss";
+import Footer from '../sections/footer';
+import Button from '../components/Button';
 
 const Login = () => {
+
+  const HandleLogin = () => {
+    console.log("Clicked");
+  }
+
   return (
     <>
       <main>
@@ -10,18 +20,21 @@ const Login = () => {
           <h1>{WebDetails.webName}</h1>
           <p>{WebDetails.webMotto}</p>
         </div>
-        <div className="login">
-          <div className="login-in">
-            <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" />
-          </div>
-          <div className="login-in">
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" />
+        <div className="loginform">
+          <div className="login">
+            <div className="login-in">
+              <input type="email" name="email" id="email" />
+              <label htmlFor="email">Email</label>
+            </div>
+            <div className="login-in">
+              <input type="password" name="password" id="password" />
+              <label htmlFor="password">Password</label>
+            </div>
+            <Button onClick={HandleLogin}>Login</Button>
           </div>
         </div>
-        <div className="cta">Login</div>
       </main>
+      <Footer />
     </>
   )
 }
