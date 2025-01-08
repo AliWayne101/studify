@@ -8,11 +8,11 @@ import Footer from '../sections/footer';
 import Button from '../components/Button';
 
 const Login = () => {
-
+  
   const HandleLogin = () => {
     console.log("Clicked");
   }
-
+  
   return (
     <>
       <main>
