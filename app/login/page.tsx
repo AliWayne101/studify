@@ -8,11 +8,11 @@ import Footer from '../sections/footer';
 import Button from '../components/Button';
 
 const Login = () => {
-  
+
   const HandleLogin = () => {
     console.log("Clicked");
   }
-  
+
   return (
     <>
       <main>
@@ -20,17 +20,20 @@ const Login = () => {
           <h1>{WebDetails.webName}</h1>
           <p>{WebDetails.webMotto}</p>
         </div>
-        <div className="loginform">
-          <div className="login">
-            <div className="login-in">
-              <input type="email" name="email" id="email" />
-              <label htmlFor="email">Email</label>
+        <div className="body-cont">
+          <div className="error">Text</div>
+          <div className="loginform">
+            <div className="login">
+              <div className="login-in">
+                <input type="email" name="email" id="email" />
+                <label htmlFor="email">Email</label>
+              </div>
+              <div className="login-in">
+                <input type="password" name="password" id="password" />
+                <label htmlFor="password">Password</label>
+              </div>
+              <Button onClick={HandleLogin}>Login</Button>
             </div>
-            <div className="login-in">
-              <input type="password" name="password" id="password" />
-              <label htmlFor="password">Password</label>
-            </div>
-            <Button onClick={HandleLogin}>Login</Button>
           </div>
         </div>
       </main>

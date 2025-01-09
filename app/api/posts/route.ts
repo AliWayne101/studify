@@ -23,7 +23,9 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
                     });
                 })
             break;
+        case "signup":
+            break;
         default:
-            res.status(404).json({ message: "Invalid request" });
+            res.status(200).json({ message: "Invalid request" });
     }
 }

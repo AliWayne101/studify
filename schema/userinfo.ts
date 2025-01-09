@@ -20,11 +20,11 @@ const Users = new Schema<IUserInfo>({
     Name: String,
     Email: String,
     Image: {
-        Type: String,
+        type: String,
         default: 'default'
     },
     AccountType: {
-        Type: String,
+        type: String,
         default: 'Basic'
     },
     Address: String,

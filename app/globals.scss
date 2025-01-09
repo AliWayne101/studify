@@ -6,6 +6,7 @@
   --foreground: white;
   --font-lora: 'Lora', serif;
   --font-poppins: 'Poppins', serif;
+  --warning: rgb(189, 36, 36);
 }
 
 html,
@@ -63,4 +64,17 @@ main {
   // border: 1px solid var(--theme-main);
   padding: 5px 30px;
   font-size: 18px;
+}
+
+.body-cont {
+  margin: 40px 0 80px 0;
+}
+
+.error {
+  background-color: var(--warning);
+  color: var(--foreground);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
 }
