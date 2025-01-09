@@ -3,14 +3,14 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.scss";
 import { Lora, Poppins } from 'next/font/google';
 import { WebDetails } from '../configs';
-
+import NextTopLoader from "nextjs-toploader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const lora = Lora({ 
+const lora = Lora({
   variable: "--font-lora",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"]
@@ -40,6 +40,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${lora.variable} ${poppins.variable}`}>
+        <NextTopLoader
+          color="var(--theme-main)"
+        />
         {children}
       </body>
     </html>
