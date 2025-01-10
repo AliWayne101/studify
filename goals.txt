@@ -62,3 +62,5 @@ Pages of the Website:
     Login Page:
         Secure login for both parents and students with easy recovery options.
         Access to the portal with appropriate permissions for students and parents.
+
+https://github.com/AhmedAlqurafi/next-auth-credentials/blob/main/pages/api/auth/%5B...nextauth%5D.ts
