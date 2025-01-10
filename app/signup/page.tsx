@@ -29,13 +29,14 @@ const Signup = () => {
   }
 
   const HandleSignup = async () => {
+    const { Name, Email, Role, SchoolName, Gender, Password, Repassword, Phone, CNIC, Address } = userInfo;
     const emptyFields = Object.entries(userInfo).filter(([key, value]) => value === "").map(([key]) => key);
 
     var emptyFieldsString = "";
     if (emptyFields.length > 0) {
       emptyFields.forEach(field => emptyFieldsString += field + ", ");
       emptyFieldsString = emptyFieldsString.slice(0, -2); // Strip last 2 characters
-      emptyFields.length > 1 ? setFillError(emptyFieldsString + "are required fields") : setFillError(emptyFieldsString + "is a required field");
+      emptyFields.length > 1 ? setFillError(emptyFieldsString + " are required fields") : setFillError(emptyFieldsString + " is a required field");
       return;
     } else {
       setFillError(null);
@@ -48,7 +49,18 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userInfo)
+        body: JSON.stringify({
+          Request: "signup",
+          Name,
+          Email,
+          Role,
+          SchoolName,
+          Gender,
+          Password,
+          Phone,
+          CNIC,
+          Address
+        })
       });
 
       if (!response.ok) {
@@ -86,7 +98,7 @@ const Signup = () => {
                 <select name="Role" id="Role" onChange={handleChange}>
                   <option className='bg' value="">Select Role</option>
                   <option className='bg' value="Teacher">Teacher</option>
-                  <option className='bg' value="Teacher">Admin</option>
+                  <option className='bg' value="Admin">Admin</option>
                   <option className='bg' value="Student">Student</option>
                   <option className='bg' value="Parent">Parent</option>
                 </select>

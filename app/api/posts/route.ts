@@ -1,31 +1,44 @@
 import UserModel from "@/schema/userinfo";
 import { Connect } from "@/utils";
-import { NextApiRequest, NextApiResponse } from "next";
+import mongoose from "mongoose";
+import { NextRequest, NextResponse } from 'next/server';
 
-export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
+export const POST = async (request: NextRequest) => {
     await Connect();
 
-    const { Request } = req.body;
+    const body = await request.json();
+    const { Request } = body;
+
     switch (Request) {
         case "login":
-            const { Email } = req.body;
-            UserModel.findOne({ Email: Email })
-                .exec()
-                .then((doc) => {
-                    res.status(200).json({
-                        message: "OK",
-                        doc: doc
-                    });
-                }).catch((err) => {
-                    res.status(200).json({
-                        message: "ERROR",
-                        error: err
-                    });
-                })
-            break;
+            var { Email } = body;
+            try {
+                const doc = await UserModel.findOne({ Email: Email }).exec();
+                return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
+            } catch (err) {
+                return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
+            }
         case "signup":
-            break;
+            var { Name, Email, Role, SchoolName, Gender, Password, Phone, CNIC, Address } = body;
+            console.log("Initiating Signup Process");
+            try {
+                const doc = await UserModel.create({
+                    _id: new mongoose.Types.ObjectId(),
+                    Name,
+                    Email,
+                    Role,
+                    SchoolName,
+                    Gender,
+                    Password,
+                    Phone,
+                    CNIC,
+                    Address
+                });
+                return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
+            } catch (err) {
+                return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
+            }
         default:
-            res.status(200).json({ message: "Invalid request" });
+            return NextResponse.json({ message: "Invalid Request", body: body }, { status: 200 });
     }
 }
