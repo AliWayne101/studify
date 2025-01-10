@@ -2,7 +2,7 @@ import { compare, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
 
 export const hashPassword = async (password: string) => {
-    const hashedPassword = await hash(password, process.env.NEXT_PUBLIC_SALT_LENGTH!);
+    const hashedPassword = await hash(password, 12);
     return hashedPassword;
 }
 

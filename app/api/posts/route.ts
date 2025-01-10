@@ -1,5 +1,5 @@
 import UserModel from "@/schema/userinfo";
-import { Connect } from "@/utils";
+import { Connect, hashPassword } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -20,8 +20,12 @@ export const POST = async (request: NextRequest) => {
             }
         case "signup":
             var { Name, Email, Role, SchoolName, Gender, Password, Phone, CNIC, Address } = body;
-            console.log("Initiating Signup Process");
             try {
+                const existingUser = await UserModel.findOne({ Email: Email }).exec();
+                if (existingUser !== null)
+                    return NextResponse.json({ message: "ERROR", error: "User already exists with the same Email" }, { status: 200 });
+                const newPassword = await hashPassword(Password);
+                console.log(newPassword);
                 const doc = await UserModel.create({
                     _id: new mongoose.Types.ObjectId(),
                     Name,
@@ -29,10 +33,10 @@ export const POST = async (request: NextRequest) => {
                     Role,
                     SchoolName,
                     Gender,
-                    Password,
                     Phone,
                     CNIC,
-                    Address
+                    Address,
+                    Password: newPassword
                 });
                 return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
             } catch (err) {
