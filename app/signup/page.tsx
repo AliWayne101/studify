@@ -104,7 +104,6 @@ const Signup = () => {
                   <option className='bg' value="">Select Role</option>
                   <option className='bg' value="Teacher">Teacher</option>
                   <option className='bg' value="Admin">Admin</option>
-                  <option className='bg' value="Student">Student</option>
                   <option className='bg' value="Parent">Parent</option>
                 </select>
                 <label htmlFor="Role">Role</label>
