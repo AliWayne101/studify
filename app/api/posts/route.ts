@@ -21,13 +21,12 @@ export const POST = async (request: NextRequest) => {
             }
         case "signup":
             var { Name, Email, Role, SchoolName, Gender, Password, Phone, CNIC, Address } = body;
+            const newPassword = await hashPassword(Password);
+            const uniqueID = UniqueID(8);
             try {
                 const existingUser = await UserModel.findOne({ Email: Email }).exec();
                 if (existingUser !== null)
                     return NextResponse.json({ message: "ERROR", error: "User already exists with the same Email" }, { status: 200 });
-                const newPassword = await hashPassword(Password);
-                console.log(newPassword);
-                const uniqueID = UniqueID(8);
                 const doc = await UserModel.create({
                     _id: new mongoose.Types.ObjectId(),
                     UID: uniqueID,
@@ -39,7 +38,8 @@ export const POST = async (request: NextRequest) => {
                     Phone,
                     CNIC,
                     Address,
-                    Password: newPassword
+                    Password: newPassword,
+
                 });
                 return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
             } catch (err) {

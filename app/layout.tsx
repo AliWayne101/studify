@@ -4,6 +4,8 @@ import "./globals.scss";
 import { Lora, Poppins } from 'next/font/google';
 import { WebDetails } from '../configs';
 import NextTopLoader from "nextjs-toploader";
+import Providers from "./providers";
+import { getSession } from "./auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,21 +31,22 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: WebDetails.webName,
-  description: WebDetails.webMeta,
+  description: WebDetails.webMeta.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getSession();
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${lora.variable} ${poppins.variable}`}>
-        <NextTopLoader
-          color="var(--theme-main)"
-        />
-        {children}
+        <Providers session={session}>
+          <NextTopLoader color="var(--theme-main)" />
+          {children}
+        </Providers>
       </body>
     </html>
   );

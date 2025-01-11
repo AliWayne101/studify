@@ -32,3 +32,6 @@ export const DashLinks = [
 
 export const SALT_LENGTH = 12;
 export const SESSION_AGE = 60 * 60 * 24; // 24 hours
+
+//Testing
+//mongodb://alimalik:xjXG0IYgxf0ilkwd@studify-shard-00-00.84ytz.mongodb.net:27017,studify-shard-00-01.84ytz.mongodb.net:27017,studify-shard-00-02.84ytz.mongodb.net:27017/studify?ssl=true&replicaSet=atlas-vq1m0t-shard-0&authSource=admin&retryWrites=true&w=majority&appName=studify
