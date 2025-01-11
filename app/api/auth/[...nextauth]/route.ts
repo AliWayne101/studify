@@ -30,6 +30,7 @@ const handler = NextAuth({
         return {
           name: user.Name,
           email: user.Email,
+          account: user.AccountType
         };
       },
     }),

@@ -25,6 +25,11 @@ const Login = () => {
   }
 
   const HandleLogin = async () => {
+    if (!loginDetails.email || !loginDetails.password) {
+      setErrorFill("Please fill in all fields");
+      return;
+    }
+
     console.log('Handling signin...');
     await signIn('credentials', {
       redirect: false,
