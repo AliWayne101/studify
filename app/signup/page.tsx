@@ -5,6 +5,7 @@ import Button from '../components/Button'
 import Footer from '../sections/footer'
 import "../css/login.scss"
 import "../css/sections/hero.scss"
+import { hashPassword } from '@/utils'
 
 const Signup = () => {
   const [userInfo, setUserInfo] = useState({
@@ -42,6 +43,13 @@ const Signup = () => {
       setFillError(null);
     }
 
+    if (Password !== Repassword) {
+      setFillError("Passwords do not match");
+      return;
+    }
+
+    const hashedPassword = hashPassword(Password);
+
     //start register
     try {
       const response = await fetch('/api/posts', {
@@ -56,7 +64,7 @@ const Signup = () => {
           Role,
           SchoolName,
           Gender,
-          Password,
+          Password: hashedPassword,
           Phone,
           CNIC,
           Address
