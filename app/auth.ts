@@ -84,7 +84,7 @@ const authOptions: AuthOptions = {
 const getSession = () => getServerSession(authOptions);
 
 const SignOut = async () => {
-    await signOut({ callbackUrl: '/' });
+    await signOut({ callbackUrl: '/login' });
 };
 
 export { authOptions, getSession, SignOut }
