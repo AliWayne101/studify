@@ -1,12 +1,11 @@
 'use client';
 
 import React, { useState } from 'react'
-import { WebDetails } from '@/configs';
 import "../css/login.scss";
-import "../css/sections/hero.scss";
 import Footer from '../sections/footer';
 import Button from '../components/Button';
 import { signIn } from 'next-auth/react';
+import Logo from '../sections/Logo';
 
 const Login = () => {
 
@@ -39,10 +38,7 @@ const Login = () => {
   return (
     <>
       <main>
-        <div className="hero">
-          <h1>{WebDetails.webName}</h1>
-          <p>{WebDetails.webMotto}</p>
-        </div>
+        <Logo />
         <div className="body-cont">
           <div className="error">Text</div>
           <div className="loginform">

@@ -1,18 +1,14 @@
 import React from 'react'
 import './css/home.scss'
-import "./css/sections/hero.scss";
 import Link from 'next/link'
 import Footer from './sections/footer'
-import { WebDetails } from '@/configs';
+import Logo from './sections/Logo';
 
 const Home = () => {
   return (
     <>
       <main>
-        <div className="hero">
-          <h1>{WebDetails.webName}</h1>
-          <p>{WebDetails.webMotto}</p>
-        </div>
+        <Logo />
         <div className="cards">
           <div className="cards-cont">
             <h2>Title</h2>

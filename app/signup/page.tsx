@@ -1,11 +1,10 @@
 "use client"
-import { WebDetails } from '@/configs'
 import React, { useState } from 'react'
 import Button from '../components/Button'
 import Footer from '../sections/footer'
 import "../css/login.scss"
-import "../css/sections/hero.scss"
 import { hashPassword } from '@/utils'
+import Logo from '../sections/Logo'
 
 const Signup = () => {
   const [userInfo, setUserInfo] = useState({
@@ -85,11 +84,7 @@ const Signup = () => {
   return (
     <>
       <main>
-        <div className="hero">
-          <h1>{WebDetails.webName}</h1>
-          <p>{WebDetails.webMotto}</p>
-        </div>
-
+        <Logo />
         <div className="body-cont">
           { fillError && <div className="error">{fillError}</div> }
           <div className="loginform">
