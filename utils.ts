@@ -11,6 +11,15 @@ export const isPasswordValid = async (password: string, hashedPassword: string) 
     return isValid;
 }
 
+export const UniqueID = (length: number) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
 export const Connect = async () => {
     if (mongoose.connection.readyState >= 1) return;
     mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_ACCESS!);

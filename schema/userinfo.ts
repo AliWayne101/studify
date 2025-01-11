@@ -2,6 +2,7 @@ import mongoose, { Model, Schema } from "mongoose";
 
 export interface IUserInfo {
     _id: mongoose.Types.ObjectId;
+    UID: string;
     Name: string;
     Email: string;
     Image: string;
@@ -17,6 +18,7 @@ export interface IUserInfo {
 
 const Users = new Schema<IUserInfo>({
     _id: mongoose.Schema.Types.ObjectId,
+    UID: String,
     Name: String,
     Email: String,
     Image: {

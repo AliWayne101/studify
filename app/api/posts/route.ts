@@ -1,5 +1,5 @@
 import UserModel from "@/schema/userinfo";
-import { Connect, hashPassword } from "@/utils";
+import { Connect, hashPassword, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -26,8 +26,10 @@ export const POST = async (request: NextRequest) => {
                     return NextResponse.json({ message: "ERROR", error: "User already exists with the same Email" }, { status: 200 });
                 const newPassword = await hashPassword(Password);
                 console.log(newPassword);
+                const uniqueID = UniqueID(8);
                 const doc = await UserModel.create({
                     _id: new mongoose.Types.ObjectId(),
+                    UID: uniqueID,
                     Name,
                     Email,
                     Role,
