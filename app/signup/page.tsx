@@ -5,6 +5,8 @@ import Footer from '../sections/footer'
 import "../css/login.scss"
 import { hashPassword } from '@/utils'
 import Logo from '../sections/Logo'
+import Error from '../components/Error'
+import Body from '../sections/Body'
 
 const Signup = () => {
   const [userInfo, setUserInfo] = useState({
@@ -85,8 +87,8 @@ const Signup = () => {
     <>
       <main>
         <Logo />
-        <div className="body-cont">
-          { fillError && <div className="error">{fillError}</div> }
+        <Body>
+          <Error error={fillError} />
           <div className="loginform">
             <div className="login">
               <div className="login-in">
@@ -142,7 +144,7 @@ const Signup = () => {
               <Button onClick={HandleSignup}>Signup</Button>
             </div>
           </div>
-        </div>
+        </Body>
       </main>
       <Footer />
     </>

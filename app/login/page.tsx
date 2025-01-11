@@ -6,9 +6,12 @@ import Footer from '../sections/footer';
 import Button from '../components/Button';
 import { signIn } from 'next-auth/react';
 import Logo from '../sections/Logo';
+import Body from '../sections/Body';
+import Error from '../components/Error';
 
 const Login = () => {
 
+  const [errorFill, setErrorFill] = useState<string | null>(null);
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: ""
@@ -29,8 +32,10 @@ const Login = () => {
       password: loginDetails.password
     }).then((response) => {
       console.log(response);
+      setErrorFill(null);
     }).catch((err) => {
       console.log("Error");
+      setErrorFill("Error");
       console.log(err);
     })
   }
@@ -39,8 +44,8 @@ const Login = () => {
     <>
       <main>
         <Logo />
-        <div className="body-cont">
-          <div className="error">Text</div>
+        <Body>
+          <Error error={errorFill} />
           <div className="loginform">
             <div className="login">
               <div className="login-in">
@@ -54,7 +59,7 @@ const Login = () => {
               <Button onClick={HandleLogin}>Login</Button>
             </div>
           </div>
-        </div>
+        </Body>
       </main>
       <Footer />
     </>
