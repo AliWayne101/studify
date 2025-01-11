@@ -13,7 +13,7 @@ const Login = () => {
 
   const [errorFill, setErrorFill] = useState<string | null>(null);
   const [loginDetails, setLoginDetails] = useState({
-    email: "",
+    uid: "",
     password: ""
   });
 
@@ -27,14 +27,14 @@ const Login = () => {
   const HandleLogin = async () => {
     console.log('Handling signin...');
     
-    if (!loginDetails.email || !loginDetails.password) {
+    if (!loginDetails.uid || !loginDetails.password) {
       setErrorFill("Please fill all the fields");
       return;
     }
 
     await signIn('credentials', {
       redirect: false,
-      email: loginDetails.email,
+      email: loginDetails.uid,
       password: loginDetails.password
     }).then((response) => {
       console.log(response);
@@ -55,8 +55,8 @@ const Login = () => {
           <div className="loginform">
             <div className="login">
               <div className="login-in">
-                <input onChange={handleChange} type="email" name="email" id="email" />
-                <label htmlFor="email">Email</label>
+                <input onChange={handleChange} type="text" name="uid" id="uid" />
+                <label htmlFor="uid">UID</label>
               </div>
               <div className="login-in">
                 <input onChange={handleChange} type="password" name="password" id="password" />

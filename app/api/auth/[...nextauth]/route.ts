@@ -16,7 +16,7 @@ const handler = NextAuth({
       async authorize(credentials: any) {
         // Check user exists
         await Connect();
-        const user = await UserModel.findOne({ email: credentials.email }).exec();
+        const user = await UserModel.findOne({ UID: credentials.email }).exec();
         if (!user) {
           return null;
         }
@@ -29,7 +29,7 @@ const handler = NextAuth({
 
         return {
           name: user.Name,
-          email: user.Email,
+          uid: user.UID,
           account: user.AccountType
         };
       },

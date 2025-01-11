@@ -6,7 +6,7 @@ export interface IUserInfo {
     Name: string;
     Email: string;
     Image: string;
-    Role: string; //teacher student parent owner
+    Role: string; //teacher parent owner
     SchoolName: string;
     Gender: string;
     Password: string;
