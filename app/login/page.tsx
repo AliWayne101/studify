@@ -47,6 +47,7 @@ const Login = () => {
     setIsLoading(true);
     if (!loginDetails.uid || !loginDetails.password) {
       setErrorFill("Please fill all the fields");
+      setIsLoading(false);
       return;
     }
 
