@@ -21,6 +21,7 @@ const Login = () => {
   });
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [addBlur, setAddBlur] = useState(false);
 
   useEffect(() => {
     if (session != undefined) {
@@ -66,14 +67,14 @@ const Login = () => {
 
   return (
     <>
-      <Navbar />
-      <main>
+      <Navbar updateParentState={setAddBlur} />
+      <main className={`${addBlur && 'blur'}`}>
         <Logo />
         <Body>
           <Error error={errorFill} />
           <div className="loginform">
             {isLoading ?
-              <Loading Size={96}/>
+              <Loading Size={96} />
               :
               <div className="login">
                 <div className="login-in">
@@ -90,7 +91,9 @@ const Login = () => {
           </div>
         </Body>
       </main>
-      <Footer />
+      <div className={`${addBlur && 'blur'}`}>
+        <Footer />
+      </div>
     </>
   )
 }

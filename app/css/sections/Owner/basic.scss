@@ -40,16 +40,18 @@
             &-bg-icon {
                 z-index: 1;
                 transform: translateX(10px) translateY(20px);
-                font-size: 36px;
+                font-size: 58px;
+                filter:blur(2px);
+                color: var(--theme-bg);
             }
             &-boxes {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
-
                 &-box {
                     &-in {
                         div:nth-child(2) {
-                            font-size: 16px;
+                            font-size: 12px;
+                            z-index: 2 !important;
                         }
                     }
                 }

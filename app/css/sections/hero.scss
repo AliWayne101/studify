@@ -6,4 +6,10 @@
     p {
         width: 480px;
     }
+
+    @media screen and (max-width: 500px) {
+        p {
+            width: 100%;
+        }
+    }
 }

@@ -8,9 +8,24 @@ import { SignOut } from '../auth'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { GrFormClose } from 'react-icons/gr'
 
-const Navbar = () => {
+interface NavbarProps {
+    updateParentState: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
     const [isNavToggle, setIsNavToggle] = useState(false);
     const { data: session, status } = useSession();
+
+    const handleSignOut = () => {
+        SignOut();
+        updateParentState(false); // Update parent state on sign out
+    };
+
+    const updateParentStateFromHere = (cond: boolean) => {
+        setIsNavToggle(cond);
+        updateParentState(cond);
+    }
+
     return (
         <>
             <div className={`navbar`}>
@@ -28,7 +43,7 @@ const Navbar = () => {
                     {session ? (
                         <>
                             <Link href={'/profile'}>Profile</Link>
-                            <span className="link" onClick={SignOut}>Logout</span>
+                            <span className="link" onClick={handleSignOut}>Logout</span>
                         </>
                     ) : (
                         <Link href={'/login'}>Login</Link>
@@ -37,7 +52,9 @@ const Navbar = () => {
                 </div>
 
                 <div className="navbar-burger">
-                    <RxHamburgerMenu size={22} onClick={() => setIsNavToggle(true)} />
+                    {isNavToggle == false && (
+                        <RxHamburgerMenu size={22} onClick={() => updateParentStateFromHere(true)} />
+                    )}
                 </div>
             </div>
             <AnimatePresence>
@@ -50,7 +67,7 @@ const Navbar = () => {
                         transition={{ duration: 0.3 }}
                     >
                         <div className="navbar-mobile-burger">
-                            <GrFormClose size={32} onClick={() => setIsNavToggle(false)} />
+                            <GrFormClose size={32} onClick={() => updateParentStateFromHere(false)} />
                         </div>
                         <div className="navbar-mobile-menu">
                             {NavLinks.map((link, index) => (
@@ -62,7 +79,7 @@ const Navbar = () => {
                                 <Link href={'/profile'}>Profile</Link>
                             </div>
                             <div className="navbar-mobile-menu-item">
-                                <span className="link" onClick={SignOut}>Logout</span>
+                                <span className="link" onClick={handleSignOut}>Logout</span>
                             </div>
                         </div>
                     </motion.div>

@@ -14,31 +14,39 @@ import Loading from '../components/Loading'
 const Dashboard = () => {
   const { data: session, status } = useSession();
   const [studentlist, setStudentlist] = useState<IStudentCard[]>([]);
+  const [addBlur, setAddBlur] = useState(false);
+
 
   useEffect(() => {
     console.log(session);
   }, [session]);
 
+  useEffect(() => {
+    console.log(addBlur);
+  }, [addBlur])
+
   return (
     <>
-      <Navbar />
-      <main>
+      <Navbar updateParentState={setAddBlur} />
+      <main className={`${addBlur && 'blur'}`}>
         <Logo />
         <Body>
           {session ? (
             <div className="dash">
               <div className="dash-intro">
                 <h1>Hi, {session?.user.name}</h1>
-                <small>{session?.user.role} of {session?.user.schoolName}</small>
+                <small><span>{session?.user.role}</span> of <b>{session?.user.schoolName}</b></small>
               </div>
               <Basic Role={session.user.role} />
               <StudentList students={studentlist} />
             </div>
-          ) : <Loading Size={48}/>}
+          ) : <Loading Size={48} />}
 
         </Body>
       </main>
-      <Footer />
+      <div className={`${addBlur && 'blur'}`}>
+        <Footer />
+      </div>
     </>
   )
 }
