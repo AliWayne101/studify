@@ -24,10 +24,10 @@ export const WebDetails = {
 }
 
 export const NavLinks = [
-    { text: "Home", url: "/" },
-    { text: "Home", url: "/" },
-    { text: "Home", url: "/" },
-    { text: "Home", url: "/" },
+    { text: "Home", url: "/", isProtect: false },
+    { text: "Home", url: "/", isProtect: false },
+    { text: "Home", url: "/", isProtect: false },
+    { text: "Dashboard", url: "/dashboard", isProtect: true },
 ]
 
 export const Roles = ["Owner", "Teacher", "Admin", "Parent", "Student"];
