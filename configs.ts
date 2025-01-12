@@ -19,10 +19,16 @@ export const WebDetails = {
         title: "Studify - Stay Connected to Your Child's Academic Journey",
         description: "Studify provides real-time updates on your child's grades, attendance, and progress. Empower their success with instant access to academic information.",
         keywords: "Studify, academic updates, grades, attendance, student progress",
-        author: "Ali Wains",
         authors: [{ name: "Ali Wains" }],
     }
 }
+
+export const NavLinks = [
+    { text: "Home", url: "/" },
+    { text: "Home", url: "/" },
+    { text: "Home", url: "/" },
+    { text: "Home", url: "/" },
+]
 
 export const DashLinks = [
     { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },

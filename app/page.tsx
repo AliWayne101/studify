@@ -3,10 +3,12 @@ import './css/home.scss'
 import Link from 'next/link'
 import Footer from './sections/footer'
 import Logo from './sections/Logo';
+import Navbar from './sections/Navbar';
 
 const Home = () => {
   return (
     <>
+      <Navbar />
       <main>
         <Logo />
         <div className="cards">
