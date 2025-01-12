@@ -1,9 +1,10 @@
 :root {
-  --background: #292828;
-  --background-sec: #1f1e1e;
+  --background: #14151a;
+  --background-sec: #121216;
   --theme-main: purple;
   --theme-accent: rgb(180, 7, 180);
   --foreground: white;
+  --text: #d1d5d1;
   --font-lora: 'Lora', serif;
   --font-poppins: 'Poppins', serif;
   --warning: rgb(189, 36, 36);
@@ -17,7 +18,7 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  color: var(--text);
   background: var(--background);
   font-family: var(--font-poppins);
   -webkit-font-smoothing: antialiased;
