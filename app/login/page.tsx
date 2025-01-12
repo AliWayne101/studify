@@ -44,8 +44,7 @@ const Login = () => {
   }
 
   const HandleLogin = async () => {
-    console.log('Handling signin...');
-
+    setIsLoading(true);
     if (!loginDetails.uid || !loginDetails.password) {
       setErrorFill("Please fill all the fields");
       return;
@@ -56,12 +55,10 @@ const Login = () => {
       email: loginDetails.uid,
       password: loginDetails.password
     }).then((response) => {
-      console.log(response);
       setErrorFill(null);
     }).catch((err) => {
-      console.log("Error");
-      setErrorFill("Error");
-      console.log(err);
+      setIsLoading(false);
+      setErrorFill("There was an error, please try again!");
     })
   }
 
