@@ -16,19 +16,18 @@ const Dashboard = () => {
 
   useEffect(() => {
     console.log(session);
-  },[session]);
+  }, [session]);
 
   return (
     <>
-    <Navbar />
-    <main>
+      <Navbar />
+      <main>
         <Logo />
         <Body>
-        <div onClick={SignOut}>Signout</div>
-            <StudentList students={studentlist} />
+          <StudentList students={studentlist} />
         </Body>
-    </main>
-    <Footer />
+      </main>
+      <Footer />
     </>
   )
 }

@@ -30,6 +30,8 @@ export const NavLinks = [
     { text: "Home", url: "/" },
 ]
 
+export const Roles = ["Owner", "Teacher", "Admin", "Parent", "Student"];
+
 export const DashLinks = [
     { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },
     { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },

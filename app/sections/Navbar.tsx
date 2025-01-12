@@ -4,6 +4,9 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSession } from 'next-auth/react'
+import { SignOut } from '../auth'
+import { RxHamburgerMenu } from 'react-icons/rx'
+import { GrFormClose } from 'react-icons/gr'
 
 const Navbar = () => {
     const [isNavToggle, setIsNavToggle] = useState(false);
@@ -25,7 +28,7 @@ const Navbar = () => {
                     {session ? (
                         <>
                             <Link href={'/profile'}>Profile</Link>
-                            <Link href={'/logout'}>Logout</Link>
+                            <span className="link" onClick={SignOut}>Logout</span>
                         </>
                     ) : (
                         <Link href={'/login'}>Login</Link>
@@ -34,7 +37,7 @@ const Navbar = () => {
                 </div>
 
                 <div className="navbar-burger">
-                    <span onClick={() => setIsNavToggle(true)}>Burger</span>
+                    <RxHamburgerMenu size={22} onClick={() => setIsNavToggle(true)} />
                 </div>
             </div>
             <AnimatePresence>
@@ -47,7 +50,7 @@ const Navbar = () => {
                         transition={{ duration: 0.3 }}
                     >
                         <div className="navbar-mobile-burger">
-                            <span onClick={() => setIsNavToggle(false)}>Burger</span>
+                            <GrFormClose size={32} onClick={() => setIsNavToggle(false)} />
                         </div>
                         <div className="navbar-mobile-menu">
                             {NavLinks.map((link, index) => (
@@ -55,6 +58,12 @@ const Navbar = () => {
                                     <Link href={link.url}>{link.text}</Link>
                                 </div>
                             ))}
+                            <div className="navbar-mobile-menu-item">
+                                <Link href={'/profile'}>Profile</Link>
+                            </div>
+                            <div className="navbar-mobile-menu-item">
+                                <span className="link" onClick={SignOut}>Logout</span>
+                            </div>
                         </div>
                     </motion.div>
                 )}

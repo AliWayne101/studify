@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 
 const Login = () => {
   const [errorFill, setErrorFill] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [loginDetails, setLoginDetails] = useState({
     uid: "",
     password: ""
@@ -22,9 +23,14 @@ const Login = () => {
 
   useEffect(() => {
     if (session != undefined) {
+      setIsLoading(true);
       if (session) {
         router.push('/dashboard');
+      } else {
+        setIsLoading(false);
       }
+    } else {
+      setIsLoading(false);
     }
   }, [session]);
 
@@ -65,17 +71,21 @@ const Login = () => {
         <Body>
           <Error error={errorFill} />
           <div className="loginform">
-            <div className="login">
-              <div className="login-in">
-                <input onChange={handleChange} type="text" name="uid" id="uid" />
-                <label htmlFor="uid">UID</label>
+            {isLoading ?
+              <div className="loading">Loading...</div>
+              :
+              <div className="login">
+                <div className="login-in">
+                  <input onChange={handleChange} type="text" name="uid" id="uid" />
+                  <label htmlFor="uid">UID</label>
+                </div>
+                <div className="login-in">
+                  <input onChange={handleChange} type="password" name="password" id="password" />
+                  <label htmlFor="password">Password</label>
+                </div>
+                <Button onClick={HandleLogin}>Login</Button>
               </div>
-              <div className="login-in">
-                <input onChange={handleChange} type="password" name="password" id="password" />
-                <label htmlFor="password">Password</label>
-              </div>
-              <Button onClick={HandleLogin}>Login</Button>
-            </div>
+            }
           </div>
         </Body>
       </main>
