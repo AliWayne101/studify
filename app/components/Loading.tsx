@@ -1,8 +1,9 @@
 import React from 'react'
+import { CircleLoader } from 'react-spinners'
 
-const Loading = () => {
+const Loading = ({Size}: {Size: number}) => {
   return (
-    <div>Loading..</div>
+    <CircleLoader color='var(--theme-main)' size={Size} />
   )
 }
 

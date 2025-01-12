@@ -34,7 +34,7 @@ const Dashboard = () => {
               <Basic Role={session.user.role} />
               <StudentList students={studentlist} />
             </div>
-          ) : <Loading />}
+          ) : <Loading Size={48}/>}
 
         </Body>
       </main>

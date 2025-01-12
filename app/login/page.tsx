@@ -10,6 +10,7 @@ import Body from '../sections/Body';
 import Error from '../components/Error';
 import Navbar from '../sections/Navbar';
 import { useRouter } from 'next/navigation';
+import Loading from '../components/Loading';
 
 const Login = () => {
   const [errorFill, setErrorFill] = useState<string | null>(null);
@@ -72,7 +73,7 @@ const Login = () => {
           <Error error={errorFill} />
           <div className="loginform">
             {isLoading ?
-              <div className="loading">Loading...</div>
+              <Loading Size={96}/>
               :
               <div className="login">
                 <div className="login-in">
