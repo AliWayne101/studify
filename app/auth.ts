@@ -8,18 +8,22 @@ import { signOut } from "next-auth/react";
 declare module "next-auth" {
     interface Session {
         user: {
+            name:string;
             uid: string;
             role: string;
             accountType: string;
             image: string;
+            schoolName: string;
         } & DefaultSession["user"];
     }
 
     interface User {
+        name:string;
         uid: string;
         role: string;
         accountType: string;
         image: string;
+        schoolName: string;
     }
 }
 
@@ -48,6 +52,7 @@ const authOptions: AuthOptions = {
                     name: user.Name,
                     role: user.Role,
                     accountType: user.AccountType,
+                    schoolName: user.SchoolName,
                     image: user.Image // Assuming user schema has Image field
                 };
             },
@@ -65,6 +70,7 @@ const authOptions: AuthOptions = {
                 session.user.role = token.role as string;
                 session.user.accountType = token.accountType as string;
                 session.user.image = token.image as string;
+                session.user.schoolName = token.schoolName as string;
             }
             return session;
         },
@@ -75,6 +81,7 @@ const authOptions: AuthOptions = {
                 token.role = user.role;
                 token.accountType = user.accountType;
                 token.image = user.image;
+                token.schoolName = user.schoolName;
             }
             return token;
         }

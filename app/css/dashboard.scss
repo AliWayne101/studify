@@ -1,0 +1,17 @@
+.dash {
+    margin-top: 80px;
+    &-intro {
+        small {
+            display: block;
+            transform: translateY(-10px);
+        }
+        @media screen and (max-width: 720px) {
+            small {
+                transform: translateY(-10px);
+                padding-right: 25px;
+                width: 100%;
+                text-align: right;
+            }
+        }
+    }
+}

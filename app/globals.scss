@@ -9,6 +9,7 @@
   --font-lora: 'Lora', serif;
   --font-poppins: 'Poppins', serif;
   --warning: rgb(189, 36, 36);
+
 }
 
 html,
@@ -47,7 +48,7 @@ main {
   margin: 50px 30px 0 30px;
 
   @media screen and (max-width: 720px) {
-    margin: 0 0;
+    margin: 50px 10;
   }
 }
 
@@ -148,9 +149,12 @@ main {
 
     &-menu {
       margin-top: 40px;
+
       &-item {
         margin: 20px 0;
-        a, span {
+
+        a,
+        span {
           color: var(--foreground) !important;
         }
 
@@ -178,5 +182,21 @@ main {
       text-align: right;
       padding: 10px;
     }
+  }
+}
+
+.bg {
+  background-color: var(--background);
+
+  &-sec {
+    background-color: var(--background-sec);
+  }
+}
+
+.hl-bg {
+  border: 1px solid transparent;
+  &:hover {
+    background-color: var(--theme-bg);
+    border: 1px solid var(--theme-main);
   }
 }
