@@ -1,21 +1,32 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import "../css/login.scss";
 import Footer from '../sections/footer';
 import Button from '../components/Button';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Logo from '../sections/Logo';
 import Body from '../sections/Body';
 import Error from '../components/Error';
+import Navbar from '../sections/Navbar';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
-
   const [errorFill, setErrorFill] = useState<string | null>(null);
   const [loginDetails, setLoginDetails] = useState({
     uid: "",
     password: ""
   });
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session != undefined) {
+      if (session) {
+        router.push('/dashboard');
+      }
+    }
+  }, [session]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginDetails({
@@ -26,7 +37,7 @@ const Login = () => {
 
   const HandleLogin = async () => {
     console.log('Handling signin...');
-    
+
     if (!loginDetails.uid || !loginDetails.password) {
       setErrorFill("Please fill all the fields");
       return;
@@ -48,6 +59,7 @@ const Login = () => {
 
   return (
     <>
+      <Navbar />
       <main>
         <Logo />
         <Body>

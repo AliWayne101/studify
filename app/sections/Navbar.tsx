@@ -3,9 +3,11 @@ import { NavLinks, WebDetails } from '@/configs'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useSession } from 'next-auth/react'
 
 const Navbar = () => {
     const [isNavToggle, setIsNavToggle] = useState(false);
+    const { data: session, status } = useSession();
     return (
         <>
             <div className={`navbar`}>
@@ -20,8 +22,15 @@ const Navbar = () => {
                 </div>
 
                 <div className="navbar-user">
-                    <Link href={'/profile'}>Profile</Link>
-                    <Link href={'/logout'}>Logout</Link>
+                    {session ? (
+                        <>
+                            <Link href={'/profile'}>Profile</Link>
+                            <Link href={'/logout'}>Logout</Link>
+                        </>
+                    ) : (
+                        <Link href={'/login'}>Login</Link>
+                    )}
+
                 </div>
 
                 <div className="navbar-burger">
@@ -30,7 +39,7 @@ const Navbar = () => {
             </div>
             <AnimatePresence>
                 {isNavToggle && (
-                    <motion.div 
+                    <motion.div
                         className="navbar-mobile"
                         initial={{ opacity: 0, x: '100%' }}
                         animate={{ opacity: 1, x: 0 }}
