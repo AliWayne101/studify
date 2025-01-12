@@ -33,11 +33,22 @@
                 &:focus + label {
                     transform: translateY(-20px);
                 }
+
             }
 
             select option {
                 color: var(--foreground);
                 outline: none;
+            }
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .login {
+            &-in {
+                input, select {
+                    min-width: 100% !important;
+                }
             }
         }
     }

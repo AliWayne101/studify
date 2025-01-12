@@ -75,16 +75,32 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
                         </div>
                         <div className="navbar-mobile-menu">
                             {NavLinks.map((link, index) => (
-                                <div className="navbar-mobile-menu-item" key={index}>
-                                    <Link href={link.url}>{link.text}</Link>
-                                </div>
+                                link.isProtect ? (
+                                    session && (
+                                        <div className="navbar-mobile-menu-item" key={index}>
+                                            <Link href={link.url}>{link.text}</Link>
+                                        </div>
+                                    )
+                                ) :
+                                    <div className="navbar-mobile-menu-item" key={index}>
+                                        <Link href={link.url}>{link.text}</Link>
+                                    </div>
                             ))}
-                            <div className="navbar-mobile-menu-item">
-                                <Link href={'/profile'}>Profile</Link>
-                            </div>
-                            <div className="navbar-mobile-menu-item">
-                                <span className="link" onClick={handleSignOut}>Logout</span>
-                            </div>
+                            {session ? (
+                                <>
+                                    <div className="navbar-mobile-menu-item">
+                                        <Link href={'/profile'}>Profile</Link>
+                                    </div>
+                                    <div className="navbar-mobile-menu-item">
+                                        <span className="link" onClick={handleSignOut}>Logout</span>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="navbar-mobile-menu-item">
+                                    <Link href={'/login'}>Login</Link>
+                                </div>
+                            )}
+
                         </div>
                     </motion.div>
                 )}
