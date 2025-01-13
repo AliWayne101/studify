@@ -64,3 +64,5 @@ Pages of the Website:
         Access to the portal with appropriate permissions for students and parents.
 
 https://github.com/AhmedAlqurafi/next-auth-credentials/blob/main/pages/api/auth/%5B...nextauth%5D.ts
+
+Loading must be in center of parent
