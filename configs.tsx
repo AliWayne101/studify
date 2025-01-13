@@ -1,10 +1,12 @@
+import { RiFacebookFill, RiInstagramFill, RiTwitterFill } from 'react-icons/ri';
+
 export const socialDetails = [
-    { url: "https://facebook.com" },
-    { url: "https://instagram.com" },
-    { url: "https://twitter.com" },
+    { url: "https://facebook.com", icon: <RiFacebookFill className='footer-section-socials-icon' size={36} /> },
+    { url: "https://instagram.com", icon: <RiInstagramFill className='footer-section-socials-icon' size={36} /> },
+    { url: "https://twitter.com", icon: <RiTwitterFill className='footer-section-socials-icon' size={36} /> },
 ];
 
-export const footerLinks = [
+export const footerLinksMore = [
     { text: "Link 1", url: "#" },
     { text: "Link 2", url: "#" },
     { text: "Link 3", url: "#" },
@@ -12,9 +14,18 @@ export const footerLinks = [
     { text: "Link 5", url: "#" },
 ];
 
+export const footerLinksAbout = [
+    { text: "Link 1", url: "#" },
+    { text: "Link 2", url: "#" },
+    { text: "Link 3", url: "#" },
+    { text: "Link 4", url: "#" },
+    { text: "Link 5", url: "#" },
+]
+
 export const WebDetails = {
     webName: "Studify",
     webMotto: `Stay connected to your child's academic journey with real-time updates. Empower their success with instant access to grades, attendance, and progress.`,
+    backlink: "https://waynedev.vercel.app",
     webMeta: {
         title: "Studify - Stay Connected to Your Child's Academic Journey",
         description: "Studify provides real-time updates on your child's grades, attendance, and progress. Empower their success with instant access to academic information.",

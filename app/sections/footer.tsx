@@ -1,33 +1,38 @@
 import React from 'react'
 import "../css/sections/footer.scss";
 import Link from 'next/link';
-import { SocialIcon } from 'react-social-icons';
-import { footerLinks, socialDetails } from '../../configs';
+import { footerLinksMore, footerLinksAbout, WebDetails, socialDetails } from '../../configs';
+import { RiFacebookBoxFill } from 'react-icons/ri';
 
 const Footer = () => {
   return (
     <div className="footer">
-      <div className="footer-in">
-        <h1>Links</h1>
+      <div className="footer-section">
+        <h1>{WebDetails.webName}</h1>
+        <p>Unified Academic Resource Platform</p>
+        <div className="footer-section-socials">
+          {socialDetails.map((social, index) => (
+            <Link href={social.url} target='_blank' key={index}>{social.icon}</Link>
+          ))}
+        </div>
+        <div className="footer-section-copy">
+          Copyright © 2023 {WebDetails.webName}. All rights reserved.<br />
+          A project of <Link href={WebDetails.backlink}>Wayne Development</Link>
+        </div>
+      </div>
+      <div className="footer-section">
+        <h2>More Studify</h2>
         <ul>
-          {footerLinks.map((x, index) => (
-            <li key={index}>
-              <Link href={x.url}>{x.text}</Link>
-            </li>
+          {footerLinksMore.map((link, index) => (
+            <li key={index}><Link href={link.url}>{link.text}</Link></li>
           ))}
         </ul>
       </div>
-      <div className="footer-in">
-        Copyright © 2023 Studify. All rights reserved.<br />
-        Site Developed and Hosted by <Link href='https://waynedev.vercel.app' target='_blank'><b>Wayne Development</b></Link>
-      </div>
-      <div className="footer-in">
-        <h1>Socials</h1>
-        <ul className="socials">
-          {socialDetails.map((x, index) => (
-            <li className="socials-icon" key={index}>
-              <SocialIcon url={x.url} />
-            </li>
+      <div className="footer-section">
+        <h2>About Studify</h2>
+        <ul>
+          {footerLinksAbout.map((link, index) => (
+            <li key={index}><Link href={link.url}>{link.text}</Link></li>
           ))}
         </ul>
       </div>
