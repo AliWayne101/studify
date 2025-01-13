@@ -1,5 +1,6 @@
 import { compare, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
+import { RolesWithAuthority } from './configs';
 
 export const hashPassword = async (password: string) => {
     const hashedPassword = await hash(password.toString(), 10);
@@ -19,6 +20,14 @@ export const UniqueID = (length: number) => {
     }
     return result;
 }
+
+export const isAuthorized = (Role: string, Levels: string[]) => {
+    const roleDetails = RolesWithAuthority.find(r => r.role === Role);
+    if (roleDetails !== undefined)
+        return Levels.includes(roleDetails?.authorityLevel);
+    else
+        return false;
+} 
 
 export const Connect = async () => {
     if (mongoose.connection.readyState >= 1) return;

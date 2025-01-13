@@ -43,6 +43,14 @@ export const NavLinks = [
 
 export const Roles = ["Owner", "Teacher", "Admin", "Parent", "Student"];
 
+export const RolesWithAuthority = [
+    { role: "Owner", authorityLevel: "SU" },
+    { role: "Teacher", authorityLevel: "HU" },
+    { role: "Admin", authorityLevel: "HU" },
+    { role: "Parent", authorityLevel: "User" },
+    { role: "Student", authorityLevel: "User" },
+];
+
 export const DashLinks = [
     { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },
     { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },

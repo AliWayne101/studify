@@ -4,26 +4,17 @@ import Logo from '../sections/Logo'
 import Body from '../sections/Body'
 import Footer from '../sections/footer'
 import "../css/dashboard.scss"
-import StudentList from '../sections/StudentList'
+import StudentList from '../sections/Authority/StudentList'
 import { IStudentCard } from '@/schema/studentcard'
 import { useSession } from 'next-auth/react'
 import Navbar from '../sections/Navbar'
-import Basic from '../sections/Owner/Basic'
+import Basic from '../sections/Authority/Basic'
 import Loading from '../components/Loading'
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
   const [studentlist, setStudentlist] = useState<IStudentCard[]>([]);
   const [addBlur, setAddBlur] = useState(false);
-
-
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
-
-  useEffect(() => {
-    console.log(addBlur);
-  }, [addBlur])
 
   return (
     <>
@@ -38,7 +29,7 @@ const Dashboard = () => {
                 <small><span>{session?.user.role}</span> of <b>{session?.user.schoolName}</b></small>
               </div>
               <Basic Role={session.user.role} />
-              <StudentList students={studentlist} />
+              <StudentList Role={session.user.role} />
             </div>
           ) : <Loading Size={48} />}
 

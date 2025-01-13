@@ -6,3 +6,7 @@ export interface ButtonProps {
 export interface childrenProps {
     children: React.ReactNode;
 }
+
+export interface RoleProps {
+    Role: string
+}

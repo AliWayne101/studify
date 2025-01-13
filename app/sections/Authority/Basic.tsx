@@ -1,13 +1,10 @@
 "use client"
 import React, { useState } from 'react'
-import "../../css/sections/Owner/basic.scss"
-import { BsPeopleFill } from 'react-icons/bs';
+import "../../css/sections/Authority/basic.scss"
 import { motion } from 'framer-motion';
 import { TbActivityHeartbeat } from 'react-icons/tb';
-
-interface OwnerBasic {
-    Role: string;
-}
+import { RoleProps } from '@/interfaces';
+import { isAuthorized } from '@/utils';
 
 const boxVariants = {
     hidden: { opacity: 0, x: 400 },
@@ -21,7 +18,7 @@ const boxVariants = {
     })
 };
 
-const Basic = ({ Role }: OwnerBasic) => {
+const Basic = ({ Role }: RoleProps) => {
     const [basicInfo, setBasicInfo] = useState([
         { Title: "Students", Info: "200" },
         { Title: "Teachers", Info: "10" },
@@ -30,7 +27,7 @@ const Basic = ({ Role }: OwnerBasic) => {
     ]);
 
     return (
-        Role === "Owner" || Role === "Admin" || Role === "Teacher" ? (
+        isAuthorized(Role, ["SU", "HU"]) ? (
             <div className="basic">
                 <h2>Basic Information</h2>
                 <div className="basic-boxes">
