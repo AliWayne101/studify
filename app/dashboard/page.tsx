@@ -5,7 +5,6 @@ import Body from '../sections/Body'
 import Footer from '../sections/footer'
 import "../css/dashboard.scss"
 import StudentList from '../sections/Authority/StudentList'
-import { IStudentCard } from '@/schema/studentcard'
 import { useSession } from 'next-auth/react'
 import Navbar from '../sections/Navbar'
 import Basic from '../sections/Authority/Basic'
@@ -14,7 +13,6 @@ import List from '../sections/Authority/List'
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
-  const [studentlist, setStudentlist] = useState<IStudentCard[]>([]);
   const [addBlur, setAddBlur] = useState(false);
 
   return (

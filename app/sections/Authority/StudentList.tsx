@@ -1,6 +1,5 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { IStudentCard } from '../../../schema/studentcard';
 import "../../css/sections/Authority/basic.scss";
 import { SessionProps } from '@/interfaces';
 import { isAuthorized } from '@/utils';
@@ -11,14 +10,18 @@ const StudentList = ({ session }: SessionProps) => {
 
     useEffect(() => {
         var requestBody = {
-            Request: "getuserinfo",
+            Request: "getdashboarduinfo",
             uid: session.user.uid,
             targetRoll: "Student",
+            schoolName: session.user.schoolName,
             clause: "all"
         };
-        if (session.user.role)
-            requestBody.targetRoll = "Teacher";
-        
+
+        if (session.user.role === "Owner" || session.user.role === "Admin")
+            requestBody.targetRoll = "Employees";
+        else if (session.user.role === "Teacher")
+            requestBody.clause = "class";
+
         const sendRequest = async () => {
             try {
 
@@ -29,14 +32,14 @@ const StudentList = ({ session }: SessionProps) => {
                     },
                     body: JSON.stringify(requestBody)
                 });
-                
+
                 if (!response.ok) {
                     setIsError("Network response was not okay, please refresh the page");
                     return;
                 }
                 const data = response.json();
                 console.log(data);
-            } catch(err) {
+            } catch (err) {
                 setIsError("Seems to be an error, please refresh the page");
                 console.log(err);
             }

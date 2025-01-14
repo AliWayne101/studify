@@ -13,7 +13,9 @@ export interface IUserInfo {
     Phone: string;
     AccountType: string; //free or special
     CNIC: string;
+    AssignedClass: string;
     Address: string;
+    ParentUID: string[];
 }
 
 const Users = new Schema<IUserInfo>({
@@ -35,7 +37,9 @@ const Users = new Schema<IUserInfo>({
     Password: String,
     Phone: String,
     Role: String,
-    SchoolName: String
+    SchoolName: String,
+    AssignedClass: String,
+    ParentUID: [String]
 });
 
 let UserModel: Model<IUserInfo>;

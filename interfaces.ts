@@ -1,5 +1,4 @@
 import { Session } from "next-auth";
-import { IStudentCard } from "./schema/studentcard";
 import { IUserInfo } from "./schema/userinfo";
 
 export interface ButtonProps {
@@ -22,5 +21,5 @@ export interface SessionProps {
 export interface ListProps {
     Title: string;
     Target: string;
-    List: IStudentCard[]|IUserInfo[];
+    List: IUserInfo;
 }

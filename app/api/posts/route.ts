@@ -1,4 +1,4 @@
-import UserModel from "@/schema/userinfo";
+import UserModel, { IUserInfo } from "@/schema/userinfo";
 import AttendanceModel from "@/schema/attendanceinfo";
 import { Connect, hashPassword, UniqueID } from "@/utils";
 import mongoose from "mongoose";
@@ -19,8 +19,28 @@ export const POST = async (request: NextRequest) => {
             } catch (err) {
                 return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
             }
-        case "getuserinfo":
-            
+        case "getdashboarduinfo":
+            var { uid, clause, targetRoll, schoolName } = body;
+            if (clause === "all") {
+                var searchParams = {};
+                if (targetRoll === "Employees") {
+                    searchParams = { Role: { $in: ["Teacher", "Admin"] }, SchoolName: schoolName };
+                } else if (targetRoll === "Student") {
+                    searchParams = { Role: "Student", SchoolName: schoolName }
+                }
+                const docs = await UserModel.find(searchParams);
+                return NextResponse.json({ message: "OK", data: docs }, { status: 200 });
+            } else if (clause === "class") {
+                const teacherCard = await UserModel.findOne({ UID: uid });
+                if (teacherCard) {
+                    const students = await UserModel.find({ AssignedClass: teacherCard.AssignedClass });
+                    return NextResponse.json({ message: "OK", data: students });
+                } else {
+                    return NextResponse.json({ message: "ERROR", error: "No user with such data" }, { status: 200 });
+                }
+            } else {
+                return NextResponse.json({ message: "ERROR" }, { status: 200 });
+            }
             break;
         case "signup":
             var { Name, Email, Role, SchoolName, Gender, Password, Phone, CNIC, Address } = body;
