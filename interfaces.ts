@@ -20,6 +20,5 @@ export interface SessionProps {
 
 export interface ListProps {
     Title: string;
-    Target: string;
-    List: IUserInfo;
+    List?: IUserInfo[];
 }

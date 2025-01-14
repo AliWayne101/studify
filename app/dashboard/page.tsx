@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Logo from '../sections/Logo'
 import Body from '../sections/Body'
 import Footer from '../sections/footer'
@@ -9,7 +9,6 @@ import { useSession } from 'next-auth/react'
 import Navbar from '../sections/Navbar'
 import Basic from '../sections/Authority/Basic'
 import Loading from '../components/Loading'
-import List from '../sections/Authority/List'
 
 const Dashboard = () => {
   const { data: session, status } = useSession();

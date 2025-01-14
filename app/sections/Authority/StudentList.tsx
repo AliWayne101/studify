@@ -4,10 +4,12 @@ import "../../css/sections/Authority/basic.scss";
 import { SessionProps } from '@/interfaces';
 import { isAuthorized } from '@/utils';
 import List from './List';
+import { IUserInfo } from '@/schema/userinfo';
 
 const StudentList = ({ session }: SessionProps) => {
     const [isError, setIsError] = useState<string | null>(null);
-
+    const [userInfo, setUserInfo] = useState<IUserInfo[]|undefined>(undefined);
+    const [listTitle, setListTitle] = useState("");
     useEffect(() => {
         var requestBody = {
             Request: "getdashboarduinfo",
@@ -17,10 +19,13 @@ const StudentList = ({ session }: SessionProps) => {
             clause: "all"
         };
 
-        if (session.user.role === "Owner" || session.user.role === "Admin")
+        if (session.user.role === "Owner" || session.user.role === "Admin") {
             requestBody.targetRoll = "Employees";
-        else if (session.user.role === "Teacher")
+            setListTitle("Employee Information");
+        } else if (session.user.role === "Teacher") {
             requestBody.clause = "class";
+            setListTitle("Student Information");
+        }
 
         const sendRequest = async () => {
             try {
@@ -49,7 +54,7 @@ const StudentList = ({ session }: SessionProps) => {
 
     return (
         isAuthorized(session.user.role, ["SU", "HU"]) ? (
-            <List Title="User Information" />
+            <List Title={listTitle} List={userInfo}/>
         ) : null
     );
 };

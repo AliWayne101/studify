@@ -8,7 +8,7 @@
         gap: 20px;
         &-card {
             background-color: var(--background-sec);
-            height: 285px;
+            height: 290px;
             width: 240px;
             overflow: hidden;
             text-overflow: hidden;
@@ -31,14 +31,36 @@
             }
             ul {
                 list-style-type: none;
-                padding: 0 20px;
                 margin-bottom: 20px;
                 li {
                     text-align: center;
+                    margin-top: 4px;
                     font-size: 14px;
+                    border-bottom: 1px solid var(--background);
                 }
             }
             
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        &-cards {
+            grid-template-columns: repeat(2, 1fr);
+            &-card {
+                height: auto !important;
+                width: auto !important;
+                &-image {
+                    img {
+                        height: 100px;
+                        width: 100px;
+                    }
+                }
+                ul {
+                    li {
+                        font-size: 12px;
+                    }
+                }
+            }
         }
     }
 }

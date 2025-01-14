@@ -209,3 +209,19 @@ b {
   backdrop-filter: blur(20px);
   filter: blur(20px);
 }
+
+ul {
+  li {
+    span {
+      font-weight: bold;
+      color: var(--foreground)
+    }
+  }
+}
+
+.center {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
-import { RolesWithAuthority } from './configs';
+import { AVATAR_LINK, RolesWithAuthority } from './configs';
 
 export const hashPassword = async (password: string) => {
     const hashedPassword = await hash(password.toString(), 10);
@@ -27,7 +27,14 @@ export const isAuthorized = (Role: string, Levels: string[]) => {
         return Levels.includes(roleDetails?.authorityLevel);
     else
         return false;
-} 
+}
+
+export const getImageLink = (Data: string) => {
+    if (Data === "Basic")
+        return AVATAR_LINK;
+    else
+        return Data;
+}
 
 export const Connect = async () => {
     if (mongoose.connection.readyState >= 1) return;

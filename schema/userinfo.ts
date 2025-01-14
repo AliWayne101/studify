@@ -16,6 +16,8 @@ export interface IUserInfo {
     AssignedClass: string;
     Address: string;
     ParentUID: string[];
+    DOB: Date;
+    JoinedOn: Date;
 }
 
 const Users = new Schema<IUserInfo>({
@@ -39,7 +41,9 @@ const Users = new Schema<IUserInfo>({
     Role: String,
     SchoolName: String,
     AssignedClass: String,
-    ParentUID: [String]
+    ParentUID: [String],
+    DOB: Date,
+    JoinedOn: Date
 });
 
 let UserModel: Model<IUserInfo>;
