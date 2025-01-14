@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react'
 import Navbar from '../sections/Navbar'
 import Basic from '../sections/Authority/Basic'
 import Loading from '../components/Loading'
+import List from '../sections/Authority/List'
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -29,7 +30,7 @@ const Dashboard = () => {
                 <small><span>{session?.user.role}</span> of <b>{session?.user.schoolName}</b></small>
               </div>
               <Basic Role={session.user.role} />
-              <StudentList Role={session.user.role} />
+              <StudentList session={session} />
             </div>
           ) : <Loading Size={48} />}
 

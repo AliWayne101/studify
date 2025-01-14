@@ -1,0 +1,44 @@
+.list {
+    margin-top: 30px;
+
+    &-cards {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+        &-card {
+            background-color: var(--background-sec);
+            height: 285px;
+            width: 240px;
+            overflow: hidden;
+            text-overflow: hidden;
+            transition: height 300ms ease-in-out;
+
+            &:hover {
+                height: 500px;
+            }
+            &-image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                margin: 20px 0;
+                img {
+                    height: 200px;
+                    width: 200px;
+                    border-radius: 100%;
+                }
+            }
+            ul {
+                list-style-type: none;
+                padding: 0 20px;
+                margin-bottom: 20px;
+                li {
+                    text-align: center;
+                    font-size: 14px;
+                }
+            }
+            
+        }
+    }
+}

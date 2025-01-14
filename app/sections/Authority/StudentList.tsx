@@ -1,16 +1,52 @@
-import React from 'react';
+"use client"
+import React, { useEffect, useState } from 'react';
 import { IStudentCard } from '../../../schema/studentcard';
 import "../../css/sections/Authority/basic.scss";
-import { RoleProps } from '@/interfaces';
+import { SessionProps } from '@/interfaces';
 import { isAuthorized } from '@/utils';
+import List from './List';
 
+const StudentList = ({ session }: SessionProps) => {
+    const [isError, setIsError] = useState<string | null>(null);
 
-const StudentList = ({ Role }: RoleProps) => {
-    
+    useEffect(() => {
+        var requestBody = {
+            Request: "getuserinfo",
+            uid: session.user.uid,
+            targetRoll: "Student",
+            clause: "all"
+        };
+        if (session.user.role)
+            requestBody.targetRoll = "Teacher";
+        
+        const sendRequest = async () => {
+            try {
+
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                if (!response.ok) {
+                    setIsError("Network response was not okay, please refresh the page");
+                    return;
+                }
+                const data = response.json();
+                console.log(data);
+            } catch(err) {
+                setIsError("Seems to be an error, please refresh the page");
+                console.log(err);
+            }
+        }
+        sendRequest();
+    }, [session.user.role])
 
     return (
-        isAuthorized(Role, ["SU", "HU"]) ? (
-            <div>This is it</div>
+        isAuthorized(session.user.role, ["SU", "HU"]) ? (
+            <List Title="User Information" />
         ) : null
     );
 };

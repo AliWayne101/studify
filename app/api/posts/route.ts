@@ -19,6 +19,9 @@ export const POST = async (request: NextRequest) => {
             } catch (err) {
                 return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
             }
+        case "getuserinfo":
+            
+            break;
         case "signup":
             var { Name, Email, Role, SchoolName, Gender, Password, Phone, CNIC, Address } = body;
             const newPassword = await hashPassword(Password);
