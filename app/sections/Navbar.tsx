@@ -35,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
 
                 <div className="navbar-menu">
                     {NavLinks.map((link, index) => (
-                        link.isProtect ? (
+                        link.isProtected ? (
                             session && <Link href={link.url} className='navbar-menu-item' key={index}>{link.text}</Link>
                         ) :
                             <Link href={link.url} className='navbar-menu-item' key={index}>{link.text}</Link>
@@ -75,7 +75,7 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
                         </div>
                         <div className="navbar-mobile-menu">
                             {NavLinks.map((link, index) => (
-                                link.isProtect ? (
+                                link.isProtected ? (
                                     session && (
                                         <div className="navbar-mobile-menu-item" key={index}>
                                             <Link href={link.url}>{link.text}</Link>
