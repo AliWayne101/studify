@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import "../../css/sections/Authority/basic.scss";
 import { SessionProps } from '@/interfaces';
-import { isAuthorized } from '@/utils';
 import List from './List';
 import { IUserInfo } from '@/schema/userinfo';
 
