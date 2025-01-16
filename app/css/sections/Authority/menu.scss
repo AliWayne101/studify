@@ -11,7 +11,7 @@
                 align-items: center;
                 justify-content: center;
                 height: 40px;
-                background-color: var(--theme-accent);
+                border: 1px solid var(--theme-accent);
                 color: var(--text);
                 transition: all 200ms ease-in;
                 &:hover {
