@@ -1,3 +1,4 @@
+import { AttendanceStructProps } from "@/interfaces";
 import mongoose, { Model, Schema } from "mongoose";
 
 export interface IAttendanceInfo {
@@ -5,10 +6,7 @@ export interface IAttendanceInfo {
     Month: string;
     Year: number;
     StudentId: string;
-    Attendace: {
-        Day: number;
-        Status: string
-    }[];
+    Attendance: AttendanceStructProps[];
 }
 
 const Attendance = new Schema<IAttendanceInfo>({
@@ -16,7 +14,7 @@ const Attendance = new Schema<IAttendanceInfo>({
     Month: String,
     Year: Number,
     StudentId: String,
-    Attendace: [{
+    Attendance: [{
         Day: Number,
         Status: String
     }]

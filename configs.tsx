@@ -1,4 +1,5 @@
 import { RiFacebookFill, RiInstagramFill, RiTwitterFill } from 'react-icons/ri';
+import { MenuLinks } from './interfaces';
 
 export const socialDetails = [
     { url: "https://facebook.com", icon: <RiFacebookFill className='footer-section-socials-icon' size={36} /> },
@@ -6,20 +7,14 @@ export const socialDetails = [
     { url: "https://twitter.com", icon: <RiTwitterFill className='footer-section-socials-icon' size={36} /> },
 ];
 
-export const footerLinksMore = [
-    { text: "Link 1", url: "#" },
-    { text: "Link 2", url: "#" },
-    { text: "Link 3", url: "#" },
-    { text: "Link 4", url: "#" },
-    { text: "Link 5", url: "#" },
+export const footerLinksMore:MenuLinks[] = [
+    { text: "Contact Us", url: "/contact" },
+    { text: "About Us", url: "/about" },
+    { text: "Privacy Policy", url: "/privacy" },
 ];
 
-export const footerLinksAbout = [
-    { text: "Link 1", url: "#" },
-    { text: "Link 2", url: "#" },
-    { text: "Link 3", url: "#" },
-    { text: "Link 4", url: "#" },
-    { text: "Link 5", url: "#" },
+export const footerLinksAbout:MenuLinks[] = [
+    { text: "Sitemap", url: "/sitemap" },
 ]
 
 export const WebDetails = {
@@ -34,11 +29,10 @@ export const WebDetails = {
     }
 }
 
-export const NavLinks = [
-    { text: "Home", url: "/", isProtect: false },
-    { text: "Home", url: "/", isProtect: false },
-    { text: "Home", url: "/", isProtect: false },
-    { text: "Dashboard", url: "/dashboard", isProtect: true },
+export const NavLinks: MenuLinks[] = [
+    { text: "Dashboard", url: "/dashboard", isProtected: true },
+    { text: "Contact Us", url: "/", isProtected: true },
+    { text: "Home", url: "/", isProtected: false },
 ]
 
 export const Roles = ["Owner", "Teacher", "Admin", "Parent", "Student"];
@@ -52,11 +46,11 @@ export const RolesWithAuthority = [
     { role: "Student", authorityLevel: "User" },
 ];
 
-export const DashLinks = [
-    { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },
-    { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },
-    { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },
-    { text: "Attendance", url: '/actions/update/attendance', role: ["Teacher", "Admin", "Parent"] },
+export const TeacherLinks:MenuLinks[] = [
+    { text: "Mark Attendance", url: '/actions/update/attendance/students' },
+    { text: "123", url: '/actions/update/attendance' },
+    { text: "123", url: '/actions/update/attendance' },
+    { text: "123", url: '/actions/update/attendance' },
 ]
 
 export const SALT_LENGTH = 12;

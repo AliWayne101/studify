@@ -122,11 +122,11 @@ export const POST = async (request: NextRequest) => {
                         Attendace: [{ Day: currentDay, Status }]
                     });
                 } else {
-                    const dayIndex = attendance.Attendace.findIndex(a => a.Day === currentDay);
+                    const dayIndex = attendance.Attendance.findIndex(a => a.Day === currentDay);
                     if (dayIndex > -1) {
-                        attendance.Attendace[dayIndex].Status = Status;
+                        attendance.Attendance[dayIndex].Status = Status;
                     } else {
-                        attendance.Attendace.push({ Day: currentDay, Status });
+                        attendance.Attendance.push({ Day: currentDay, Status });
                     }
                     await attendance.save();
                 }

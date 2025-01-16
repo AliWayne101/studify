@@ -23,6 +23,17 @@ export interface BasicInfoProps {
     Info: String;
 }
 
+export interface AttendanceStructProps {
+    Day: number;
+    Status: string;
+}
+
+export interface MenuLinks {
+    text: string;
+    url: string;
+    isProtected?: boolean
+}
+
 export interface ListProps {
     Title: string;
     List?: IUserInfo[];
