@@ -30,7 +30,7 @@ export const isAuthorized = (Role: string, Levels: string[]) => {
 }
 
 export const getImageLink = (Data: string) => {
-    if (Data === "Basic")
+    if (Data === "default")
         return AVATAR_LINK;
     else
         return Data;

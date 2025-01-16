@@ -19,8 +19,8 @@ const List = ({ Title, List }: ListProps) => {
                             <li><span>Role:</span> {doc.Role}</li>
                             <li><span>CNIC:</span> {doc.CNIC}</li>
                             <li><span>Phone:</span> {doc.Phone}</li>
-                            <li><span>DOB:</span> {doc.DOB.toLocaleDateString()}</li>
-                            <li><span>Joining Date:</span> {doc.JoinedOn.toLocaleDateString()}</li>
+                            <li><span>DOB:</span> {new Date(doc.DOB.toString()).toLocaleDateString('en-GB')}</li>
+                            <li><span>Joining Date:</span> {new Date(doc.JoinedOn.toString()).toLocaleDateString('en-GB')}</li>
                             <li>Address <br /> <small>{doc.Address}</small></li>
                         </ul>
                     </div>

@@ -38,8 +38,11 @@ export const POST = async (request: NextRequest) => {
                 } else {
                     return NextResponse.json({ message: "ERROR", error: "No user with such data" }, { status: 200 });
                 }
+            } else if (clause === "children") {
+                const docs = await UserModel.find({ ParentUID: uid });
+                return NextResponse.json({ message: "OK", data: docs });
             } else {
-                return NextResponse.json({ message: "ERROR" }, { status: 200 });
+                return NextResponse.json({ message: "ERROR", error: "Invalid request.." }, { status: 200 });
             }
             break;
         case "signup":

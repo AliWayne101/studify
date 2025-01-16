@@ -1,9 +1,9 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../../css/sections/Authority/basic.scss"
 import { motion } from 'framer-motion';
 import { TbActivityHeartbeat } from 'react-icons/tb';
-import { RoleProps } from '@/interfaces';
+import { SessionProps } from '@/interfaces';
 import { isAuthorized } from '@/utils';
 
 const boxVariants = {
@@ -18,7 +18,7 @@ const boxVariants = {
     })
 };
 
-const Basic = ({ Role }: RoleProps) => {
+const Basic = ({ session }: SessionProps) => {
     const [basicInfo, setBasicInfo] = useState([
         { Title: "Students", Info: "200" },
         { Title: "Teachers", Info: "10" },
@@ -26,8 +26,12 @@ const Basic = ({ Role }: RoleProps) => {
         { Title: "Present Teachers", Info: "5/10" },
     ]);
 
+    useEffect(() => {
+
+    }, [session])
+
     return (
-        isAuthorized(Role, ["SU", "HU"]) ? (
+        isAuthorized(session.user.role, ["SU", "HU"]) ? (
             <div className="basic">
                 <h2>Basic Information</h2>
                 <div className="basic-boxes">
