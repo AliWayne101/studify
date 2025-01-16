@@ -1,11 +1,14 @@
 .menu {
     margin: 20px 0;
+
     &-items {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         gap: 10px;
+
         &-item {
             min-height: 40px;
+
             a {
                 display: flex;
                 align-items: center;
@@ -14,11 +17,21 @@
                 border: 1px solid var(--theme-accent);
                 color: var(--text);
                 transition: all 200ms ease-in;
+
                 &:hover {
                     background-color: var(--theme-main);
                     color: var(--foreground);
                 }
             }
+        }
+
+        @media screen and (max-width: 720px) {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        @media screen and (max-width: 480px) {
+            grid-template-columns: repeat(3, 1fr);
+            font-size: 12px !important;
         }
     }
 }
