@@ -18,6 +18,7 @@ export interface IUserInfo {
     ParentUID: string[];
     DOB: Date;
     JoinedOn: Date;
+    isActive: boolean;
 }
 
 const Users = new Schema<IUserInfo>({
@@ -43,7 +44,11 @@ const Users = new Schema<IUserInfo>({
     AssignedClass: String,
     ParentUID: [String],
     DOB: Date,
-    JoinedOn: Date
+    JoinedOn: Date,
+    isActive: {
+        type: Boolean,
+        default: true
+    },
 });
 
 let UserModel: Model<IUserInfo>;

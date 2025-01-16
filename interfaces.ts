@@ -18,6 +18,11 @@ export interface SessionProps {
     session: Session;
 }
 
+export interface BasicInfoProps {
+    Title: string;
+    Info: String;
+}
+
 export interface ListProps {
     Title: string;
     List?: IUserInfo[];

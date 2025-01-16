@@ -3,6 +3,7 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { Connect, hashPassword, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
+import { BasicInfoProps } from "@/interfaces";
 
 export const POST = async (request: NextRequest) => {
     await Connect();
@@ -45,6 +46,33 @@ export const POST = async (request: NextRequest) => {
                 return NextResponse.json({ message: "ERROR", error: "Invalid request.." }, { status: 200 });
             }
             break;
+        case "basic": {
+            const { Role, SchoolName, uID } = body;
+            const returnData: BasicInfoProps[] = [];
+            if (Role === "Owner" || Role === "Admin") {
+                const currentDate = new Date();
+                const currentMonth = currentDate.getMonth();
+                const currentYear = currentDate.getFullYear();
+
+                const students = await UserModel.find({ isActive: true, SchoolName: SchoolName, Role: "Student" });
+                const teachers = await UserModel.find({ isActive: true, SchoolName: SchoolName, Role: "Teacher" });
+                const newAdmissions = await UserModel.find({ 
+                    isActive: true,
+                    SchoolName: SchoolName,
+                    JoinedOn: {
+                        $gte: new Date(currentYear, currentMonth, 1),
+                        $lt: new Date(currentYear, currentMonth + 1, 1)
+                    }
+                });
+                returnData.push({Title: "Students", Info: students.length.toString() });
+                returnData.push({Title: "Teachers", Info: teachers.length.toString() });
+                returnData.push({Title: "Adm. month", Info: newAdmissions.length.toString() });
+                returnData.push({Title: "Present Teachers", Info: "000/000" });
+            }
+
+            return NextResponse.json({ message: "OK", data: returnData }, { status: 200 });
+            break;
+        }
         case "signup":
             var { Name, Email, Role, SchoolName, Gender, Password, Phone, CNIC, Address } = body;
             const newPassword = await hashPassword(Password);

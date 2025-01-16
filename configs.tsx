@@ -43,11 +43,12 @@ export const NavLinks = [
 
 export const Roles = ["Owner", "Teacher", "Admin", "Parent", "Student"];
 
+//SU - SuperUser | HU = HighUser | SG = Special Guest | User = User
 export const RolesWithAuthority = [
     { role: "Owner", authorityLevel: "SU" },
     { role: "Teacher", authorityLevel: "HU" },
     { role: "Admin", authorityLevel: "HU" },
-    { role: "Parent", authorityLevel: "User" },
+    { role: "Parent", authorityLevel: "SG" },
     { role: "Student", authorityLevel: "User" },
 ];
 
