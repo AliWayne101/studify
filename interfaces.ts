@@ -34,6 +34,10 @@ export interface MenuLinks {
     isProtected?: boolean
 }
 
+export interface SlugProps {
+    params: Promise<{ slug: string}>
+}
+
 export interface ListProps {
     Title: string;
     List?: IUserInfo[];

@@ -8,11 +8,13 @@ import Logo from '@/app/sections/Logo';
 import Body from '@/app/sections/Body';
 import Footer from '@/app/sections/footer';
 import Loading from '@/app/components/Loading';
+import { SlugProps } from '@/interfaces';
 
-const UpdateAttendance = () => {
+const UpdateAttendance = ({ params }: SlugProps) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [addBlur, setAddBlur] = useState(false);
+  const [slug, setSlug] = useState("");;
 
   useEffect(() => {
     if (session) {
@@ -22,6 +24,14 @@ const UpdateAttendance = () => {
     }
   }, [session, router])
 
+  useEffect(() => {
+    const getSlug = async() => {
+      const _slug = (await params).slug;
+      setSlug(_slug);
+    }
+    getSlug();
+  }, [params])
+
   return (
     <>
       <Navbar updateParentState={setAddBlur} />
@@ -29,7 +39,7 @@ const UpdateAttendance = () => {
         <Logo />
         <Body>
           {session ? <>
-            This is done
+            This is done {slug}
           </> : <Loading Size={48} />}
         </Body>
       </main>
