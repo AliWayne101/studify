@@ -59,6 +59,7 @@ export const POST = async (request: NextRequest) => {
                 const newAdmissions = await UserModel.find({ 
                     isActive: true,
                     SchoolName: SchoolName,
+                    Role: "Student",
                     JoinedOn: {
                         $gte: new Date(currentYear, currentMonth, 1),
                         $lt: new Date(currentYear, currentMonth + 1, 1)
@@ -74,7 +75,7 @@ export const POST = async (request: NextRequest) => {
             break;
         }
         case "signup":
-            var { Name, Email, Role, SchoolName, Gender, Password, Phone, CNIC, Address } = body;
+            var { Name, Email, Role, SchoolName, Gender, Password, Phone, CNIC, Address, DOB } = body;
             const newPassword = await hashPassword(Password);
             const uniqueID = UniqueID(8);
             try {
@@ -93,7 +94,7 @@ export const POST = async (request: NextRequest) => {
                     CNIC,
                     Address,
                     Password: newPassword,
-
+                    DOB
                 });
                 return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
             } catch (err) {

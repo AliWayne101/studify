@@ -22,7 +22,8 @@ const Signup = () => {
     Repassword: "",
     Phone: "",
     CNIC: "",
-    Address: ""
+    Address: "",
+    DateOfBirth: ""
   });
   const [fillError, setFillError] = useState<string | null>(null);
 
@@ -34,7 +35,7 @@ const Signup = () => {
   }
 
   const HandleSignup = async () => {
-    const { Name, Email, Role, SchoolName, Gender, Password, Repassword, Phone, CNIC, Address } = userInfo;
+    const { Name, Email, Role, SchoolName, Gender, Password, Repassword, Phone, CNIC, Address, DateOfBirth } = userInfo;
     const emptyFields = Object.entries(userInfo).filter(([key, value]) => value === "").map(([key]) => key);
 
     var emptyFieldsString = "";
@@ -71,7 +72,8 @@ const Signup = () => {
           Password: hashedPassword,
           Phone,
           CNIC,
-          Address
+          Address,
+          DOB: DateOfBirth
         })
       });
 
@@ -128,6 +130,10 @@ const Signup = () => {
               <div className="login-in">
                 <input onChange={handleChange} type="Text" name="SchoolName" id="SchoolName" />
                 <label htmlFor="SchoolName">School Name</label>
+              </div>
+              <div className="login-in">
+                <input onChange={handleChange} type="date" name="DateOfBirth" id="DateOfBirth" />
+                <label htmlFor="DateOfBirth">Date of Birth</label>
               </div>
               <div className="login-in">
                 <input onChange={handleChange} type="password" name="Password" id="Password" />

@@ -44,7 +44,10 @@ const Users = new Schema<IUserInfo>({
     AssignedClass: String,
     ParentUID: [String],
     DOB: Date,
-    JoinedOn: Date,
+    JoinedOn: {
+        type: Date,
+        default: Date.now()
+    },
     isActive: {
         type: Boolean,
         default: true
