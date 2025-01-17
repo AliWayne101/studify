@@ -47,7 +47,7 @@ export const RolesWithAuthority = [
 ];
 
 export const TeacherLinks:MenuLinks[] = [
-    { text: "Mark Attendance", url: '/actions/update/attendance/student' },
+    { text: "Mark Attendance", url: '/actions/update/attendance/students' },
     { text: "123", url: '/actions/update/attendance' },
     { text: "123", url: '/actions/update/attendance' },
     { text: "123", url: '/actions/update/attendance' },
