@@ -35,7 +35,7 @@ export const NavLinks: MenuLinks[] = [
     { text: "Home", url: "/", isProtected: false },
 ]
 
-export const Roles = ["Owner", "Teacher", "Admin", "Parent", "Student"];
+// export const Roles = ["Owner", "Teacher", "Admin", "Parent", "Student"];
 
 //SU - SuperUser | HU = HighUser | SG = Special Guest | User = User
 export const RolesWithAuthority = [

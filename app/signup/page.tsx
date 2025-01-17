@@ -1,14 +1,14 @@
 "use client"
+import "../css/login.scss"
 import React, { useState } from 'react'
 import Button from '../components/Button'
 import Footer from '../sections/footer'
-import "../css/login.scss"
 import { hashPassword } from '@/utils'
 import Logo from '../sections/Logo'
 import Error from '../components/Error'
 import Body from '../sections/Body'
 import { useSession } from 'next-auth/react'
-import { Roles } from '@/configs'
+import { RolesWithAuthority } from '@/configs'
 
 const Signup = () => {
   const { data: session } = useSession();
@@ -105,8 +105,8 @@ const Signup = () => {
               <div className="login-in">
                 <select name="Role" id="Role" onChange={handleChange}>
                   <option className='bg' value="">Select Role</option>
-                  {Roles.map((role, index) => (
-                    <option className='bg' value={role} key={index}>{role}</option>
+                  {RolesWithAuthority.map((role, index) => (
+                    <option className='bg' value={role.role} key={index}>{role.role}</option>
                   ))}
                 </select>
                 <label htmlFor="Role">Role</label>
