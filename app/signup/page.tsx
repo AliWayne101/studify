@@ -7,8 +7,11 @@ import { hashPassword } from '@/utils'
 import Logo from '../sections/Logo'
 import Error from '../components/Error'
 import Body from '../sections/Body'
+import { useSession } from 'next-auth/react'
+import { Roles } from '@/configs'
 
 const Signup = () => {
+  const { data: session } = useSession();
   const [userInfo, setUserInfo] = useState({
     Name: "",
     Email: "",
@@ -63,7 +66,7 @@ const Signup = () => {
           Name,
           Email,
           Role,
-          SchoolName,
+          SchoolName: session ? session.user.schoolName : SchoolName,
           Gender,
           Password: hashedPassword,
           Phone,
@@ -102,9 +105,9 @@ const Signup = () => {
               <div className="login-in">
                 <select name="Role" id="Role" onChange={handleChange}>
                   <option className='bg' value="">Select Role</option>
-                  <option className='bg' value="Teacher">Teacher</option>
-                  <option className='bg' value="Admin">Admin</option>
-                  <option className='bg' value="Parent">Parent</option>
+                  {Roles.map((role, index) => (
+                    <option className='bg' value={role} key={index}>{role}</option>
+                  ))}
                 </select>
                 <label htmlFor="Role">Role</label>
               </div>
@@ -116,6 +119,12 @@ const Signup = () => {
                 </select>
                 <label htmlFor="Gender">Gender</label>
               </div>
+              {!session &&
+                <div className="login-in">
+                  <input onChange={handleChange} type="Text" name="SchoolName" id="SchoolName" />
+                  <label htmlFor="SchoolName">School Name</label>
+                </div>
+              }
               <div className="login-in">
                 <input onChange={handleChange} type="Text" name="SchoolName" id="SchoolName" />
                 <label htmlFor="SchoolName">School Name</label>
