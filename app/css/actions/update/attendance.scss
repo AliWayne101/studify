@@ -4,17 +4,16 @@
     &-cards {
         margin-top: 20px;
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         min-height: 600px;
 
         &-card {
-            position: relative; // Change to relative to contain the overlay
+            position: relative;
             height: 200px;
-            // padding: 10px;
             border: 1px solid var(--theme-accent);
             transition: all 300ms ease-in;
             &-inside {
-                padding: 10px;
+                padding: 20px 10px;
                 z-index: 4;
                 ul {
                     list-style-type: none;

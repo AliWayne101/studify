@@ -132,6 +132,10 @@ const UpdateAttendance = ({ params }: SlugProps) => {
                       </ul>
                       <div className="upattendance-cards-card-inside-actions">
                         This is actions
+                        {
+                          //What if the user is already marked?, get the marked data inside the userprofiles too
+                          //Create a validator to valid the attendance and show the actions accordingly
+                        }
                       </div>
                     </div>
                   </div>

@@ -113,6 +113,7 @@ export const POST = async (request: NextRequest) => {
 
             //Under Development
             //Create an array of StudentParentInterface and fill the data accordingly
+            //Also add the attendance data of each filled employee
             if (Case === "staff") {
                 if (CasterRole === "Owner") {
                     roleArray = ["Teacher", "Admin", "General"];
