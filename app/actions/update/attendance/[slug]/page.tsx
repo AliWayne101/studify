@@ -3,14 +3,11 @@ import { isAuthorized } from '@/utils';
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Navbar from '@/app/sections/Navbar';
-import Logo from '@/app/sections/Logo';
-import Body from '@/app/sections/Body';
-import Footer from '@/app/sections/footer';
 import Loading from '@/app/components/Loading';
 import { SlugProps } from '@/interfaces';
 import { IUserInfo } from '@/schema/userinfo';
 import "../../../../css/actions/update/attendance.scss"
+import Struct from '@/app/Struct';
 
 const UpdateAttendance = ({ params }: SlugProps) => {
   const { data: session } = useSession();
@@ -105,52 +102,39 @@ const UpdateAttendance = ({ params }: SlugProps) => {
     requestFetch();
   }, [slug])
 
-  useEffect(() => {
-    console.log(userProfiles);
-  }, [userProfiles]);
-
   return (
-    <>
-      <Navbar updateParentState={setAddBlur} />
-      <main className={`${addBlur && "blur"}`}>
-        <Logo />
-        <Body>
-          {isLoading ? <Loading Size={48} /> :
-            <div className="upattendance">
-              <h2>List of all {slug}</h2>
-              <div className="upattendance-cards">
+    <Struct>
+      {isLoading ? <Loading Size={48} /> :
+        <div className="upattendance">
+          <h2>List of all {slug}</h2>
+          <div className="upattendance-cards">
 
-                {userProfiles.map((profile, index) => (
-                  <div className="upattendance-cards-card" key={index}>
-                    <div className="upattendance-cards-mock"></div>
-                    <div className="upattendance-cards-card-inside">
-                      <ul>
-                        <li>Name: <span>{profile.Name}</span></li>
-                        <li>Guardian Name: <span>working..</span></li>
-                        <li>Role: <span>{profile.Role}</span></li>
-                        <li>Class: <span> {profile.AssignedClass ? profile.AssignedClass : "unassigned" }</span></li>
-                      </ul>
-                      <div className="upattendance-cards-card-inside-actions">
-                        This is actions
-                        {
-                          //What if the user is already marked?, get the marked data inside the userprofiles too
-                          //Create a validator to valid the attendance and show the actions accordingly
-                        }
-                      </div>
-                    </div>
+            {userProfiles.map((profile, index) => (
+              <div className="upattendance-cards-card" key={index}>
+                <div className="upattendance-cards-mock"></div>
+                <div className="upattendance-cards-card-inside">
+                  <ul>
+                    <li>Name: <span>{profile.Name}</span></li>
+                    <li>Guardian Name: <span>working..</span></li>
+                    <li>Role: <span>{profile.Role}</span></li>
+                    <li>Class: <span> {profile.AssignedClass ? profile.AssignedClass : "unassigned"}</span></li>
+                  </ul>
+                  <div className="upattendance-cards-card-inside-actions">
+                    This is actions
+                    {
+                      //What if the user is already marked?, get the marked data inside the userprofiles too
+                      //Create a validator to valid the attendance and show the actions accordingly
+                    }
                   </div>
-                ))}
-
+                </div>
               </div>
-            </div>
-          }
-        </Body>
-      </main>
+            ))}
 
-      <div className={`${addBlur && 'blur'}`}>
-        <Footer />
-      </div>
-    </>
+          </div>
+        </div>
+      }
+
+    </Struct>
   )
 }
 
