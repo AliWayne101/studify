@@ -10,7 +10,6 @@ import Navbar from '../sections/Navbar'
 import Basic from '../sections/Authority/Basic'
 import Loading from '../components/Loading'
 import Menu from '../sections/Authority/Menu'
-import { TeacherLinks } from '@/configs'
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -29,7 +28,7 @@ const Dashboard = () => {
                 <small><span>{session?.user.role}</span> of <b>{session?.user.schoolName}</b></small>
               </div>
               <Basic session={session} />
-              <Menu Links={TeacherLinks} />
+              <Menu session={session} />
               <AuthList session={session} />
             </div>
           ) : <Loading Size={48} />}

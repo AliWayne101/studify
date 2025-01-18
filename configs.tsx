@@ -7,13 +7,13 @@ export const socialDetails = [
     { url: "https://twitter.com", icon: <RiTwitterFill className='footer-section-socials-icon' size={36} /> },
 ];
 
-export const footerLinksMore:MenuLinks[] = [
+export const footerLinksMore: MenuLinks[] = [
     { text: "Contact Us", url: "/contact" },
     { text: "About Us", url: "/about" },
     { text: "Privacy Policy", url: "/privacy" },
 ];
 
-export const footerLinksAbout:MenuLinks[] = [
+export const footerLinksAbout: MenuLinks[] = [
     { text: "Sitemap", url: "/sitemap" },
 ]
 
@@ -44,13 +44,24 @@ export const RolesWithAuthority = [
     { role: "Admin", authorityLevel: "HU" },
     { role: "Parent", authorityLevel: "SG" },
     { role: "Student", authorityLevel: "User" },
+    { role: "General", authorityLevel: "User" }
 ];
 
-export const TeacherLinks:MenuLinks[] = [
+export const TeacherLinks: MenuLinks[] = [
     { text: "Mark Attendance", url: '/actions/update/attendance/students' },
     { text: "123", url: '/actions/update/attendance' },
     { text: "123", url: '/actions/update/attendance' },
     { text: "123", url: '/actions/update/attendance' },
+]
+
+export const AdminLinks: MenuLinks[] = [
+    { text: "Mark Attendance", url: '/actions/update/attendance/staff' },
+
+]
+
+export const OwnerLinks: MenuLinks[] = [
+    { text: "Mark Attendance", url: '/actions/update/attendance/staff' },
+
 ]
 
 export const SALT_LENGTH = 12;

@@ -1,0 +1,63 @@
+.upattendance {
+    margin-top: 40px;
+
+    &-cards {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        min-height: 600px;
+
+        &-card {
+            position: relative; // Change to relative to contain the overlay
+            height: 200px;
+            // padding: 10px;
+            border: 1px solid var(--theme-accent);
+            transition: all 300ms ease-in;
+            &-inside {
+                padding: 10px;
+                z-index: 4;
+                ul {
+                    list-style-type: none;
+
+                    li {
+                        span {
+                            color: var(--foreground);
+                        }
+                    }
+                }
+
+                &-actions {
+                    margin-top: 20px;
+                }
+            }
+
+            &:hover {
+                border: 1px solid transparent;
+            }
+
+            &:hover .upattendance-cards-mock {
+                height: 100%;
+                width: 100%;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 1;
+            }
+            &:hover .upattendance-cards-card-inside {
+                z-index: 2; // Ensure inside content is on top of the overlay
+            }
+        }
+
+        &-mock {
+            background-color: rgba(128, 128, 128, 0.192);
+            height: 0px;
+            width: 0px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1; // Set z-index lower than card contents
+            transition: height 0.3s ease, width 0.3s ease; // Smooth transition
+        }
+    }
+}

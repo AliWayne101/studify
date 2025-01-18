@@ -20,6 +20,12 @@ export const POST = async (request: NextRequest) => {
             } catch (err) {
                 return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
             }
+            break;
+        case "getuserbyid":
+            var { uid } = body;
+            const doc = await UserModel.findOne({ UID: uid }).exec();
+            return NextResponse.json({ message: "OK", doc: doc });
+            break;
         case "getdashboarduinfo":
             var { uid, clause, targetRoll, schoolName } = body;
             if (clause === "all") {
@@ -56,7 +62,7 @@ export const POST = async (request: NextRequest) => {
 
                 const students = await UserModel.find({ isActive: true, SchoolName: SchoolName, Role: "Student" });
                 const teachers = await UserModel.find({ isActive: true, SchoolName: SchoolName, Role: "Teacher" });
-                const newAdmissions = await UserModel.find({ 
+                const newAdmissions = await UserModel.find({
                     isActive: true,
                     SchoolName: SchoolName,
                     Role: "Student",
@@ -65,10 +71,10 @@ export const POST = async (request: NextRequest) => {
                         $lt: new Date(currentYear, currentMonth + 1, 1)
                     }
                 });
-                returnData.push({Title: "Students", Info: students.length.toString() });
-                returnData.push({Title: "Teachers", Info: teachers.length.toString() });
-                returnData.push({Title: "Adm. month", Info: newAdmissions.length.toString() });
-                returnData.push({Title: "Present Teachers", Info: "000/000" });
+                returnData.push({ Title: "Students", Info: students.length.toString() });
+                returnData.push({ Title: "Teachers", Info: teachers.length.toString() });
+                returnData.push({ Title: "Adm. month", Info: newAdmissions.length.toString() });
+                returnData.push({ Title: "Present Teachers", Info: "000/000" });
             }
 
             return NextResponse.json({ message: "OK", data: returnData }, { status: 200 });
@@ -100,6 +106,29 @@ export const POST = async (request: NextRequest) => {
             } catch (err) {
                 return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
             }
+            break;
+        case "getusers":
+            var { Case, SchoolName, CasterRole, Class } = body;
+            var roleArray: string[] = ["Student"];
+
+            if (Case === "staff") {
+                if (CasterRole === "Owner") {
+                    roleArray = ["Teacher", "Admin", "General"];
+                } else if (CasterRole === "Admin") {
+                    roleArray = ["Teacher", "General"];
+                }
+                const docs = await UserModel.find({ Role: { $in: roleArray }, SchoolName: SchoolName });
+                return NextResponse.json({ message: "OK", docs: docs }, { status: 200 });
+            } else if (Case === "students") {
+                var docs: IUserInfo[] = [];
+                if (CasterRole === "Admin") {
+                    docs = await UserModel.find({ SchoolName: SchoolName, Role: "Student" });
+                } else if (CasterRole === "Teacher") {
+                    docs = await UserModel.find({ SchoolName: SchoolName, Role: "Student", AssignedClass: Class });
+                }
+                return NextResponse.json({ message: "OK", docs: docs }, { status: 200 });
+            }
+            break;
         case "fillAttendance":
             var { StudentId, Status } = body;
             const currentDate = new Date();
