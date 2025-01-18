@@ -111,6 +111,8 @@ export const POST = async (request: NextRequest) => {
             var { Case, SchoolName, CasterRole, Class } = body;
             var roleArray: string[] = ["Student"];
 
+            //Under Development
+            //Create an array of StudentParentInterface and fill the data accordingly
             if (Case === "staff") {
                 if (CasterRole === "Owner") {
                     roleArray = ["Teacher", "Admin", "General"];

@@ -42,3 +42,9 @@ export interface ListProps {
     Title: string;
     List?: IUserInfo[];
 }
+
+//Under Development
+export interface StudentParentInterface {
+    Student: IUserInfo;
+    Parent: IUserInfo;
+}
