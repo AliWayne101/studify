@@ -1,0 +1,31 @@
+.class {
+    &-create {
+        background-color: var(--background-sec);
+        padding-top: 40px;
+        padding: 10px;
+        margin-bottom: 40px;
+        &-input {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            margin: 20px;
+            label {
+                margin-right: 40px;
+            }
+            input {
+                width: 400px;
+                background-color: transparent;
+                border: none;
+                outline: none;
+                color: var(--foreground);
+                border-bottom: 1px solid var(--theme-main);
+                padding: 5px;
+            }
+
+            &-inside {
+                span {
+                    border-bottom: 1px solid var(--theme-accent);
+                }
+            }
+        }
+    }
+}
