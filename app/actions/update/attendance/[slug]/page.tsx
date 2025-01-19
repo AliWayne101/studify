@@ -1,5 +1,5 @@
 "use client"
-import { isAuthorized } from '@/utils';
+import { AttStatus, getDate, isAuthorized, sendRequest } from '@/utils';
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -8,6 +8,8 @@ import { ProperUserInterface, SlugProps } from '@/interfaces';
 import { IUserInfo } from '@/schema/userinfo';
 import "../../../../css/actions/update/attendance.scss"
 import Struct from '@/app/Struct';
+import Button from '@/app/components/Button';
+import { IAttendanceInfo } from '@/schema/attendanceinfo';
 
 const UpdateAttendance = ({ params }: SlugProps) => {
   const { data: session } = useSession();
@@ -102,6 +104,38 @@ const UpdateAttendance = ({ params }: SlugProps) => {
     requestFetch();
   }, [slug])
 
+  const attButton = async (uid: string, status: string) => {
+    const _date = getDate();
+    const reqBody = {
+      Request: "fillAttendance",
+      uID: uid,
+      Status: status,
+      Day: _date.Day,
+      Month: _date.Month,
+      Year: _date.Year
+    };
+    const response = await sendRequest('/api/posts', reqBody);
+    if (response.message !== "OK") {
+      setIsError(response.error!);
+      return;
+    }
+
+    const attendanceMonth: IAttendanceInfo = response.results.doc;
+    const newData: ProperUserInterface[] = [];
+    userProfiles.map((profile) => {
+      if (profile.User.UID !== attendanceMonth.UID) {
+        newData.push(profile);
+      } else {
+        newData.push({
+          User: profile.User,
+          Parent: profile.Parent,
+          Attendance: attendanceMonth
+        })
+      }
+    });
+    setUserProfiles(newData);
+  }
+
   return (
     <Struct>
       {isLoading ? <Loading Size={48} /> :
@@ -119,12 +153,24 @@ const UpdateAttendance = ({ params }: SlugProps) => {
                       {profile.Parent && <li>Guardian Name: <span>{profile.Parent.Name}</span></li>}
                       <li>Role: <span>{profile.User.Role}</span></li>
                       <li>Class: <span> {profile.User.AssignedClass ? profile.User.AssignedClass : "unassigned"}</span></li>
+                      {AttStatus(profile.Attendance?.Attendance).IsPresent && <li>Attendance: <span>{AttStatus(profile.Attendance?.Attendance).Status}</span></li>}
                     </ul>
                     <div className="upattendance-cards-card-inside-actions">
-                      This is actions
                       {
-                        //What if the user is already marked?, get the marked data inside the userprofiles too
-                        //Create a validator to valid the attendance and show the actions accordingly
+                        session?.user.role !== "Owner" ?
+                          <>
+                            {
+                              //Update code instead of attButton
+                            }
+                            <Button onClick={() => attButton(profile.User.UID, "present")} Disabled={AttStatus(profile.Attendance?.Attendance).IsPresent}>Present</Button>
+                            <Button onClick={() => attButton(profile.User.UID, "absent")} Disabled={AttStatus(profile.Attendance?.Attendance).IsPresent}>Absent</Button>
+                            <Button onClick={() => attButton(profile.User.UID, "leave")} Disabled={AttStatus(profile.Attendance?.Attendance).IsPresent}>Leave</Button>
+                          </> :
+                          <>
+                            <Button onClick={() => attButton(profile.User.UID, "present")}>Present</Button>
+                            <Button onClick={() => attButton(profile.User.UID, "absent")}>Absent</Button>
+                            <Button onClick={() => attButton(profile.User.UID, "leave")}>Leave</Button>
+                          </>
                       }
                     </div>
                   </div>

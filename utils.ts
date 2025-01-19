@@ -1,6 +1,7 @@
 import { compare, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
 import { AVATAR_LINK, RolesWithAuthority } from './configs';
+import { AttendanceStructProps } from './interfaces';
 
 export const hashPassword = async (password: string) => {
     const hashedPassword = await hash(password.toString(), 10);
@@ -47,5 +48,57 @@ export const getDate = () => {
         Month: currentDate.toLocaleString('default', { month: 'long' }),
         Year: currentDate.getFullYear(),
         Day: currentDate.getDate()
+    }
+}
+
+export const sendRequest = async (address: string, _body: object) => {
+    const response = await fetch(address, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(_body)
+    });
+    if (!response.ok) {
+        return {
+            message: "error",
+            error: "Network problem, please refresh the page.."
+        }
+    }
+    const data = await response.json();
+    if (data.message !== "OK") {
+        return {
+            message: data.message,
+            error: data.error
+        }
+    }
+
+    return {
+        message: "OK",
+        results: data
+    }
+}
+
+export const AttStatus = (Data: AttendanceStructProps[] | undefined) => {
+    var _attStatus = "";
+    var isPresent = false;
+    const _date = getDate();
+
+    if (Data == undefined) {
+        return {
+            Status: "",
+            IsPresent: false
+        }
+    }
+
+    for (const _day of Data) {
+        if (_day.Day === _date.Day) {
+            _attStatus = _day.Status;
+            isPresent = true;
+        }
+    }
+    return {
+        Status: _attStatus,
+        IsPresent: isPresent
     }
 }

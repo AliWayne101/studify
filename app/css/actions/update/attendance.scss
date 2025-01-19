@@ -4,11 +4,10 @@
     &-cards {
         margin-top: 20px;
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
 
         &-card {
             position: relative;
-            height: 200px;
             border: 1px solid var(--theme-accent);
             transition: all 300ms ease-in;
             &-inside {
@@ -26,6 +25,9 @@
 
                 &-actions {
                     margin-top: 20px;
+                    display: grid;
+                    gap: 10px;
+                    grid-template-columns: repeat(3, 1fr);
                 }
             }
 

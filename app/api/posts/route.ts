@@ -150,38 +150,29 @@ export const POST = async (request: NextRequest) => {
             }
             break;
         case "fillAttendance":
-            var { StudentId, Status } = body;
-            const currentDate = new Date();
-            const currentDay = currentDate.getDate();
-            const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
-            const currentYear = currentDate.getFullYear();
+            var { uID, Status, Day, Month, Year } = body;
 
             try {
-                let attendance = await AttendanceModel.findOne({
-                    StudentId,
-                    Month: currentMonth,
-                    Year: currentYear
-                });
-
+                let attendance = await AttendanceModel.findOne({ UID: uID, Month: Month, Year: Year });
                 if (!attendance) {
                     attendance = await AttendanceModel.create({
                         _id: new mongoose.Types.ObjectId(),
-                        StudentId,
-                        Month: currentMonth,
-                        Year: currentYear,
-                        Attendace: [{ Day: currentDay, Status }]
+                        UID: uID,
+                        Month: Month,
+                        Year: Year,
+                        Attendance: [{ Day: Day, Status: Status }]
                     });
                 } else {
-                    const dayIndex = attendance.Attendance.findIndex(a => a.Day === currentDay);
+                    const dayIndex = attendance.Attendance.findIndex(a => a.Day === Day);
                     if (dayIndex > -1) {
                         attendance.Attendance[dayIndex].Status = Status;
                     } else {
-                        attendance.Attendance.push({ Day: currentDay, Status });
+                        attendance.Attendance.push({ Day: Day, Status: Status });
                     }
                     await attendance.save();
                 }
 
-                return NextResponse.json({ message: "OK", attendance: attendance }, { status: 200 });
+                return NextResponse.json({ message: "OK", doc: attendance }, { status: 200 });
             } catch (err) {
                 return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
             }

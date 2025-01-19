@@ -4,6 +4,7 @@ import { IAttendanceInfo } from "./schema/attendanceinfo";
 
 export interface ButtonProps {
     onClick: () => void;
+    Disabled?: boolean;
     children: React.ReactNode;
 }
 

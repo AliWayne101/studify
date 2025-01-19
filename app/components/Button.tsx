@@ -3,9 +3,11 @@ import { ButtonProps } from '@/interfaces'
 import React from 'react'
 import "../css/sections/components/button.scss";
 
-const Button:React.FC<ButtonProps> = ({onClick, children}) => {
+const Button:React.FC<ButtonProps> = ({onClick, Disabled, children}) => {
   return (
-    <button onClick={onClick}>{children}</button>
+    <button onClick={onClick} disabled={Disabled} className={Disabled ? 'disabled' : ''}>
+      {children}
+    </button>
   )
 }
 
