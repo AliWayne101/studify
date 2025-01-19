@@ -13,7 +13,6 @@ export interface IUserInfo {
     Phone: string;
     AccountType: string; //free or special
     CNIC: string;
-    AssignedClass: string;
     Address: string;
     ParentUID: string[];
     DOB: Date;
@@ -42,7 +41,6 @@ const Users = new Schema<IUserInfo>({
     Phone: String,
     Role: String,
     SchoolName: String,
-    AssignedClass: String,
     ParentUID: [String],
     DOB: Date,
     JoinedOn: {

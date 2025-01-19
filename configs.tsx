@@ -61,6 +61,7 @@ export const AdminLinks: MenuLinks[] = [
 
 export const OwnerLinks: MenuLinks[] = [
     { text: "Mark Attendance", url: '/actions/update/attendance/staff' },
+    { text: "Set Subjects", url: "/actions/update/subjects" }
 
 ]
 

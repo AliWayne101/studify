@@ -4,6 +4,7 @@ import { Connect, getDate, hashPassword, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 import { BasicInfoProps, ProperUserInterface } from "@/interfaces";
+import ClassModel from "@/schema/classinfo";
 
 export const POST = async (request: NextRequest) => {
     await Connect();
@@ -38,13 +39,12 @@ export const POST = async (request: NextRequest) => {
                 const docs = await UserModel.find(searchParams);
                 return NextResponse.json({ message: "OK", data: docs }, { status: 200 });
             } else if (clause === "class") {
-                const teacherCard = await UserModel.findOne({ UID: uid });
-                if (teacherCard) {
-                    const students = await UserModel.find({ AssignedClass: teacherCard.AssignedClass });
-                    return NextResponse.json({ message: "OK", data: students });
-                } else {
-                    return NextResponse.json({ message: "ERROR", error: "No user with such data" }, { status: 200 });
-                }
+                const classData = await ClassModel.findOne({ TeacherUID: uid });
+                var students: IUserInfo[] = [];
+                if (classData)
+                    students = await UserModel.find({ UID: { $in: classData.StudentUIDs } });
+
+                return NextResponse.json({ message: "OK", data: students }, { status: 200 });
             } else if (clause === "children") {
                 const docs = await UserModel.find({ ParentUID: uid });
                 return NextResponse.json({ message: "OK", data: docs });
@@ -71,10 +71,24 @@ export const POST = async (request: NextRequest) => {
                         $lt: new Date(currentYear, currentMonth + 1, 1)
                     }
                 });
+
+                const docs = await UserModel.find({ Role: { $in: ["Teacher", "Admin", "General"] }, SchoolName: SchoolName });
+                const _date = getDate();
+                var presents = 0;
+                await Promise.all(docs.map(async (doc) => {
+                    const attendance = await AttendanceModel.findOne({ UID: doc.UID, Month: _date.Month, Year: _date.Year }).exec();
+                    if (attendance) {
+                        const dailyAtt = attendance.Attendance[attendance.Attendance.length - 1];
+                        if (dailyAtt.Day === _date.Day) {
+                            if (dailyAtt.Status === "present") presents++;
+                        }
+                    }
+                }));
+
                 returnData.push({ Title: "Students", Info: students.length.toString() });
                 returnData.push({ Title: "Teachers", Info: teachers.length.toString() });
                 returnData.push({ Title: "Adm. month", Info: newAdmissions.length.toString() });
-                returnData.push({ Title: "Present Teachers", Info: "000/000" });
+                returnData.push({ Title: "Present Teachers", Info: presents + "/" + docs.length });
             }
 
             return NextResponse.json({ message: "OK", data: returnData }, { status: 200 });
@@ -108,7 +122,7 @@ export const POST = async (request: NextRequest) => {
             }
             break;
         case "getusers":
-            var { Case, SchoolName, CasterRole, Class } = body;
+            var { Case, SchoolName, CasterRole, Class, uID } = body;
             var roleArray: string[] = ["Student"];
             if (Case === "staff") {
                 var proper: ProperUserInterface[] = [];
@@ -121,9 +135,11 @@ export const POST = async (request: NextRequest) => {
                 const currentDate = getDate();
                 await Promise.all(docs.map(async (doc) => {
                     const attendance = await AttendanceModel.findOne({ UID: doc.UID, Month: currentDate.Month, Year: currentDate.Year }).exec();
+                    const _class = await ClassModel.findOne({ TeacherUID: doc.UID }).exec();
                     proper.push({
                         User: doc,
-                        Attendance: attendance
+                        Attendance: attendance,
+                        Class: _class
                     });
                 }));
 
@@ -134,7 +150,9 @@ export const POST = async (request: NextRequest) => {
                 if (CasterRole === "Admin") {
                     docs = await UserModel.find({ SchoolName: SchoolName, Role: "Student" });
                 } else if (CasterRole === "Teacher") {
-                    docs = await UserModel.find({ SchoolName: SchoolName, Role: "Student", AssignedClass: Class });
+                    const _class = await ClassModel.findOne({ TeacherUID: uID }).exec();
+                    if (_class)
+                        docs = await UserModel.find({ UID: { $in: _class.StudentUIDs } });
                 }
                 const currentDate = getDate();
                 await Promise.all(docs.map(async (doc) => {
@@ -151,7 +169,6 @@ export const POST = async (request: NextRequest) => {
             break;
         case "fillAttendance":
             var { uID, Status, Day, Month, Year } = body;
-
             try {
                 let attendance = await AttendanceModel.findOne({ UID: uID, Month: Month, Year: Year });
                 if (!attendance) {

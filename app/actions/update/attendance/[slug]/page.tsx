@@ -71,10 +71,10 @@ const UpdateAttendance = ({ params }: SlugProps) => {
     if (slug === "") return;
     var reqBody = {
       Request: "getusers",
+      uID: session?.user.uid,
       Case: slug,
       CasterRole: session!.user.role,
-      SchoolName: session!.user.schoolName,
-      Class: userDetail?.AssignedClass
+      SchoolName: session!.user.schoolName
     }
     const requestFetch = async () => {
       try {
@@ -103,10 +103,6 @@ const UpdateAttendance = ({ params }: SlugProps) => {
     }
     requestFetch();
   }, [slug])
-
-  const upAttButton = async (uid: string, status: string) => {
-
-  }
 
   const attButton = async (uid: string, status: string) => {
     const _date = getDate();
@@ -156,7 +152,7 @@ const UpdateAttendance = ({ params }: SlugProps) => {
                       <li>Name: <span>{profile.User.Name}</span></li>
                       {profile.Parent && <li>Guardian Name: <span>{profile.Parent.Name}</span></li>}
                       <li>Role: <span>{profile.User.Role}</span></li>
-                      <li>Class: <span> {profile.User.AssignedClass ? profile.User.AssignedClass : "unassigned"}</span></li>
+                      <li>Class: <span> {profile.Class?.Name ? profile.Class.Name : "unassigned"}</span></li>
                       {AttStatus(profile.Attendance?.Attendance).IsPresent && <li>Attendance: <span className='success'>{AttStatus(profile.Attendance?.Attendance).Status.toUpperCase()}</span></li>}
                     </ul>
                     <div className="upattendance-cards-card-inside-actions">

@@ -1,6 +1,7 @@
 import { Session } from "next-auth";
 import { IUserInfo } from "./schema/userinfo";
 import { IAttendanceInfo } from "./schema/attendanceinfo";
+import { IClassInfo } from "./schema/classinfo";
 
 export interface ButtonProps {
     onClick: () => void;
@@ -45,9 +46,9 @@ export interface ListProps {
     List?: IUserInfo[];
 }
 
-//Under Development
 export interface ProperUserInterface {
     User: IUserInfo;
     Parent?: IUserInfo|null;
     Attendance?: IAttendanceInfo|null;
+    Class?: IClassInfo|null;
 }
