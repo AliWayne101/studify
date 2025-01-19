@@ -163,9 +163,6 @@ const UpdateAttendance = ({ params }: SlugProps) => {
                       {
                         session?.user.role !== "Owner" ?
                           <>
-                            {
-                              //Update code instead of attButton
-                            }
                             <Button onClick={() => attButton(profile.User.UID, "present")} Disabled={AttStatus(profile.Attendance?.Attendance).IsPresent}>Present</Button>
                             <Button onClick={() => attButton(profile.User.UID, "absent")} Disabled={AttStatus(profile.Attendance?.Attendance).IsPresent}>Absent</Button>
                             <Button onClick={() => attButton(profile.User.UID, "leave")} Disabled={AttStatus(profile.Attendance?.Attendance).IsPresent}>Leave</Button>
