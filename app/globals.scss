@@ -225,3 +225,10 @@ ul {
   justify-content: center;
   align-items: center;
 }
+
+.warning {
+  color: var(--warning) !important;
+}
+.success {
+  color: var(--theme-main) !important;
+}
