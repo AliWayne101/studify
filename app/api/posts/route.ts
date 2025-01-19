@@ -1,9 +1,9 @@
 import UserModel, { IUserInfo } from "@/schema/userinfo";
 import AttendanceModel from "@/schema/attendanceinfo";
-import { Connect, hashPassword, UniqueID } from "@/utils";
+import { Connect, getDate, hashPassword, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps } from "@/interfaces";
+import { BasicInfoProps, ProperUserInterface } from "@/interfaces";
 
 export const POST = async (request: NextRequest) => {
     await Connect();
@@ -110,26 +110,43 @@ export const POST = async (request: NextRequest) => {
         case "getusers":
             var { Case, SchoolName, CasterRole, Class } = body;
             var roleArray: string[] = ["Student"];
-
-            //Under Development
-            //Create an array of StudentParentInterface and fill the data accordingly
-            //Also add the attendance data of each filled employee
             if (Case === "staff") {
+                var proper: ProperUserInterface[] = [];
                 if (CasterRole === "Owner") {
                     roleArray = ["Teacher", "Admin", "General"];
                 } else if (CasterRole === "Admin") {
                     roleArray = ["Teacher", "General"];
                 }
                 const docs = await UserModel.find({ Role: { $in: roleArray }, SchoolName: SchoolName });
-                return NextResponse.json({ message: "OK", docs: docs }, { status: 200 });
+                const currentDate = getDate();
+                await Promise.all(docs.map(async (doc) => {
+                    const attendance = await AttendanceModel.findOne({ UID: doc.UID, Month: currentDate.Month, Year: currentDate.Year }).exec();
+                    proper.push({
+                        User: doc,
+                        Attendance: attendance
+                    });
+                }));
+
+                return NextResponse.json({ message: "OK", docs: proper }, { status: 200 });
             } else if (Case === "students") {
                 var docs: IUserInfo[] = [];
+                var proper: ProperUserInterface[] = [];
                 if (CasterRole === "Admin") {
                     docs = await UserModel.find({ SchoolName: SchoolName, Role: "Student" });
                 } else if (CasterRole === "Teacher") {
                     docs = await UserModel.find({ SchoolName: SchoolName, Role: "Student", AssignedClass: Class });
                 }
-                return NextResponse.json({ message: "OK", docs: docs }, { status: 200 });
+                const currentDate = getDate();
+                await Promise.all(docs.map(async (doc) => {
+                    const parent = await UserModel.findOne({ UID: doc.ParentUID }).exec();
+                    const attendance = await AttendanceModel.findOne({ UID: doc.UID, Month: currentDate.Month, Year: currentDate.Year }).exec();
+                    proper.push({
+                        User: doc,
+                        Parent: parent,
+                        Attendance: attendance
+                    })
+                }));
+                return NextResponse.json({ message: "OK", docs: proper }, { status: 200 });
             }
             break;
         case "fillAttendance":

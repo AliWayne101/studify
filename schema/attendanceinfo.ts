@@ -5,7 +5,7 @@ export interface IAttendanceInfo {
     _id: mongoose.Types.ObjectId;
     Month: string;
     Year: number;
-    StudentId: string;
+    UID: string;
     Attendance: AttendanceStructProps[];
 }
 
@@ -13,7 +13,7 @@ const Attendance = new Schema<IAttendanceInfo>({
     _id: mongoose.Schema.Types.ObjectId,
     Month: String,
     Year: Number,
-    StudentId: String,
+    UID: String,
     Attendance: [{
         Day: Number,
         Status: String

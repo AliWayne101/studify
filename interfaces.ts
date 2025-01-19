@@ -45,8 +45,8 @@ export interface ListProps {
 }
 
 //Under Development
-export interface StudentParentInterface {
-    Student: IUserInfo;
-    Parent: IUserInfo;
-    Attendance: IAttendanceInfo;
+export interface ProperUserInterface {
+    User: IUserInfo;
+    Parent?: IUserInfo|null;
+    Attendance?: IAttendanceInfo|null;
 }

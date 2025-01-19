@@ -40,3 +40,12 @@ export const Connect = async () => {
     if (mongoose.connection.readyState >= 1) return;
     mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_ACCESS!);
 }
+
+export const getDate = () => {
+    const currentDate = new Date();
+    return {
+        Month: currentDate.toLocaleString('default', { month: 'long' }),
+        Year: currentDate.getFullYear(),
+        Day: currentDate.getDate()
+    }
+}

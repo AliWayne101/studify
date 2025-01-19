@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Loading from '@/app/components/Loading';
-import { SlugProps } from '@/interfaces';
+import { ProperUserInterface, SlugProps } from '@/interfaces';
 import { IUserInfo } from '@/schema/userinfo';
 import "../../../../css/actions/update/attendance.scss"
 import Struct from '@/app/Struct';
@@ -15,7 +15,7 @@ const UpdateAttendance = ({ params }: SlugProps) => {
   const [addBlur, setAddBlur] = useState(false);
   const [slug, setSlug] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [userProfiles, setUserProfiles] = useState<IUserInfo[]>([]);
+  const [userProfiles, setUserProfiles] = useState<ProperUserInterface[]>([]);
   const [isError, setIsError] = useState("");
   const [userDetail, setUserDetail] = useState<IUserInfo | undefined>(undefined);
 
@@ -112,19 +112,21 @@ const UpdateAttendance = ({ params }: SlugProps) => {
             {userProfiles.map((profile, index) => (
               <div className="upattendance-cards-card" key={index}>
                 <div className="upattendance-cards-mock"></div>
-                <div className="upattendance-cards-card-inside">
-                  <ul>
-                    <li>Name: <span>{profile.Name}</span></li>
-                    <li>Guardian Name: <span>working..</span></li>
-                    <li>Role: <span>{profile.Role}</span></li>
-                    <li>Class: <span> {profile.AssignedClass ? profile.AssignedClass : "unassigned"}</span></li>
-                  </ul>
-                  <div className="upattendance-cards-card-inside-actions">
-                    This is actions
-                    {
-                      //What if the user is already marked?, get the marked data inside the userprofiles too
-                      //Create a validator to valid the attendance and show the actions accordingly
-                    }
+                <div className="upattendance-cards-card">
+                  <div className="upattendance-cards-card-inside">
+                    <ul>
+                      <li>Name: <span>{profile.User.Name}</span></li>
+                      {profile.Parent && <li>Guardian Name: <span>{profile.Parent.Name}</span></li>}
+                      <li>Role: <span>{profile.User.Role}</span></li>
+                      <li>Class: <span> {profile.User.AssignedClass ? profile.User.AssignedClass : "unassigned"}</span></li>
+                    </ul>
+                    <div className="upattendance-cards-card-inside-actions">
+                      This is actions
+                      {
+                        //What if the user is already marked?, get the marked data inside the userprofiles too
+                        //Create a validator to valid the attendance and show the actions accordingly
+                      }
+                    </div>
                   </div>
                 </div>
               </div>
