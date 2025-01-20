@@ -1,6 +1,6 @@
 import UserModel, { IUserInfo } from "@/schema/userinfo";
 import AttendanceModel from "@/schema/attendanceinfo";
-import { Connect, getDate, hashPassword, UniqueID } from "@/utils";
+import { AttStatus, AttStatusDay, Connect, getDate, hashPassword, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 import { BasicInfoProps, ProperUserInterface } from "@/interfaces";
@@ -60,31 +60,35 @@ export const POST = async (request: NextRequest) => {
                 const currentMonth = currentDate.getMonth();
                 const currentYear = currentDate.getFullYear();
 
-                const students = await UserModel.find({ isActive: true, SchoolName: SchoolName, Role: "Student" });
-                const teachers = await UserModel.find({ isActive: true, SchoolName: SchoolName, Role: "Teacher" });
-                const newAdmissions = await UserModel.find({
+                const dbdata:IUserInfo[] = await UserModel.find({ 
                     isActive: true,
                     SchoolName: SchoolName,
-                    Role: "Student",
-                    JoinedOn: {
-                        $gte: new Date(currentYear, currentMonth, 1),
-                        $lt: new Date(currentYear, currentMonth + 1, 1)
-                    }
+                    Role: { $in: ["Teacher", "Student", "Admin", "General"] }
                 });
+                const students:IUserInfo[] = dbdata.filter(x => x.Role === "Student");
+                const teachers:IUserInfo[] = dbdata.filter(x => x.Role === "Teacher");
 
-                const docs = await UserModel.find({ Role: { $in: ["Teacher", "Admin", "General"] }, SchoolName: SchoolName });
+                const newAdmissions = students.filter(student => 
+                    new Date(student.JoinedOn) >= new Date(currentYear, currentMonth, 1) &&
+                    new Date(student.JoinedOn) < new Date(currentYear, currentMonth + 1, 1)
+                );
+                const docs = dbdata.filter(user => user.Role === "Teacher" || user.Role === "Admin" || user.Role === "General");
+                const listOfIds = [];
+                for (const user of docs) {
+                    listOfIds.push(user.UID);
+                }
                 const _date = getDate();
+                const allAttendance = await AttendanceModel.find({
+                    UID: { $in: listOfIds },
+                    Month: _date.Month,
+                    Year: _date.Year
+                });
                 var presents = 0;
-                await Promise.all(docs.map(async (doc) => {
-                    const attendance = await AttendanceModel.findOne({ UID: doc.UID, Month: _date.Month, Year: _date.Year }).exec();
-                    if (attendance) {
-                        const dailyAtt = attendance.Attendance[attendance.Attendance.length - 1];
-                        if (dailyAtt.Day === _date.Day) {
-                            if (dailyAtt.Status === "present") presents++;
-                        }
-                    }
-                }));
-
+                for (const att of allAttendance) {
+                    const attStatus = AttStatusDay(att.Attendance, _date.Day, "present");
+                    if (attStatus === true) presents++;
+                }
+                
                 returnData.push({ Title: "Students", Info: students.length.toString() });
                 returnData.push({ Title: "Teachers", Info: teachers.length.toString() });
                 returnData.push({ Title: "Adm. month", Info: newAdmissions.length.toString() });
@@ -93,7 +97,7 @@ export const POST = async (request: NextRequest) => {
                 const classInfo = await ClassModel.findOne({ TeacherUID: uID }).exec();
                 var studentsLength, presentStudents, absentStudents, leaveStudents = 0;
                 if (classInfo) studentsLength = classInfo.StudentUIDs.length;
-                
+
             }
 
             return NextResponse.json({ message: "OK", data: returnData }, { status: 200 });
