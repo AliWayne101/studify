@@ -193,6 +193,23 @@ export const POST = async (request: NextRequest) => {
             } catch (err) {
                 return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
             }
+            break;
+        case "createclass":
+            var { SchoolName, ClassName } = body;
+            const nuid = UniqueID(8);
+            const ndoc = await ClassModel.create({
+                _id: new mongoose.Types.ObjectId(),
+                SchoolName: SchoolName,
+                Name: ClassName,
+                UID: nuid
+            });
+            return NextResponse.json({ message: "OK", doc: ndoc }, { status: 200 });
+            break;
+        case "getclass":
+            var { SchoolName } = body;
+            var cdocs = await ClassModel.find({ SchoolName: SchoolName });
+            return NextResponse.json({ message: "OK", docs: cdocs }, { status: 200 });
+            break;
         default:
             return NextResponse.json({ message: "Invalid Request", body: body }, { status: 200 });
     }

@@ -2,15 +2,25 @@ import mongoose, { Model, Schema } from "mongoose";
 
 export interface IClassInfo {
     _id: mongoose.Types.ObjectId;
+    UID: string;
     TeacherUID: string;
     StudentUIDs: string[];
+    SchoolName: string;
     Name: string;
 }
 
 const Class =  new Schema<IClassInfo>({
     _id: mongoose.Schema.Types.ObjectId,
-    TeacherUID: String,
-    StudentUIDs: [String],
+    UID: String,
+    TeacherUID: {
+        type: String,
+        default: "unassigned"
+    },
+    StudentUIDs: {
+        type: [String],
+        default: []
+    },
+    SchoolName: String,
     Name: String
 });
 
