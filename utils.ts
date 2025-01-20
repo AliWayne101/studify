@@ -79,6 +79,18 @@ export const sendRequest = async (address: string, _body: object) => {
     }
 }
 
+export const AttStatusDay = (Data: AttendanceStructProps[] | undefined, Day: number, Condition: string) => {
+    if (Data === undefined) return null;
+    const dayIndex = Data.findIndex(a => a.Day === Day);
+    if (dayIndex > -1) {
+        if (Data[dayIndex].Status === Condition)
+            return true;
+        else
+            return false;
+    } else
+        return false;
+}
+
 export const AttStatus = (Data: AttendanceStructProps[] | undefined) => {
     var _attStatus = "";
     var isPresent = false;

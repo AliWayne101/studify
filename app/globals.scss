@@ -9,7 +9,7 @@
   --font-lora: 'Lora', serif;
   --font-poppins: 'Poppins', serif;
   --warning: rgb(189, 36, 36);
-
+  --overlay-color: rgba(128, 128, 128, 0.192);
 }
 
 html,
@@ -234,4 +234,49 @@ ul {
 }
 .pointer {
   cursor: pointer;
+}
+.bold {
+  font-weight: bold;
+}
+
+.navback {
+  font-size: 18px;
+  &-icon {
+    transform: translateY(2px);
+    margin-right: 10;
+  }
+}
+
+.options {
+  &-option {
+    position: relative;
+    background-color: var(--background-sec);
+    &-main {
+        padding: 10px;
+        background-color: transparent;
+        cursor: pointer;
+        p {
+            width: 80%;
+        }
+        position: relative;
+        z-index: 2;
+    }
+    &-mock {
+        position: absolute;
+        height: 0px;
+        width: 0px;
+        background-color: var(--overlay-color);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        transition: height 0.3s ease, width 0.3s ease;
+        cursor: pointer;
+    }
+
+    &:hover .options-option-mock {
+        height: 100%;
+        width: 100%;
+    }
+}
 }

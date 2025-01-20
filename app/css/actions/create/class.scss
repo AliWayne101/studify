@@ -1,16 +1,23 @@
 .class {
+    h2 {
+        margin-bottom: 30px;
+    }
+
     &-create {
         background-color: var(--background-sec);
         padding-top: 40px;
         padding: 10px;
         margin-bottom: 40px;
+
         &-input {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             margin: 20px;
+
             label {
                 margin-right: 40px;
             }
+
             input {
                 width: 400px;
                 background-color: transparent;
@@ -28,4 +35,11 @@
             }
         }
     }
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 200px;
+    gap: 10px;
 }

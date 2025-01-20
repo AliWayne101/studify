@@ -89,6 +89,11 @@ export const POST = async (request: NextRequest) => {
                 returnData.push({ Title: "Teachers", Info: teachers.length.toString() });
                 returnData.push({ Title: "Adm. month", Info: newAdmissions.length.toString() });
                 returnData.push({ Title: "Present Teachers", Info: presents + "/" + docs.length });
+            } else if (Role === "Teacher") {
+                const classInfo = await ClassModel.findOne({ TeacherUID: uID }).exec();
+                var studentsLength, presentStudents, absentStudents, leaveStudents = 0;
+                if (classInfo) studentsLength = classInfo.StudentUIDs.length;
+                
             }
 
             return NextResponse.json({ message: "OK", data: returnData }, { status: 200 });

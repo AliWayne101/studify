@@ -44,20 +44,20 @@
                 z-index: -1;
             }
             &:hover .upattendance-cards-card-inside {
-                z-index: 5; // Ensure inside content is on top of the overlay
+                z-index: 5;
             }
         }
 
         &-mock {
-            background-color: rgba(128, 128, 128, 0.192);
+            background-color: var(--overlay-color);
             height: 0px;
             width: 0px;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 1; // Set z-index lower than card contents
-            transition: height 0.3s ease, width 0.3s ease; // Smooth transition
+            z-index: 1;
+            transition: height 0.3s ease, width 0.3s ease;
         }
     }
 }
