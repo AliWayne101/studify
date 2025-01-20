@@ -60,15 +60,15 @@ export const POST = async (request: NextRequest) => {
                 const currentMonth = currentDate.getMonth();
                 const currentYear = currentDate.getFullYear();
 
-                const dbdata:IUserInfo[] = await UserModel.find({ 
+                const dbdata: IUserInfo[] = await UserModel.find({
                     isActive: true,
                     SchoolName: SchoolName,
                     Role: { $in: ["Teacher", "Student", "Admin", "General"] }
                 });
-                const students:IUserInfo[] = dbdata.filter(x => x.Role === "Student");
-                const teachers:IUserInfo[] = dbdata.filter(x => x.Role === "Teacher");
+                const students: IUserInfo[] = dbdata.filter(x => x.Role === "Student");
+                const teachers: IUserInfo[] = dbdata.filter(x => x.Role === "Teacher");
 
-                const newAdmissions = students.filter(student => 
+                const newAdmissions = students.filter(student =>
                     new Date(student.JoinedOn) >= new Date(currentYear, currentMonth, 1) &&
                     new Date(student.JoinedOn) < new Date(currentYear, currentMonth + 1, 1)
                 );
@@ -88,7 +88,7 @@ export const POST = async (request: NextRequest) => {
                     const attStatus = AttStatusDay(att.Attendance, _date.Day, "present");
                     if (attStatus === true) presents++;
                 }
-                
+
                 returnData.push({ Title: "Students", Info: students.length.toString() });
                 returnData.push({ Title: "Teachers", Info: teachers.length.toString() });
                 returnData.push({ Title: "Adm. month", Info: newAdmissions.length.toString() });
@@ -131,7 +131,7 @@ export const POST = async (request: NextRequest) => {
             }
             break;
         case "getusers":
-            var { Case, SchoolName, CasterRole, Class, uID } = body;
+            var { Case, SchoolName, CasterRole, uID } = body;
             var roleArray: string[] = ["Student"];
             if (Case === "staff") {
                 var proper: ProperUserInterface[] = [];
@@ -142,15 +142,21 @@ export const POST = async (request: NextRequest) => {
                 }
                 const docs = await UserModel.find({ Role: { $in: roleArray }, SchoolName: SchoolName });
                 const currentDate = getDate();
-                await Promise.all(docs.map(async (doc) => {
-                    const attendance = await AttendanceModel.findOne({ UID: doc.UID, Month: currentDate.Month, Year: currentDate.Year }).exec();
-                    const _class = await ClassModel.findOne({ TeacherUID: doc.UID }).exec();
+                const atids = [];
+                const tids = [];
+                for (const user of docs) {
+                    if (user.Role === "Teacher") tids.push(user.UID);
+                    atids.push(user.UID);
+                }
+                const classes = await ClassModel.find({ TeacherUID: { $in: tids } });
+                const attendances = await AttendanceModel.find({ UID: { $in: atids }, Month: currentDate.Month, Year: currentDate.Year });
+                for (const user of docs) {
                     proper.push({
-                        User: doc,
-                        Attendance: attendance,
-                        Class: _class
-                    });
-                }));
+                        User: user,
+                        Attendance: attendances.find(x => x.UID == user.UID),
+                        Class: classes.find(x => x.TeacherUID === user.UID)
+                    })
+                }
 
                 return NextResponse.json({ message: "OK", docs: proper }, { status: 200 });
             } else if (Case === "students") {
@@ -218,6 +224,40 @@ export const POST = async (request: NextRequest) => {
             var { SchoolName } = body;
             var cdocs = await ClassModel.find({ SchoolName: SchoolName });
             return NextResponse.json({ message: "OK", docs: cdocs }, { status: 200 });
+            break;
+        case "getusersbyrole":
+            var { Role, SchoolName } = body;
+            const userDocs = await UserModel.find({ Role: Role, SchoolName: SchoolName });
+            return NextResponse.json({ message: "OK", docs: userDocs }, { status: 200 });
+            break;
+        case "assignclass":
+            var { TeacherUID, ClassUID } = body;
+            try {
+                const _class = await ClassModel.findOne({ UID: ClassUID });
+                if (_class) {
+                    _class.TeacherUID = TeacherUID;
+                    await _class.save();
+                    return NextResponse.json({ message: "OK" }, { status: 200 });
+                } else {
+                    return NextResponse.json({ message: "ERROR", error: "Class does not exists, please refresh the page.." }, { status: 200 });
+                }
+            } catch (err) {
+                return NextResponse.json({ message: "ERROR", error: "There was an error trying to connect to server, please refresh the page.." }, { status: 200 });
+            }
+            break;
+        case "unassignclass":
+            var { TeacherUID, ClassUID } = body;
+            try {
+                const _class = await ClassModel.findOne({ UID: ClassUID, TeacherUID: TeacherUID });
+                if (_class) {
+                    _class.TeacherUID = "unassigned";
+                    await _class.save();
+                    return NextResponse.json({ message: "OK" }, { status: 200 });
+                } else
+                    return NextResponse.json({ message: "ERROR", error: "Class does not exists, please refresh the page.." }, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "There was an error trying to connect to server, please refresh the page.." }, { status: 200 });
+            }
             break;
         default:
             return NextResponse.json({ message: "Invalid Request", body: body }, { status: 200 });

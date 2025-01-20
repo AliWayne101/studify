@@ -2,6 +2,8 @@ import { compare, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
 import { AVATAR_LINK, RolesWithAuthority } from './configs';
 import { AttendanceStructProps } from './interfaces';
+import { IUserInfo } from './schema/userinfo';
+import { IClassInfo } from './schema/classinfo';
 
 export const hashPassword = async (password: string) => {
     const hashedPassword = await hash(password.toString(), 10);
@@ -113,4 +115,13 @@ export const AttStatus = (Data: AttendanceStructProps[] | undefined) => {
         Status: _attStatus,
         IsPresent: isPresent
     }
+}
+
+export const UnassignedTeachers = (Users: IUserInfo[], Classes: IClassInfo[]) => {
+    const unassignedUsers: IUserInfo[] = [];
+    for (const user of Users) {
+        const assignedClass = Classes.find(x => x.TeacherUID === user.UID);
+        if (assignedClass === undefined) unassignedUsers.push(user);
+    }
+    return unassignedUsers;
 }
