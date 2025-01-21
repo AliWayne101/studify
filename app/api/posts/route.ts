@@ -256,8 +256,6 @@ export const POST = async (request: NextRequest) => {
             var query: getUsersByRoleInterface = { Role: Role, SchoolName: SchoolName };
             if (All === false)
                 query = { Role: Role, SchoolName: SchoolName, isActive: true }
-
-            console.log(query);
             const userDocs = await UserModel.find(query);
             return NextResponse.json({ message: "OK", docs: userDocs }, { status: 200 });
             break;
