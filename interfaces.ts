@@ -52,3 +52,8 @@ export interface ProperUserInterface {
     Attendance?: IAttendanceInfo|null;
     Class?: IClassInfo|null;
 }
+
+export interface SubjectList {
+    SubjectName: string;
+    SubjectTeacherUID: string;
+}

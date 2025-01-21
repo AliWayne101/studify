@@ -31,7 +31,7 @@ export const WebDetails = {
 
 export const NavLinks: MenuLinks[] = [
     { text: "Dashboard", url: "/dashboard", isProtected: true },
-    { text: "Contact Us", url: "/actions/contact", isProtected: true },
+    { text: "Contact School", url: "/actions/contact", isProtected: true },
     { text: "Home", url: "/", isProtected: false },
 ]
 
