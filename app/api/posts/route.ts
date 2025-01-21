@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 import { BasicInfoProps, ProperUserInterface } from "@/interfaces";
 import ClassModel from "@/schema/classinfo";
+import NotifModel from "@/schema/notifinfo";
 
 export const POST = async (request: NextRequest) => {
     await Connect();
@@ -276,6 +277,14 @@ export const POST = async (request: NextRequest) => {
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "There was an error trying to connect to server, please refresh the page.." }, { status: 200 });
             }
+            break;
+        case "createnotif":
+            var { Title, Text, From, To } = body;
+            const cnotif = await NotifModel.create({ Title: Title, Text: Text, From: From, To: To });
+            if (!cnotif)
+                return NextResponse.json({ message: "ERROR", error: "Unable to create the notification" }, { status: 200 });
+            else
+                return NextResponse.json({ message: "OK", doc: cnotif }, { status: 200 });
             break;
         default:
             return NextResponse.json({ message: "Invalid Request", body: body }, { status: 200 });

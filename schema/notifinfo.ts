@@ -6,7 +6,7 @@ export interface INotifInfo{
     From: string;
     Title: string;
     Text: string;
-    Received: boolean;
+    IsRead: boolean;
     Timestamp: Date;
 }
 
@@ -16,7 +16,10 @@ const Notification = new Schema<INotifInfo>({
     From: String,
     Title: String,
     Text: String,
-    Received: Boolean,
+    IsRead: {
+        type: Boolean,
+        default: false
+    },
     Timestamp: {
         type: Date,
         default: Date.now

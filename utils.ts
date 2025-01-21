@@ -125,3 +125,17 @@ export const UnassignedTeachers = (Users: IUserInfo[], Classes: IClassInfo[]) =>
     }
     return unassignedUsers;
 }
+
+export const CreateNotification = async (title: string, text: string, from: string, to: string) => {
+    const response = await sendRequest('/api/posts', {
+        Request: "createnotif",
+        Title: title,
+        Text: text,
+        From: from,
+        To: to
+    });
+    if (response.message === "OK")
+        return true;
+    else
+        return false;
+}
