@@ -90,7 +90,7 @@ const Class = () => {
 
     }
 
-    const UnassignTeacher = async() => {
+    const UnassignTeacher = async () => {
         if (targetClass === "") return;
         setIsLoading(true);
         const response = await sendRequest('/api/posts', {
@@ -116,6 +116,7 @@ const Class = () => {
             ClassUID: targetClass
         });
         if (response.message === "OK") {
+            setTargetClass("");
             setAssignSelectTeacher("");
             LoadData();
         }
@@ -153,16 +154,16 @@ const Class = () => {
                                     </div>
                                     <div className="class-create">
                                         <h3>List of Classes</h3>
-                                        <div className="class-create-input bold">
-                                            <div className="class-create-input-inside">Class Name</div>
-                                            <div className="class-create-input-inside">Actions</div>
-                                        </div>
-                                        {classList.map((item, index) => (
-                                            <div className="class-create-input" key={index}>
-                                                <div className="class-create-input-inside"><span>{item.Name}</span></div>
-                                                <div className="class-create-input-inside"><span className='pointer' onClick={() => DeleteClass(item.Name)}>Delete</span></div>
-                                            </div>
-                                        ))}
+                                        <ul>
+                                            {classList.map((item, index) => (
+                                                <li key={index}>
+                                                    <div>Class</div>
+                                                    <h2>{item.Name}</h2>
+                                                    <div className='class-create-icon'><span className='pointer' onClick={() => DeleteClass(item.Name)}>Delete</span></div>
+                                                </li>
+                                            ))}
+                                        </ul>
+
                                     </div>
                                 </div>
                                 : curWindow === "assign"

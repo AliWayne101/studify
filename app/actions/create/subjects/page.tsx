@@ -108,7 +108,7 @@ const Subjects = () => {
       }
   }, [targetSubject])
 
-  const AssignTeacher = async(assign: boolean) => {
+  const AssignTeacher = async (assign: boolean) => {
     const response = await sendRequest('/api/posts', {
       Request: "assignsubject",
       SubjectTeacherUID: assign === true ? assignSelectTeacher : "unassigned",
@@ -117,7 +117,7 @@ const Subjects = () => {
     });
     if (response.message === "OK") {
       setAssignSelectTeacher("");
-      setTargetSubject(""); 
+      setTargetSubject("");
       LoadData();
     } else {
       setIsError(response.error);
@@ -160,16 +160,15 @@ const Subjects = () => {
             </div>
             <div className="class-create">
               <h3>List of Subjects</h3>
-              <div className="class-create-input bold">
-                <div className="class-create-input-inside">Subject Name</div>
-                <div className="class-create-input-inside">Actions</div>
-              </div>
-              {schoolSubjects?.SubjectList.map((item, index) => (
-                <div className="class-create-input" key={index}>
-                  <div className="class-create-input-inside"><span>{item.SubjectName}</span></div>
-                  <div className="class-create-input-inside"><span className='pointer' onClick={() => DeleteSubject(item.SubjectName)}>Delete</span></div>
-                </div>
-              ))}
+              <ul>
+                {schoolSubjects?.SubjectList.map((item, index) => (
+                  <li key={index}>
+                    <div>Subject</div>
+                    <h2>{item.SubjectName}</h2>
+                    <div className='class-create-icon'><span className='pointer' onClick={() => DeleteSubject(item.SubjectName)}>Delete</span></div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
           : curWindow === "assign" ?
@@ -199,7 +198,7 @@ const Subjects = () => {
                       {targetSubjectInfo && targetSubjectInfo.SubjectTeacherUID !== "unassigned" ?
                         <div className="class-assign-info-in-detail">
                           <div className="class-assign-info-in-detail-basic">
-                            <h3>Assigned Teacher</h3>
+                            <h2>Assigned Teacher</h2>
                             Name: <b>{teachersList.find(x => x.UID === targetSubjectInfo.SubjectTeacherUID)?.Name}</b>
                             <div>
                               <Button onClick={() => AssignTeacher(false)}>Unassign</Button>
@@ -207,7 +206,7 @@ const Subjects = () => {
                           </div>
                         </div>
                         : <div className="class-assign-info-in-detail">
-                          <h3>List of Unassigned Teachers</h3>
+                          <h2>List of Unassigned Teachers</h2>
                           <select name="Teacer" id="Teacer" onChange={(e) => setAssignSelectTeacher(e.target.value)}>
                             <option className='bg' value="">Select Teacher</option>
                             {UnassignedTeachers().map((teacher, index) => (

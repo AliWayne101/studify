@@ -260,7 +260,12 @@ ul {
     &-main {
       padding: 10px;
       background-color: transparent;
+      height: 100%;
       cursor: pointer;
+      
+      h1 {
+        margin-left: 20px;
+      }
 
       p {
         width: 80%;
