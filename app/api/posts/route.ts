@@ -3,9 +3,10 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { AttStatus, AttStatusDay, Connect, getDate, hashPassword, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ProperUserInterface } from "@/interfaces";
+import { BasicInfoProps, ProperUserInterface, SubjectList } from "@/interfaces";
 import ClassModel from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
+import SubjectsModel from "@/schema/subjectsinfo";
 
 export const POST = async (request: NextRequest) => {
     await Connect();
@@ -285,6 +286,37 @@ export const POST = async (request: NextRequest) => {
                 return NextResponse.json({ message: "ERROR", error: "Unable to create the notification" }, { status: 200 });
             else
                 return NextResponse.json({ message: "OK", doc: cnotif }, { status: 200 });
+            break;
+        case "getclasses":
+            var { SchoolName } = body;
+            var subs = await SubjectsModel.findOne({ SchoolName: SchoolName });
+            return NextResponse.json({ message: "OK", doc: subs }, { status: 200 });
+            break;
+        case "createsubject":
+            var { SchoolName, SubjectName } = body;
+            var subs = await SubjectsModel.findOne({ SchoolName: SchoolName });
+            if (!subs) {
+                var uuid = UniqueID(8);
+                const subject: SubjectList = {
+                    SubjectName: SubjectName,
+                    SubjectTeacherUID: "unassigned"
+                }
+                const subjects: SubjectList[] = [];
+                subjects.push(subject);
+                const created = await SubjectsModel.create({
+                    _id: new mongoose.Types.ObjectId(),
+                    UID: uuid,
+                    SchoolName: SchoolName,
+                    SubjectList: subjects
+                });
+            } else {
+                subs.SubjectList.push({
+                    SubjectName: SubjectName,
+                    SubjectTeacherUID: "unassigned"
+                });
+                await subs.save();
+            }
+            return NextResponse.json({ message: "OK" }, { status: 200 });
             break;
         default:
             return NextResponse.json({ message: "Invalid Request", body: body }, { status: 200 });

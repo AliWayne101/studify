@@ -1,3 +1,4 @@
+"use client"
 import { MenuLinks, SessionProps } from '@/interfaces'
 import React, { useEffect, useState } from 'react'
 import "../../css/sections/Authority/menu.scss"
