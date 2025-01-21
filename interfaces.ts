@@ -53,7 +53,7 @@ export interface ProperUserInterface {
     Class?: IClassInfo|null;
 }
 
-export interface SubjectList {
+export interface SubjectDetail {
     SubjectName: string;
     SubjectTeacherUID: string;
 }

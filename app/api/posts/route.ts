@@ -3,10 +3,16 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { AttStatus, AttStatusDay, Connect, getDate, hashPassword, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ProperUserInterface, SubjectList } from "@/interfaces";
+import { BasicInfoProps, ProperUserInterface, SubjectDetail } from "@/interfaces";
 import ClassModel from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
+
+interface getUsersByRoleInterface {
+    Role: string;
+    SchoolName: string;
+    isActive?: boolean
+}
 
 export const POST = async (request: NextRequest) => {
     await Connect();
@@ -246,8 +252,13 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ message: "OK", docs: cdocs }, { status: 200 });
             break;
         case "getusersbyrole":
-            var { Role, SchoolName } = body;
-            const userDocs = await UserModel.find({ Role: Role, SchoolName: SchoolName });
+            var { Role, SchoolName, All } = body;
+            var query: getUsersByRoleInterface = { Role: Role, SchoolName: SchoolName };
+            if (All === false)
+                query = { Role: Role, SchoolName: SchoolName, isActive: true }
+
+            console.log(query);
+            const userDocs = await UserModel.find(query);
             return NextResponse.json({ message: "OK", docs: userDocs }, { status: 200 });
             break;
         case "assignclass":
@@ -297,11 +308,11 @@ export const POST = async (request: NextRequest) => {
             var subs = await SubjectsModel.findOne({ SchoolName: SchoolName });
             if (!subs) {
                 var uuid = UniqueID(8);
-                const subject: SubjectList = {
+                const subject: SubjectDetail = {
                     SubjectName: SubjectName,
                     SubjectTeacherUID: "unassigned"
                 }
-                const subjects: SubjectList[] = [];
+                const subjects: SubjectDetail[] = [];
                 subjects.push(subject);
                 const created = await SubjectsModel.create({
                     _id: new mongoose.Types.ObjectId(),
@@ -317,6 +328,56 @@ export const POST = async (request: NextRequest) => {
                 await subs.save();
             }
             return NextResponse.json({ message: "OK" }, { status: 200 });
+            break;
+        case "deletesubject":
+            try {
+                var { SchoolName, SubjectName } = body;
+                const subinfo = await SubjectsModel.findOne({ SchoolName: SchoolName });
+                var rVal = {
+                    message: "ERROR",
+                    error: "",
+                    doc: subinfo
+                }
+                if (subinfo) {
+                    const newList: SubjectDetail[] = [];
+                    for (const subDetail of subinfo.SubjectList) {
+                        if (subDetail.SubjectName !== SubjectName)
+                            newList.push(subDetail);
+                    }
+                    subinfo.SubjectList = newList;
+                    await subinfo.save();
+                    rVal.message = "OK";
+                } else {
+                    rVal.error = "Subjects model does not exists in the database, please contact the developer";
+                }
+                return NextResponse.json(rVal, { status: 200 });
+            } catch {
+                return NextResponse.json({ message: "ERROR", error: "There was an error attempting to alter subject table, please contact the developer" }, { status: 200 });
+            }
+            break;
+        case "assignsubject":
+            try {
+                var { SchoolName, SubjectName, SubjectTeacherUID } = body;
+                const subject = await SubjectsModel.findOne({ SchoolName: SchoolName });
+                var rVal = {
+                    message: "ERROR",
+                    doc: subject,
+                    error: ""
+                }
+                if (subject) {
+                    for (const sub of subject.SubjectList) {
+                        if (sub.SubjectName === SubjectName)
+                            sub.SubjectTeacherUID = SubjectTeacherUID;
+                    }
+                    await subject.save();
+                    rVal.message = "OK";
+                } else {
+                    rVal.error = "Unable to locate the school information, please contact the developer!";
+                }
+                return NextResponse.json(rVal, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Unknown Server Error, please contact the developer" }, { status: 200 });
+            }
             break;
         default:
             return NextResponse.json({ message: "Invalid Request", body: body }, { status: 200 });
