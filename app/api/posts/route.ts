@@ -95,9 +95,27 @@ export const POST = async (request: NextRequest) => {
                 returnData.push({ Title: "Present Teachers", Info: presents + "/" + docs.length });
             } else if (Role === "Teacher") {
                 const classInfo = await ClassModel.findOne({ TeacherUID: uID }).exec();
-                var studentsLength, presentStudents, absentStudents, leaveStudents = 0;
-                if (classInfo) studentsLength = classInfo.StudentUIDs.length;
+                var studentsLength, presentStudents = 0, absentStudents = 0, leaveStudents = 0;
+                if (classInfo) {
+                    studentsLength = classInfo.StudentUIDs.length;
+                    const studentsData = await AttendanceModel.find({ UID: { $in: classInfo.StudentUIDs } })
+                    const _date = getDate();
+                    for (const student of studentsData) {
+                        var _present: boolean | null = AttStatusDay(student.Attendance, _date.Day, "present");
+                        if (_present !== null && _present === true) presentStudents++;
 
+                        var _absent: boolean | null = AttStatusDay(student.Attendance, _date.Day, "absent");
+                        if (_absent !== null && _absent === true) absentStudents++;
+
+                        var _leave: boolean | null = AttStatusDay(student.Attendance, _date.Day, "leave");
+                        if (_leave !== null && _leave === true) leaveStudents++;
+
+                    }
+                    returnData.push({ Title: "Students", Info: studentsLength.toString() });
+                    returnData.push({ Title: "Present", Info: presentStudents.toString() });
+                    returnData.push({ Title: "Absent", Info: absentStudents.toString() });
+                    returnData.push({ Title: "Leave", Info: leaveStudents.toString() });
+                }
             }
 
             return NextResponse.json({ message: "OK", data: returnData }, { status: 200 });
