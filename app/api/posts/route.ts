@@ -1,6 +1,6 @@
 import UserModel, { IUserInfo } from "@/schema/userinfo";
 import AttendanceModel from "@/schema/attendanceinfo";
-import { AttStatus, AttStatusDay, Connect, getDate, hashPassword, ServResponse, UniqueID } from "@/utils";
+import { AttStatus, AttStatusDay, Connect, CreateNotification, getDate, hashPassword, ServResponse, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 import { BasicInfoProps, ProperUserInterface, SubjectDetail } from "@/interfaces";
@@ -260,7 +260,7 @@ export const POST = async (request: NextRequest) => {
             return NextResponse.json({ message: "OK", docs: userDocs }, { status: 200 });
             break;
         case "assignclass":
-            var { TeacherUID, ClassUID } = body;
+            var { TeacherUID, ClassUID, Caster } = body;
             try {
                 const _class = await ClassModel.findOne({ UID: ClassUID });
                 if (_class) {
@@ -268,32 +268,38 @@ export const POST = async (request: NextRequest) => {
                     await _class.save();
 
                     //create notificaiton
-                    return NextResponse.json({ message: "OK" }, { status: 200 });
+                    const message = "You have been assigned to class " + _class.Name;
+                    var isNotified = false;
+                    if (TeacherUID !== "unassigned") {
+                        const cf = await NotifModel.create({
+                            _id: new mongoose.Types.ObjectId(),
+                            From: From,
+                            Text: message,
+                            Title: "Information",
+                            To: To
+                        });
+                        if (cf) isNotified = true;
+                    }
+                    console.log(isNotified);
+                    return NextResponse.json({ message: "OK", isNotified: isNotified }, { status: 200 });
                 } else {
                     return NextResponse.json({ message: "ERROR", error: "Class does not exists, please refresh the page.." }, { status: 200 });
                 }
             } catch (err) {
-                return NextResponse.json({ message: "ERROR", error: "There was an error trying to connect to server, please refresh the page.." }, { status: 200 });
-            }
-            break;
-        case "unassignclass":
-            var { TeacherUID, ClassUID } = body;
-            try {
-                const _class = await ClassModel.findOne({ UID: ClassUID, TeacherUID: TeacherUID });
-                if (_class) {
-                    _class.TeacherUID = "unassigned";
-                    await _class.save();
-                    return NextResponse.json({ message: "OK" }, { status: 200 });
-                } else
-                    return NextResponse.json({ message: "ERROR", error: "Class does not exists, please refresh the page.." }, { status: 200 });
-            } catch (error) {
+                console.log(err);
                 return NextResponse.json({ message: "ERROR", error: "There was an error trying to connect to server, please refresh the page.." }, { status: 200 });
             }
             break;
         case "createnotif":
             var { Title, Text, From, To } = body;
             try {
-                const cnotif = await NotifModel.create({ Title: Title, Text: Text, From: From, To: To });
+                const cnotif = await NotifModel.create({
+                    _id: new mongoose.Types.ObjectId(),
+                    Title: Title,
+                    Text: Text,
+                    From: From,
+                    To: To
+                });
                 if (!cnotif)
                     return NextResponse.json({ message: "ERROR", error: "Unable to create the notification" }, { status: 200 });
                 else
@@ -391,10 +397,19 @@ export const POST = async (request: NextRequest) => {
                 if (result.deletedCount > 0) {
                     return NextResponse.json({ message: "OK", count: result.deletedCount }, { status: 200 });
                 } else {
-                    return NextResponse.json({ message: "ERROR", error: "Unable to delete the class, please try again or contact the developer"}, { status: 200 });
+                    return NextResponse.json({ message: "ERROR", error: "Unable to delete the class, please try again or contact the developer" }, { status: 200 });
                 }
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please contact the developer" });
+            }
+            break;
+        case "getnofis":
+            try {
+                var { To } = body;
+                const notifs = await NotifModel.find({ To: To, IsRead: false });
+                return NextResponse.json({ message: "OK", docs: notifs });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please contact the developer!"}, { status: 200 });
             }
             break;
         default:

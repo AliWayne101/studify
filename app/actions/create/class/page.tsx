@@ -105,9 +105,10 @@ const Class = () => {
         if (targetClass === "") return;
         setIsLoading(true);
         const response = await sendRequest('/api/posts', {
-            Request: "unassignclass",
+            Request: "assignclass",
             ClassUID: targetClass,
-            TeacherUID: targetClassInfo?.TeacherUID
+            TeacherUID: "unassigned",
+            Caster: session?.user.uid
         });
         if (response.message === "OK") {
             setTargetClass("");
@@ -124,7 +125,8 @@ const Class = () => {
         const response = await sendRequest('/api/posts', {
             Request: 'assignclass',
             TeacherUID: assignSelectTeacher,
-            ClassUID: targetClass
+            ClassUID: targetClass,
+            Caster: session?.user.uid
         });
         if (response.message === "OK") {
             setTargetClass("");
