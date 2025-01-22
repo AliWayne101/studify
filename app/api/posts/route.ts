@@ -273,10 +273,10 @@ export const POST = async (request: NextRequest) => {
                     if (TeacherUID !== "unassigned") {
                         const cf = await NotifModel.create({
                             _id: new mongoose.Types.ObjectId(),
-                            From: From,
+                            From: Caster,
                             Text: message,
                             Title: "Information",
-                            To: To
+                            To: TeacherUID
                         });
                         if (cf) isNotified = true;
                     }
@@ -403,11 +403,12 @@ export const POST = async (request: NextRequest) => {
                 return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please contact the developer" });
             }
             break;
-        case "getnofis":
+        case "getnotifs":
             try {
                 var { To } = body;
                 const notifs = await NotifModel.find({ To: To, IsRead: false });
-                return NextResponse.json({ message: "OK", docs: notifs });
+                const deletedRows = await NotifModel.deleteMany({ To: To, IsRead: false });
+                return NextResponse.json({ message: "OK", docs: notifs, deletedRows: deletedRows.deletedCount });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please contact the developer!"}, { status: 200 });
             }

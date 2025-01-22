@@ -1,12 +1,16 @@
 "use client"
 import { NavLinks, WebDetails } from '@/configs'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSession } from 'next-auth/react'
 import { SignOut } from '../auth'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { GrFormClose } from 'react-icons/gr'
+import { Bounce, toast, ToastContainer } from 'react-toastify'
+import { sendRequest } from '@/utils'
+import { INotifInfo } from '@/schema/notifinfo'
+import { usePathname } from 'next/navigation'
 
 interface NavbarProps {
     updateParentState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,7 +18,9 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
     const [isNavToggle, setIsNavToggle] = useState(false);
+    const [Notifications, setNotifications] = useState<INotifInfo[]>([]);
     const { data: session, status } = useSession();
+    const pathname = usePathname();
 
     const handleSignOut = () => {
         SignOut();
@@ -25,6 +31,41 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
         setIsNavToggle(cond);
         updateParentState(cond);
     }
+
+    useEffect(() => {
+        const getNotifs = async () => {
+            const response = await sendRequest("/api/posts", {
+                Request: "getnotifs",
+                SchoolName: session?.user.schoolName,
+                To: session?.user.uid
+            });
+            if (response.message === "OK")
+                for (const doc of response.results.docs) {
+                    var notif: INotifInfo = doc;
+                    toast(
+                        <div className='notification'>
+                            <div className="notification-title">{notif.Title}</div>
+                            <div className="notification-body">{notif.Text}</div>
+                            <div className="notification-footer">
+                                <div className="notification-footer-in">
+                                    From: {notif.From}
+                                </div>
+                                <div className="notification-footer-in text-right">
+                                    {(new Date(notif.Timestamp.toString())).toLocaleString()}
+                                </div>
+                            </div>
+                        </div>, {
+                        className: "toastcustom",
+                        closeButton: false
+                    });
+                }
+        }
+        getNotifs();
+    }, [pathname])
+
+    useEffect(() => {
+        
+    }, [Notifications])
 
     return (
         <>
@@ -105,6 +146,19 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
                     </motion.div>
                 )}
             </AnimatePresence>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={10000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={true}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition={Bounce}
+            />
         </>
     )
 }

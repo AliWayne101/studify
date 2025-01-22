@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/react-toastify": "^4.0.2",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^11.16.0",
     "mongoose": "^8.9.3",

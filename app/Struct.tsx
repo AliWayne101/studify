@@ -1,6 +1,6 @@
 "use client"
 import { childrenProps } from '@/interfaces'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './sections/Navbar'
 import Logo from './sections/Logo'
 import Body from './sections/Body'
