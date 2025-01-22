@@ -108,7 +108,7 @@ const Class = () => {
             Request: "assignclass",
             ClassUID: targetClass,
             TeacherUID: "unassigned",
-            Caster: session?.user.uid
+            Caster: session?.user.name
         });
         if (response.message === "OK") {
             setTargetClass("");
@@ -126,7 +126,7 @@ const Class = () => {
             Request: 'assignclass',
             TeacherUID: assignSelectTeacher,
             ClassUID: targetClass,
-            Caster: session?.user.uid
+            Caster: session?.user.name
         });
         if (response.message === "OK") {
             setTargetClass("");

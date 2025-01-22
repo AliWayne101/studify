@@ -280,7 +280,6 @@ export const POST = async (request: NextRequest) => {
                         });
                         if (cf) isNotified = true;
                     }
-                    console.log(isNotified);
                     return NextResponse.json({ message: "OK", isNotified: isNotified }, { status: 200 });
                 } else {
                     return NextResponse.json({ message: "ERROR", error: "Class does not exists, please refresh the page.." }, { status: 200 });
@@ -368,7 +367,7 @@ export const POST = async (request: NextRequest) => {
             break;
         case "assignsubject":
             try {
-                var { SchoolName, SubjectName, SubjectTeacherUID } = body;
+                var { SchoolName, SubjectName, SubjectTeacherUID, Caster} = body;
                 const subject = await SubjectsModel.findOne({ SchoolName: SchoolName });
                 var rVal = {
                     message: "ERROR",
@@ -381,6 +380,20 @@ export const POST = async (request: NextRequest) => {
                             sub.SubjectTeacherUID = SubjectTeacherUID;
                     }
                     await subject.save();
+                    if (SubjectTeacherUID !== "unassigned") {
+                        const message = SubjectName + " Has been assigned as your primary subject";
+                        var isNotified = false;
+                        if (TeacherUID !== "unassigned") {
+                            const cf = await NotifModel.create({
+                                _id: new mongoose.Types.ObjectId(),
+                                From: Caster,
+                                Text: message,
+                                Title: "Information",
+                                To: TeacherUID
+                            });
+                            if (cf) isNotified = true;
+                        }
+                    }
                     rVal.message = "OK";
                 } else {
                     rVal.error = "Unable to locate the school information, please contact the developer!";
@@ -410,7 +423,7 @@ export const POST = async (request: NextRequest) => {
                 const deletedRows = await NotifModel.deleteMany({ To: To, IsRead: false });
                 return NextResponse.json({ message: "OK", docs: notifs, deletedRows: deletedRows.deletedCount });
             } catch (error) {
-                return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please contact the developer!"}, { status: 200 });
+                return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please contact the developer!" }, { status: 200 });
             }
             break;
         default:

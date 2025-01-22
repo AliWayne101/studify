@@ -113,7 +113,8 @@ const Subjects = () => {
       Request: "assignsubject",
       SubjectTeacherUID: assign === true ? assignSelectTeacher : "unassigned",
       SubjectName: targetSubject,
-      SchoolName: session?.user.schoolName
+      SchoolName: session?.user.schoolName,
+      Caster: session?.user.name
     });
     if (response.message === "OK") {
       setAssignSelectTeacher("");

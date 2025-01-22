@@ -60,11 +60,12 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
                     });
                 }
         }
-        getNotifs();
-    }, [pathname])
+        if (session)
+            getNotifs();
+    }, [pathname, session])
 
     useEffect(() => {
-        
+
     }, [Notifications])
 
     return (
