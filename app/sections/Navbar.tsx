@@ -60,9 +60,8 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
                     });
                 }
         }
-        if (session)
-            getNotifs();
-    }, [pathname, session])
+        getNotifs();
+    }, [pathname])
 
     useEffect(() => {
 

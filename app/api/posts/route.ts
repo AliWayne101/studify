@@ -275,7 +275,7 @@ export const POST = async (request: NextRequest) => {
                             _id: new mongoose.Types.ObjectId(),
                             From: Caster,
                             Text: message,
-                            Title: "Information",
+                            Title: "Class Assignment",
                             To: TeacherUID
                         });
                         if (cf) isNotified = true;
@@ -381,18 +381,19 @@ export const POST = async (request: NextRequest) => {
                     }
                     await subject.save();
                     if (SubjectTeacherUID !== "unassigned") {
-                        const message = SubjectName + " Has been assigned as your primary subject";
+                        const message = SubjectName + " has been assigned as your primary subject";
                         var isNotified = false;
                         if (TeacherUID !== "unassigned") {
                             const cf = await NotifModel.create({
                                 _id: new mongoose.Types.ObjectId(),
                                 From: Caster,
                                 Text: message,
-                                Title: "Information",
-                                To: TeacherUID
+                                Title: "Subject Assignment",
+                                To: SubjectTeacherUID
                             });
                             if (cf) isNotified = true;
                         }
+                        console.log(isNotified);
                     }
                     rVal.message = "OK";
                 } else {
