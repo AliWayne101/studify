@@ -4,6 +4,7 @@ import { AVATAR_LINK, RolesWithAuthority } from './configs';
 import { AttendanceStructProps } from './interfaces';
 import { IUserInfo } from './schema/userinfo';
 import { IClassInfo } from './schema/classinfo';
+import { NextResponse } from 'next/server';
 
 export const hashPassword = async (password: string) => {
     const hashedPassword = await hash(password.toString(), 10);
@@ -138,4 +139,8 @@ export const CreateNotification = async (title: string, text: string, from: stri
         return true;
     else
         return false;
+}
+
+export const ServResponse = (body: Object) => {
+    NextResponse.json(body, { status: 200 });
 }

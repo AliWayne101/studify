@@ -1,6 +1,6 @@
 import UserModel, { IUserInfo } from "@/schema/userinfo";
 import AttendanceModel from "@/schema/attendanceinfo";
-import { AttStatus, AttStatusDay, Connect, getDate, hashPassword, UniqueID } from "@/utils";
+import { AttStatus, AttStatusDay, Connect, getDate, hashPassword, ServResponse, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 import { BasicInfoProps, ProperUserInterface, SubjectDetail } from "@/interfaces";
@@ -266,6 +266,8 @@ export const POST = async (request: NextRequest) => {
                 if (_class) {
                     _class.TeacherUID = TeacherUID;
                     await _class.save();
+
+                    //create notificaiton
                     return NextResponse.json({ message: "OK" }, { status: 200 });
                 } else {
                     return NextResponse.json({ message: "ERROR", error: "Class does not exists, please refresh the page.." }, { status: 200 });
@@ -290,11 +292,16 @@ export const POST = async (request: NextRequest) => {
             break;
         case "createnotif":
             var { Title, Text, From, To } = body;
-            const cnotif = await NotifModel.create({ Title: Title, Text: Text, From: From, To: To });
-            if (!cnotif)
-                return NextResponse.json({ message: "ERROR", error: "Unable to create the notification" }, { status: 200 });
-            else
-                return NextResponse.json({ message: "OK", doc: cnotif }, { status: 200 });
+            try {
+                const cnotif = await NotifModel.create({ Title: Title, Text: Text, From: From, To: To });
+                if (!cnotif)
+                    return NextResponse.json({ message: "ERROR", error: "Unable to create the notification" }, { status: 200 });
+                else
+                    return NextResponse.json({ message: "OK", doc: cnotif }, { status: 200 });
+
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "There seems to be an error on server side, unable to create the notification" }, { status: 200 });
+            }
             break;
         case "getclasses":
             var { SchoolName } = body;
@@ -375,6 +382,19 @@ export const POST = async (request: NextRequest) => {
                 return NextResponse.json(rVal, { status: 200 });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "Unknown Server Error, please contact the developer" }, { status: 200 });
+            }
+            break;
+        case "deleteclass":
+            try {
+                var { UID, SchoolName } = body;
+                const result = await ClassModel.deleteOne({ UID: UID, SchoolName: SchoolName });
+                if (result.deletedCount > 0) {
+                    return NextResponse.json({ message: "OK", count: result.deletedCount }, { status: 200 });
+                } else {
+                    return NextResponse.json({ message: "ERROR", error: "Unable to delete the class, please try again or contact the developer"}, { status: 200 });
+                }
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please contact the developer" });
             }
             break;
         default:

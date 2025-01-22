@@ -86,8 +86,19 @@ const Class = () => {
         }
     }, [targetClass])
 
-    const DeleteClass = async (cName: string) => {
-
+    const DeleteClass = async (uid: string) => {
+        setIsLoading(true);
+        const response = await sendRequest('/api/posts', {
+            Request: "deleteclass",
+            UID: uid,
+            SchoolName: session?.user.schoolName
+        });
+        if (response.message === "OK") {
+            LoadData();
+        } else {
+            setIsLoading(false);
+            setIsError("Unable to delete the class, please try again or contact the developer");
+        }
     }
 
     const UnassignTeacher = async () => {
@@ -159,7 +170,7 @@ const Class = () => {
                                                 <li key={index}>
                                                     <div>Class</div>
                                                     <h2>{item.Name}</h2>
-                                                    <div className='class-create-icon'><span className='pointer' onClick={() => DeleteClass(item.Name)}>Delete</span></div>
+                                                    <div className='class-create-icon'><span className='pointer' onClick={() => DeleteClass(item.UID)}>Delete</span></div>
                                                 </li>
                                             ))}
                                         </ul>
