@@ -46,6 +46,7 @@ export interface MenuLinks {
     url: string;
     isProtected?: boolean;
     ProtectionLevel?: string[];
+    IsVisible?: boolean;
 }
 
 export interface SlugProps {

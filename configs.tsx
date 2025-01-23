@@ -30,9 +30,10 @@ export const WebDetails = {
 }
 
 export const NavLinks: MenuLinks[] = [
-    { text: "Dashboard", url: "/dashboard", isProtected: true },
-    { text: "Contact School", url: "/actions/contact", isProtected: true },
-    { text: "Home", url: "/", isProtected: false },
+    { text: "Profile", url: "/profile", isProtected: true, IsVisible: false },
+    { text: "Dashboard", url: "/dashboard", isProtected: true, IsVisible: true },
+    { text: "Contact School", url: "/actions/contact", isProtected: true, IsVisible: true },
+    { text: "Home", url: "/", isProtected: false, IsVisible: true },
 ]
 
 //SU - SuperUser | HU = HighUser | SG = Special Guest | User = User

@@ -103,12 +103,11 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
                 </div>
 
                 <div className="navbar-menu">
-                    {NavLinks.map((link, index) => (
+                    {NavLinks.filter(x => x.IsVisible).map((link, index) => (
                         link.isProtected ? (
                             session && <Link href={link.url} className='navbar-menu-item' key={index}>{link.text}</Link>
                         ) :
                             <Link href={link.url} className='navbar-menu-item' key={index}>{link.text}</Link>
-
                     ))}
                 </div>
 
@@ -143,7 +142,7 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
                             <GrFormClose size={32} onClick={() => updateParentStateFromHere(false)} />
                         </div>
                         <div className="navbar-mobile-menu">
-                            {NavLinks.map((link, index) => (
+                            {NavLinks.filter(x => x.IsVisible).map((link, index) => (
                                 link.isProtected ? (
                                     session && (
                                         <div className="navbar-mobile-menu-item" key={index}>
