@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import { signIn, useSession } from 'next-auth/react';
 import Logo from '../sections/Logo';
 import Body from '../sections/Body';
-import Error from '../components/Error';
+import Error from '../components/ErrorContainer';
 import Navbar from '../sections/Navbar';
 import { useRouter } from 'next/navigation';
 import Loading from '../components/Loading';

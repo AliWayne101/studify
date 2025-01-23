@@ -1,5 +1,5 @@
 "use client"
-import { NavLinks, WebDetails } from '@/configs'
+import { NavLinks, OverallMenu, WebDetails } from '@/configs'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -10,16 +10,18 @@ import { GrFormClose } from 'react-icons/gr'
 import { Bounce, toast, ToastContainer } from 'react-toastify'
 import { sendRequest } from '@/utils'
 import { INotifInfo } from '@/schema/notifinfo'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { MenuLinks } from '@/interfaces'
 
 interface NavbarProps {
     updateParentState: React.Dispatch<React.SetStateAction<boolean>>;
+    LoadingCompleted?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
+const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) => {
     const [isNavToggle, setIsNavToggle] = useState(false);
-    const [Notifications, setNotifications] = useState<INotifInfo[]>([]);
     const { data: session, status } = useSession();
+    const router = useRouter();
     const pathname = usePathname();
 
     const handleSignOut = () => {
@@ -33,6 +35,36 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
     }
 
     useEffect(() => {
+        const OverallLinks: MenuLinks[] = [];
+        for (const Links of OverallMenu) {
+            for (const mLinks of Links) {
+                const linkExists = OverallLinks.find(x => x.url === mLinks.url);
+                if (!linkExists)
+                    OverallLinks.push(mLinks);
+            }
+        }
+
+        const findAddress = OverallLinks.find(x => x.url === pathname);
+        if (findAddress) {
+            if (findAddress.isProtected) {
+                if (session === null || session === undefined) {
+                    router.push('/login');
+                }
+                else {
+                    if (findAddress.ProtectionLevel) {
+                        const roleExists = findAddress.ProtectionLevel.find(y => y === session.user.role);
+                        if (!roleExists)
+                            router.push('/login');
+                        else {
+                            if (LoadingCompleted)
+                                LoadingCompleted(true);
+                        }
+                    }
+                }
+            }
+        }
+
+
         const getNotifs = async () => {
             const response = await sendRequest("/api/posts", {
                 Request: "getnotifs",
@@ -61,11 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState }) => {
                 }
         }
         getNotifs();
-    }, [pathname])
-
-    useEffect(() => {
-
-    }, [Notifications])
+    }, [pathname, session])
 
     return (
         <>

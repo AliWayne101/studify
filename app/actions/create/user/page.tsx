@@ -1,17 +1,17 @@
 "use client"
 import "../../../css/login.scss"
-import React, { useEffect, useState } from 'react'
-import { hashPassword } from '@/utils'
+import React, { useState } from 'react'
+import { hashPassword, sendRequest } from '@/utils'
 import { useSession } from 'next-auth/react'
 import { RolesWithAuthority } from '@/configs'
 import Struct from "@/app/Struct"
-import Error from "@/app/components/Error"
+import Error from "@/app/components/ErrorContainer"
 import Button from "@/app/components/Button"
-import { useRouter } from "next/navigation"
+import LoadingScreen from "@/app/components/LoadingScreen"
 
 const Signup = () => {
   const { data: session } = useSession();
-  const router = useRouter();
+  const [isLoadingCompleted, setIsLoadingCompleted] = useState(false);
   const [userInfo, setUserInfo] = useState({
     Name: "",
     Email: "",
@@ -54,113 +54,103 @@ const Signup = () => {
     }
 
     const hashedPassword = hashPassword(Password);
-
+    setIsLoadingCompleted(false);
     //start register
     try {
-      const response = await fetch('/api/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          Request: "signup",
-          Name,
-          Email,
-          Role,
-          SchoolName: session ? session.user.schoolName : SchoolName,
-          Gender,
-          Password: hashedPassword,
-          Phone,
-          CNIC,
-          Address,
-          DOB: DateOfBirth
-        })
+      const response = await sendRequest('/api/posts', {
+        Request: "signup",
+        Name,
+        Email,
+        Role,
+        SchoolName: session ? session.user.schoolName : SchoolName,
+        Gender,
+        Password: hashedPassword,
+        Phone,
+        CNIC,
+        Address,
+        DOB: DateOfBirth
       });
-
-      if (!response.ok) {
+      if (response.message === "OK") {
+        console.log(response.results);
+      } else {
         setFillError("Network response was not okay, please try again");
       }
-
-      const data = await response.json();
-      console.log('Success:', data);
+      setIsLoadingCompleted(false);
     } catch (error) {
-      console.error('Error:', error);
+      setFillError("There seems to be an unknown issues, please refresh the page and try again");
+      setIsLoadingCompleted(false);
     }
   }
 
-  useEffect(() => {
-    console.log(session);
-    if (session === undefined || session === null)
-      router.push('/login');
-  }, [session])
-
   return (
-    <Struct>
-      <Error error={fillError} />
-      <div className="loginform">
-        <div className="login">
-          <div className="login-in">
-            <input onChange={handleChange} type="text" name="Name" id="Name" />
-            <label htmlFor="Name">Name</label>
-          </div>
-          <div className="login-in">
-            <input onChange={handleChange} type="email" name="Email" id="Email" />
-            <label htmlFor="Email">Email</label>
-          </div>
-          <div className="login-in">
-            <select name="Role" id="Role" onChange={handleChange}>
-              <option className='bg' value="">Select Role</option>
-              {RolesWithAuthority.map((role, index) => (
-                <option className='bg' value={role.role} key={index}>{role.role}</option>
-              ))}
-            </select>
-            <label htmlFor="Role">Role</label>
-          </div>
-          <div className="login-in">
-            <select name="Gender" id="Gender" onChange={handleChange}>
-              <option className='bg' value="">Select Gender</option>
-              <option className='bg' value="Male">Male</option>
-              <option className='bg' value="Female">Female</option>
-            </select>
-            <label htmlFor="Gender">Gender</label>
-          </div>
-          {!session &&
+    <Struct LoadingCompleted={setIsLoadingCompleted}>
+      <LoadingScreen IsLoadingCompleted={isLoadingCompleted}>
+        <Error error={fillError} />
+        <div className="loginform">
+          <div className="login">
+            <div className="login-in">
+              <input onChange={handleChange} type="text" name="Name" id="Name" />
+              <label htmlFor="Name">Name</label>
+            </div>
+            <div className="login-in">
+              <input onChange={handleChange} type="email" name="Email" id="Email" />
+              <label htmlFor="Email">Email</label>
+            </div>
+            <div className="login-in">
+              <select name="Role" id="Role" onChange={handleChange}>
+                <option className='bg' value="">Select Role</option>
+                {RolesWithAuthority.map((role, index) => (
+                  <option className='bg' value={role.role} key={index}>{role.role}</option>
+                ))}
+              </select>
+              <label htmlFor="Role">Role</label>
+            </div>
+            <div className="login-in">
+              <select name="Gender" id="Gender" onChange={handleChange}>
+                <option className='bg' value="">Select Gender</option>
+                <option className='bg' value="Male">Male</option>
+                <option className='bg' value="Female">Female</option>
+              </select>
+              <label htmlFor="Gender">Gender</label>
+            </div>
+            {!session &&
+              <div className="login-in">
+                <input onChange={handleChange} type="Text" name="SchoolName" id="SchoolName" />
+                <label htmlFor="SchoolName">School Name</label>
+              </div>
+            }
             <div className="login-in">
               <input onChange={handleChange} type="Text" name="SchoolName" id="SchoolName" />
               <label htmlFor="SchoolName">School Name</label>
             </div>
-          }
-          <div className="login-in">
-            <input onChange={handleChange} type="Text" name="SchoolName" id="SchoolName" />
-            <label htmlFor="SchoolName">School Name</label>
+            <div className="login-in">
+              <input onChange={handleChange} type="date" name="DateOfBirth" id="DateOfBirth" />
+              <label htmlFor="DateOfBirth">Date of Birth</label>
+            </div>
+            <div className="login-in">
+              <input onChange={handleChange} type="password" name="Password" id="Password" />
+              <label htmlFor="Password">Password</label>
+            </div>
+            <div className="login-in">
+              <input onChange={handleChange} type="password" name="Repassword" id="Repassword" />
+              <label htmlFor="Repassword">Repassword</label>
+            </div>
+            <div className="login-in">
+              <input onChange={handleChange} type="text" name="Phone" id="Phone" />
+              <label htmlFor="Phone">Phone</label>
+            </div>
+            <div className="login-in">
+              <input onChange={handleChange} type="text" name="CNIC" id="CNIC" />
+              <label htmlFor="CNIC">CNIC</label>
+            </div>
+            <div className="login-in">
+              <input onChange={handleChange} type="text" name="Address" id="Address" />
+              <label htmlFor="Address">Address</label>
+            </div>
+            <Button onClick={HandleSignup}>Signup</Button>
           </div>
-          <div className="login-in">
-            <input onChange={handleChange} type="date" name="DateOfBirth" id="DateOfBirth" />
-            <label htmlFor="DateOfBirth">Date of Birth</label>
-          </div>
-          <div className="login-in">
-            <input onChange={handleChange} type="password" name="Password" id="Password" />
-            <label htmlFor="Password">Password</label>
-          </div>
-          <div className="login-in">
-            <input onChange={handleChange} type="password" name="Repassword" id="Repassword" />
-            <label htmlFor="Repassword">Repassword</label>
-          </div>
-          <div className="login-in">
-            <input onChange={handleChange} type="text" name="Phone" id="Phone" />
-            <label htmlFor="Phone">Phone</label>
-          </div>
-          <div className="login-in">
-            <input onChange={handleChange} type="text" name="CNIC" id="CNIC" />
-            <label htmlFor="CNIC">CNIC</label>
-          </div>
-          <div className="login-in">
-            <input onChange={handleChange} type="text" name="Address" id="Address" />
-            <label htmlFor="Address">Address</label>
-          </div>
-          <Button onClick={HandleSignup}>Signup</Button>
         </div>
-      </div>
+      </LoadingScreen>
     </Struct>
   )
 }

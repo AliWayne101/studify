@@ -4,16 +4,17 @@ import Struct from '@/app/Struct'
 import React, { useEffect, useState } from 'react'
 import "../../../css/actions/create/class.scss"
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { sendRequest } from '@/utils'
 import { ISubjectsInfo } from '@/schema/subjectsinfo'
-import Loading from '@/app/components/Loading'
 import { FaArrowLeft } from 'react-icons/fa'
 import { SubjectDetail } from '@/interfaces'
 import { IUserInfo } from '@/schema/userinfo'
+import LoadingScreen from '@/app/components/LoadingScreen'
+import ErrorContainer from '@/app/components/ErrorContainer'
+
 const Subjects = () => {
   const [newSubjectName, setNewSubjectName] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingCompleted, setIsLoadingCompleted] = useState(false);
   const [isError, setIsError] = useState("");
   const [schoolSubjects, setSchoolSubjects] = useState<ISubjectsInfo>();
   const [targetSubjectInfo, setTargetSubjectInfo] = useState<SubjectDetail>();
@@ -23,9 +24,8 @@ const Subjects = () => {
   const [assignSelectTeacher, setAssignSelectTeacher] = useState("");
   const { data: session } = useSession();
 
-  const router = useRouter();
   const createSubject = async () => {
-    setIsLoading(true);
+    setIsLoadingCompleted(false);
     if (newSubjectName === "") return;
     if (schoolSubjects) {
       if (schoolSubjects.SubjectList.find(x => x.SubjectName.toLocaleLowerCase() === newSubjectName.toLocaleLowerCase())) {
@@ -41,6 +41,7 @@ const Subjects = () => {
     if (response.message === "OK") {
       LoadData();
     }
+    setIsLoadingCompleted(true);
   }
 
   const LoadUsers = async () => {
@@ -57,37 +58,21 @@ const Subjects = () => {
     }
   }
 
-  useEffect(() => {
-    if (session === undefined || session === null)
-      router.push('/login');
-    else {
-      if (session?.user.role !== "Owner" && session?.user.role !== "Admin")
-        router.push('/dashboard');
-
-      LoadUsers();
-      LoadData();
-    }
-  }, [session])
-
   const LoadData = async () => {
     setNewSubjectName("");
-    setIsLoading(true);
     const response = await sendRequest('/api/posts', {
       Request: "getclasses",
       SchoolName: session?.user.schoolName
     });
     if (response.message !== "OK") {
       setIsError(response.error);
-      setIsLoading(false);
       return;
     }
     setSchoolSubjects(response.results.doc);
-    setIsLoading(false);
   }
 
   const DeleteSubject = async (subName: string) => {
-    console.log(subName);
-    setIsLoading(true);
+    setIsLoadingCompleted(false);
     const response = await sendRequest('/api/posts', {
       Request: "deletesubject",
       SubjectName: subName,
@@ -98,6 +83,7 @@ const Subjects = () => {
     } else {
       setIsError(response.error);
     }
+    setIsLoadingCompleted(true);
   }
 
   useEffect(() => {
@@ -109,6 +95,7 @@ const Subjects = () => {
   }, [targetSubject])
 
   const AssignTeacher = async (assign: boolean) => {
+    setIsLoadingCompleted(false);
     const response = await sendRequest('/api/posts', {
       Request: "assignsubject",
       SubjectTeacherUID: assign === true ? assignSelectTeacher : "unassigned",
@@ -123,6 +110,7 @@ const Subjects = () => {
     } else {
       setIsError(response.error);
     }
+    setIsLoadingCompleted(true);
   }
 
   const UnassignedTeachers = () => {
@@ -136,11 +124,15 @@ const Subjects = () => {
     return unassignedTeachers;
   }
 
+  useEffect(() => {
+    LoadUsers();
+  }, [])
+
   return (
-    <Struct>
-      {isError && <div className="error">{isError}</div>}
-      {isLoading ? <Loading Size={48} /> :
-        curWindow === "create" ?
+    <Struct LoadingCompleted={setIsLoadingCompleted}>
+      <LoadingScreen IsLoadingCompleted={isLoadingCompleted}>
+        <ErrorContainer error={isError} />
+        {curWindow === "create" ?
           <div className="class">
             <div className="navback">
               <span className='link' onClick={() => setCurWindow("")}><FaArrowLeft className='navback-icon' />Go Back</span>
@@ -240,7 +232,8 @@ const Subjects = () => {
                 </div>
               </div>
             </div>
-      }
+        }
+      </LoadingScreen>
     </Struct>
   )
 }

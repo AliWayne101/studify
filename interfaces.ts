@@ -2,6 +2,7 @@ import { Session } from "next-auth";
 import { IUserInfo } from "./schema/userinfo";
 import { IAttendanceInfo } from "./schema/attendanceinfo";
 import { IClassInfo } from "./schema/classinfo";
+import React from "react";
 
 export interface ButtonProps {
     onClick: () => void;
@@ -11,6 +12,15 @@ export interface ButtonProps {
 
 export interface childrenProps {
     children: React.ReactNode;
+}
+
+export interface StructProps {
+    children: React.ReactNode;
+    LoadingCompleted?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface ErrorInterface {
+    error: string | null
 }
 
 export interface RoleProps {
@@ -34,7 +44,8 @@ export interface AttendanceStructProps {
 export interface MenuLinks {
     text: string;
     url: string;
-    isProtected?: boolean
+    isProtected?: boolean;
+    ProtectionLevel?: string[];
 }
 
 export interface SlugProps {

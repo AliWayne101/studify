@@ -48,22 +48,29 @@ export const RolesWithAuthority = [
 ];
 
 export const TeacherLinks: MenuLinks[] = [
-    { text: "Mark Attendance", url: '/actions/update/attendance/students' },
+    { text: "Mark Attendance", url: '/actions/update/attendance/students', isProtected: true, ProtectionLevel: ["Owner", "Admin", "Teacher"] },
     { text: "123", url: '/actions/update/attendance' },
     { text: "123", url: '/actions/update/attendance' },
     { text: "123", url: '/actions/update/attendance' },
 ]
 
 export const AdminLinks: MenuLinks[] = [
-    { text: "Mark Attendance", url: '/actions/update/attendance/staff' },
-    { text: "Create User", url: "/actions/create/user" },
+    { text: "Mark Attendance", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner, Admin"] },
+    { text: "Create User", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Subjects Info", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
 ]
 
 export const OwnerLinks: MenuLinks[] = [
-    { text: "Mark Attendance", url: '/actions/update/attendance/staff' },
-    { text: "Class Info", url: "/actions/create/class" },
-    { text: "Subjects Info", url: "/actions/create/subjects" },
-    { text: "Create User", url: "/actions/create/user" },
+    { text: "Mark Attendance", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner","Admin"] },
+    { text: "Class Info", url: "/actions/create/class", isProtected: true, ProtectionLevel: ["Owner"] },
+    { text: "Subjects Info", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Create User", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+]
+
+export const OverallMenu = [
+    TeacherLinks,
+    AdminLinks,
+    OwnerLinks
 ]
 
 export const SALT_LENGTH = 12;
