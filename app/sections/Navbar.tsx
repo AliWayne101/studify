@@ -92,7 +92,8 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
                     });
                 }
         }
-        getNotifs();
+        if (session)
+            getNotifs();
     }, [pathname, session])
 
     return (
