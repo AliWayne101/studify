@@ -15,19 +15,19 @@ const AuthList = ({ session }: SessionProps) => {
     useEffect(() => {
         var requestBody = {
             Request: "getdashboarduinfo",
-            uid: session.user.uid,
+            uid: session?.user.uid,
             targetRoll: "Student",
-            schoolName: session.user.schoolName,
+            schoolName: session?.user.schoolName,
             clause: "all"
         };
 
-        if (session.user.role === "Owner" || session.user.role === "Admin") {
+        if (session?.user.role === "Owner" || session?.user.role === "Admin") {
             requestBody.targetRoll = "Employees";
             setTempTitle("Employee Information");
-        } else if (session.user.role === "Teacher") {
+        } else if (session?.user.role === "Teacher") {
             requestBody.clause = "class";
             setTempTitle("Student Information");
-        } else if (session.user.role === "Parent") {
+        } else if (session?.user.role === "Parent") {
             requestBody.clause = "children";
             setTempTitle("Children Information");
         }
@@ -64,7 +64,7 @@ const AuthList = ({ session }: SessionProps) => {
             }
         }
         sendRequest();
-    }, [session.user.role])
+    }, [session])
 
     return (
         <div className="list">

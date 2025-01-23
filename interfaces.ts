@@ -28,7 +28,7 @@ export interface RoleProps {
 }
 
 export interface SessionProps {
-    session: Session;
+    session: Session | null;
 }
 
 export interface BasicInfoProps {

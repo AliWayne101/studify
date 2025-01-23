@@ -32,9 +32,9 @@ const Basic = ({ session }: SessionProps) => {
                 },
                 body: JSON.stringify({
                     Request: "basic",
-                    Role: session.user.role,
-                    SchoolName: session.user.schoolName,
-                    uID: session.user.uid
+                    Role: session?.user.role,
+                    SchoolName: session?.user.schoolName,
+                    uID: session?.user.uid
                 })
             });
             
@@ -54,7 +54,7 @@ const Basic = ({ session }: SessionProps) => {
     }, [session])
 
     return (
-        isAuthorized(session.user.role, ["SU", "HU", "SG"]) ? (
+        isAuthorized(session?.user.role, ["SU", "HU", "SG"]) ? (
             <div className="basic">
                 <h2>Basic Information</h2>
                 { isError && <><div className="error">{isError}</div></>}

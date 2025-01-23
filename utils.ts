@@ -25,7 +25,8 @@ export const UniqueID = (length: number) => {
     return result;
 }
 
-export const isAuthorized = (Role: string, Levels: string[]) => {
+export const isAuthorized = (Role: string | undefined, Levels: string[]) => {
+    if (Role === undefined) return false;
     const roleDetails = RolesWithAuthority.find(r => r.role === Role);
     if (roleDetails !== undefined)
         return Levels.includes(roleDetails?.authorityLevel);

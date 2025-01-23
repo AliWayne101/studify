@@ -51,15 +51,15 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
                     router.push('/login');
                 }
                 else {
-                    if (findAddress.ProtectionLevel) {
-                        const roleExists = findAddress.ProtectionLevel.find(y => y === session.user.role);
-                        if (!roleExists)
-                            router.push('/login');
-                        else {
-                            if (LoadingCompleted)
+                    if (LoadingCompleted)
+                        if (findAddress.ProtectionLevel) {
+                            const roleExists = findAddress.ProtectionLevel.find(y => y === session.user.role);
+                            if (!roleExists)
+                                router.push('/login');
+                            else
                                 LoadingCompleted(true);
-                        }
-                    }
+                        } else
+                            LoadingCompleted(true);
                 }
             }
         }

@@ -9,7 +9,7 @@ const Menu = ({ session }: SessionProps) => {
     const [links, setLinks] = useState<MenuLinks[]>([]);
 
     useEffect(() => {
-        switch(session.user.role) {
+        switch(session?.user.role) {
             case "Teacher":
                 setLinks(TeacherLinks);
                 break;

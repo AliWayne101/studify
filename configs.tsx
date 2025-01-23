@@ -35,8 +35,6 @@ export const NavLinks: MenuLinks[] = [
     { text: "Home", url: "/", isProtected: false },
 ]
 
-// export const Roles = ["Owner", "Teacher", "Admin", "Parent", "Student"];
-
 //SU - SuperUser | HU = HighUser | SG = Special Guest | User = User
 export const RolesWithAuthority = [
     { role: "Owner", authorityLevel: "SU" },
@@ -49,9 +47,6 @@ export const RolesWithAuthority = [
 
 export const TeacherLinks: MenuLinks[] = [
     { text: "Mark Attendance", url: '/actions/update/attendance/students', isProtected: true, ProtectionLevel: ["Owner", "Admin", "Teacher"] },
-    { text: "123", url: '/actions/update/attendance' },
-    { text: "123", url: '/actions/update/attendance' },
-    { text: "123", url: '/actions/update/attendance' },
 ]
 
 export const AdminLinks: MenuLinks[] = [
@@ -70,7 +65,8 @@ export const OwnerLinks: MenuLinks[] = [
 export const OverallMenu = [
     TeacherLinks,
     AdminLinks,
-    OwnerLinks
+    OwnerLinks,
+    NavLinks,
 ]
 
 export const SALT_LENGTH = 12;
