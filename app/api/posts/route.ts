@@ -124,6 +124,8 @@ export const POST = async (request: NextRequest) => {
                     returnData.push({ Title: "Absent", Info: absentStudents.toString() });
                     returnData.push({ Title: "Leave", Info: leaveStudents.toString() });
                 }
+            } else if ( Role === "Parent") {
+                
             }
 
             return NextResponse.json({ message: "OK", data: returnData }, { status: 200 });

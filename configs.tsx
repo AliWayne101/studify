@@ -56,13 +56,14 @@ export const TeacherLinks: MenuLinks[] = [
 
 export const AdminLinks: MenuLinks[] = [
     { text: "Mark Attendance", url: '/actions/update/attendance/staff' },
-
+    { text: "Create User", url: "/actions/create/user" },
 ]
 
 export const OwnerLinks: MenuLinks[] = [
     { text: "Mark Attendance", url: '/actions/update/attendance/staff' },
     { text: "Class Info", url: "/actions/create/class" },
     { text: "Subjects Info", url: "/actions/create/subjects" },
+    { text: "Create User", url: "/actions/create/user" },
 ]
 
 export const SALT_LENGTH = 12;

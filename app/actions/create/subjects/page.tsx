@@ -58,7 +58,7 @@ const Subjects = () => {
   }
 
   useEffect(() => {
-    if (session === undefined)
+    if (session === undefined || session === null)
       router.push('/login');
     else {
       if (session?.user.role !== "Owner" && session?.user.role !== "Admin")

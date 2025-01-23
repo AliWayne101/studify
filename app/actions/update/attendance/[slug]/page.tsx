@@ -21,8 +21,9 @@ const UpdateAttendance = ({ params }: SlugProps) => {
   const [isError, setIsError] = useState("");
   const [userDetail, setUserDetail] = useState<IUserInfo | undefined>(undefined);
 
+  //Proper checkup if user is logged and then process the page
   useEffect(() => {
-    if (session) {
+    if (session !== null) {
       if (!isAuthorized(session.user.role, ["SU", "HU"])) {
         router.push('/login');
       } else {
