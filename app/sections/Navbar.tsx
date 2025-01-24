@@ -12,6 +12,7 @@ import { sendRequest } from '@/utils'
 import { INotifInfo } from '@/schema/notifinfo'
 import { usePathname, useRouter } from 'next/navigation'
 import { MenuLinks } from '@/interfaces'
+import { ShowToast } from '../utilsjsx'
 
 interface NavbarProps {
     updateParentState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,22 +75,8 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
             if (response.message === "OK")
                 for (const doc of response.results.docs) {
                     var notif: INotifInfo = doc;
-                    toast(
-                        <div className='notification'>
-                            <div className="notification-title">{notif.Title}</div>
-                            <div className="notification-body">{notif.Text}</div>
-                            <div className="notification-footer">
-                                <div className="notification-footer-in">
-                                    From: {notif.From}
-                                </div>
-                                <div className="notification-footer-in text-right">
-                                    {(new Date(notif.Timestamp.toString())).toLocaleString()}
-                                </div>
-                            </div>
-                        </div>, {
-                        className: "toastcustom",
-                        closeButton: false
-                    });
+                    const _from = "From: " + notif.From;
+                    ShowToast(notif.Title, notif.Text, null, _from);
                 }
         }
         if (session)
