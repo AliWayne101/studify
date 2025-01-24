@@ -56,6 +56,9 @@ const Login = () => {
       email: loginDetails.uid,
       password: loginDetails.password
     }).then((response) => {
+      console.log(response);
+      //Under development
+      //if response.ok is false the show toast to show credentials are wrong
       setErrorFill(null);
     }).catch((err) => {
       setIsLoading(false);
