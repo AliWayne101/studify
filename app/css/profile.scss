@@ -22,4 +22,15 @@
             align-items: center;
         }
     }
+    &-right {
+        h2 {
+            margin-bottom: 20px;
+        }
+        &-edit {
+            width: 600px;
+            display: flex;
+            align-items: right;
+            justify-content: right;
+        }
+    }
 }

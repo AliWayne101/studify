@@ -69,3 +69,9 @@ export interface SubjectDetail {
     SubjectName: string;
     SubjectTeacherUID: string;
 }
+
+export interface ServerResponse {
+    message: string,
+    error?: string,
+    results?: any
+}

@@ -2,53 +2,61 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
 
-    .login {
-        &-in {
-            margin-top: 20px;
-            margin-bottom: 10px;
-            display: flex;
-            label {
-                position: absolute;
-                pointer-events: none;
-                transition: all 300ms ease-in-out;
-            }
 
-            input, select {
-                min-width: 400px !important;
-                background-color: transparent;
-                border: none;
-                padding: 5px 10px 5px 80px;
-                border-bottom: 4px solid transparent;
-                color: var(--foreground);
-                transition: all 300ms ease-in-out;
-                &:focus,
-                &:active {
-                    border-bottom: 4px solid var(--theme-main);
-                    outline: none;
-                }
-                &:focus {
-                    padding: 5px 10px;
-                }
-                &:focus + label {
-                    transform: translateY(-20px);
-                }
+.login {
+    &-in {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        display: flex;
 
-            }
+        label {
+            position: absolute;
+            pointer-events: none;
+            transition: all 300ms ease-in-out;
+        }
 
-            select option {
-                color: var(--foreground);
+        input,
+        select {
+            min-width: 400px !important;
+            background-color: transparent;
+            border: none;
+            padding: 5px 10px 5px 100px;
+            border-bottom: 4px solid transparent;
+            color: var(--foreground);
+            transition: all 300ms ease-in-out;
+
+            &:focus,
+            &:active {
+                border-bottom: 4px solid var(--theme-main);
                 outline: none;
             }
+
+            &:focus {
+                padding: 5px 10px;
+            }
+
+            &:focus+label {
+                transform: translateY(-20px);
+            }
+
+        }
+
+        select option {
+            color: var(--foreground);
+            outline: none;
         }
     }
+}
 
-    @media screen and (max-width: 480px) {
-        .login {
-            &-in {
-                input, select {
-                    min-width: 100% !important;
-                }
+@media screen and (max-width: 480px) {
+    .login {
+        &-in {
+
+            input,
+            select {
+                min-width: 100% !important;
             }
         }
     }

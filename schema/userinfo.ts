@@ -18,7 +18,6 @@ export interface IUserInfo {
     DOB: Date;
     JoinedOn: Date;
     isActive: boolean;
-    Subjects: string[];
 }
 
 const Users = new Schema<IUserInfo>({
@@ -51,7 +50,6 @@ const Users = new Schema<IUserInfo>({
         type: Boolean,
         default: true
     },
-    Subjects: [String],
 });
 
 let UserModel: Model<IUserInfo>;

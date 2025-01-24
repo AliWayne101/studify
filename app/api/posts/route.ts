@@ -1,9 +1,9 @@
 import UserModel, { IUserInfo } from "@/schema/userinfo";
 import AttendanceModel from "@/schema/attendanceinfo";
-import { AttStatus, AttStatusDay, Connect, CreateNotification, getDate, hashPassword, ServResponse, UniqueID } from "@/utils";
+import { AttStatus, AttStatusDay, Connect, CreateNotification, getDate, hashPassword, isPasswordValid, ServResponse, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ProperUserInterface, SubjectDetail } from "@/interfaces";
+import { BasicInfoProps, ProperUserInterface, ServerResponse, SubjectDetail } from "@/interfaces";
 import ClassModel from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
@@ -21,15 +21,6 @@ export const POST = async (request: NextRequest) => {
     const { Request } = body;
 
     switch (Request) {
-        case "login":
-            var { Email } = body;
-            try {
-                const doc = await UserModel.findOne({ Email: Email }).exec();
-                return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
-            } catch (err) {
-                return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
-            }
-            break;
         case "getuserbyid":
             var { uid } = body;
             const doc = await UserModel.findOne({ UID: uid }).exec();
@@ -124,8 +115,8 @@ export const POST = async (request: NextRequest) => {
                     returnData.push({ Title: "Absent", Info: absentStudents.toString() });
                     returnData.push({ Title: "Leave", Info: leaveStudents.toString() });
                 }
-            } else if ( Role === "Parent") {
-                
+            } else if (Role === "Parent") {
+
             }
 
             return NextResponse.json({ message: "OK", data: returnData }, { status: 200 });
@@ -369,7 +360,7 @@ export const POST = async (request: NextRequest) => {
             break;
         case "assignsubject":
             try {
-                var { SchoolName, SubjectName, SubjectTeacherUID, Caster} = body;
+                var { SchoolName, SubjectName, SubjectTeacherUID, Caster } = body;
                 const subject = await SubjectsModel.findOne({ SchoolName: SchoolName });
                 var rVal = {
                     message: "ERROR",
@@ -427,6 +418,30 @@ export const POST = async (request: NextRequest) => {
                 return NextResponse.json({ message: "OK", docs: notifs, deletedRows: deletedRows.deletedCount });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please contact the developer!" }, { status: 200 });
+            }
+            break;
+        case "edituser":
+            var { uid, Name, Email, Gender, Phone, DOB, Password } = body;
+            try {
+                const user = await UserModel.findOne({ UID: uid }).exec();
+                if (user) {
+                    user.Name = Name;
+                    user.Email = Email;
+                    user.Gender = Gender;
+                    user.Phone = Phone;
+                    user.DOB = DOB;
+                    const isValid = await isPasswordValid(Password, user.Password);
+                    if (isValid) {
+                        await user.save();
+                        return NextResponse.json({ message: "OK", doc: user }, { status: 200 });
+                    } else {
+                        return NextResponse.json({ message: "ERROR", error: "Incorrect Password, please type in the correct password" }, { status: 200 });
+                    }
+                } else {
+                    return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please try again or contact the developer" }, { status: 200 });
+                }
+            } catch (err) {
+                return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
             }
             break;
         default:

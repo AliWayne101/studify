@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcryptjs';
+import { compare, genSalt, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
 import { AVATAR_LINK, RolesWithAuthority } from './configs';
 import { AttendanceStructProps } from './interfaces';
@@ -7,7 +7,8 @@ import { IClassInfo } from './schema/classinfo';
 import { NextResponse } from 'next/server';
 
 export const hashPassword = async (password: string) => {
-    const hashedPassword = await hash(password.toString(), 10);
+    const _salt = await genSalt(10);
+    const hashedPassword = await hash(password.toString(), _salt);
     return hashedPassword;
 }
 
@@ -55,9 +56,9 @@ export const getDate = () => {
     }
 }
 
-export const sendRequest = async (address: string, _body: object) => {
+export const sendRequest = async (address: string, _body: object, method: string = "POST") => {
     const response = await fetch(address, {
-        method: "POST",
+        method: method,
         headers: {
             "Content-Type": "application/json"
         },

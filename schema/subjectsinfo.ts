@@ -1,11 +1,11 @@
-import { SubjectList } from "@/interfaces";
+import { SubjectDetail } from "@/interfaces";
 import mongoose, { Model, Schema } from "mongoose";
 
 export interface ISubjectsInfo {
     _id: mongoose.Types.ObjectId;
     UID: string;
     SchoolName: string;
-    SubjectList: SubjectList[];
+    SubjectList: SubjectDetail[];
 }
 
 const Subjects = new Schema<ISubjectsInfo>({

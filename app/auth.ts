@@ -1,6 +1,7 @@
 import { SESSION_AGE } from "@/configs";
 import UserModel from "@/schema/userinfo";
 import { Connect, isPasswordValid } from "@/utils";
+import { compare } from "bcryptjs";
 import { AuthOptions, DefaultSession, getServerSession } from "next-auth";
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { signOut } from "next-auth/react";
@@ -42,7 +43,7 @@ const authOptions: AuthOptions = {
                 }
 
                 // Check password match
-                const isValid = isPasswordValid(credentials.password, user.Password);
+                const isValid = await isPasswordValid(credentials.password, user.Password);
                 if (!isValid) {
                     return null;
                 }
