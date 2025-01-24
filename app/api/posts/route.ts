@@ -1,9 +1,9 @@
 import UserModel, { IUserInfo } from "@/schema/userinfo";
 import AttendanceModel from "@/schema/attendanceinfo";
-import { AttStatus, AttStatusDay, Connect, CreateNotification, getDate, hashPassword, isPasswordValid, ServResponse, UniqueID } from "@/utils";
+import { AttStatusDay, Connect, getDate, hashPassword, isPasswordValid, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ProperUserInterface, ServerResponse, SubjectDetail } from "@/interfaces";
+import { BasicInfoProps, ProperUserInterface, SubjectDetail } from "@/interfaces";
 import ClassModel from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
