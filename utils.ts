@@ -34,8 +34,8 @@ export const isAuthorized = (Role: string | undefined, Levels: string[]) => {
         return false;
 }
 
-export const getImageLink = (Data: string) => {
-    if (Data === "default")
+export const getImageLink = (Data: string | undefined) => {
+    if (Data === "default" || Data === undefined)
         return AVATAR_LINK;
     else
         return Data;

@@ -1,12 +1,14 @@
 "use client"
+import "../css/profile.scss";
 import React, { useEffect, useState } from 'react'
 import Struct from '../Struct'
 import LoadingScreen from '../components/LoadingScreen'
 import { useSession } from 'next-auth/react'
 import { IUserInfo } from '@/schema/userinfo'
-import { sendRequest } from '@/utils'
-import { toast } from 'react-toastify'
+import { getImageLink, sendRequest } from '@/utils'
 import { ShowToast } from '../utilsjsx'
+import Image from "next/image";
+import Button from "../components/Button";
 
 const Profile = () => {
   const [isLoadingCompleted, setIsLoadingCompleted] = useState(false);
@@ -35,7 +37,20 @@ const Profile = () => {
   return (
     <Struct LoadingCompleted={setIsLoadingCompleted}>
       <LoadingScreen IsLoadingCompleted={isLoadingCompleted}>
-        <div className="">{profileData?.Name}</div>
+        <div className="profile">
+          <div className="profile-left">
+            <div className="profile-left-image">
+              <Image src={getImageLink(profileData?.Image)} height={1024} width={1024} alt={profileData ? profileData.Name : "null"} />
+            </div>
+            <div className="profile-left-below">
+              <Button onClick={() => console.log("Good")}>Upload</Button>
+            </div>
+          </div>
+          <div className="profile-right">
+            <h2>Profile</h2>
+            
+          </div>
+        </div>
       </LoadingScreen>
     </Struct>
   )
