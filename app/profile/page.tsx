@@ -17,6 +17,7 @@ const Profile = () => {
   const [blockEdit, setBlockEdit] = useState(true);
   const [saveProfile, setSaveProfile] = useState(false);
   const [changingPassword, setChangingPassword] = useState("");
+  const [photo, setPhoto] = useState<File | null>();
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -47,8 +48,43 @@ const Profile = () => {
     }
   }
 
+  const PhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.currentTarget.files;
+    if (files && files[0]) {
+      setPhoto(files[0]);
+    }
+  }
+
+  const UploadProfilePic = async() => {
+    if (photo === null || photo === undefined) return null;
+    try {
+      const formData = new FormData();
+      formData.append('image', photo);
+      const _url = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API}`;
+      const response = await fetch(_url, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData
+      });
+      const data = await response.json();
+      if (response.ok) {
+        return data.data.url;
+      } else {
+        return null;
+      }  
+    } catch (error) {
+      ShowToast("Error", "There seems to be an error while uploading the image, please contact the developer if problem presists", null);
+      return null;
+    }
+    
+  }
+
   const MakeChanges = async () => {
     setIsLoadingCompleted(false);
+
+    const imageLink = UploadProfilePic();
+
     if (!profileData) return;
     const response = await sendRequest("/api/posts", {
       Request: "edituser",
@@ -58,6 +94,7 @@ const Profile = () => {
       Gender: profileData?.Gender,
       Phone: profileData?.Phone,
       DOB: profileData?.DOB,
+      ProfilePhoto: imageLink,
       Password: changingPassword
     });
     if (response.message === "OK") {
@@ -81,6 +118,7 @@ const Profile = () => {
             </div>
             <div className="profile-left-below">
               <Button onClick={() => console.log("Good")}>Upload</Button>
+              <input type="file" name="Profile" id="Profile" onChange={PhotoUpload} />
             </div>
           </div>
           <div className="profile-right">

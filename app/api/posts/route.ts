@@ -421,7 +421,7 @@ export const POST = async (request: NextRequest) => {
             }
             break;
         case "edituser":
-            var { uid, Name, Email, Gender, Phone, DOB, Password } = body;
+            var { uid, Name, Email, Gender, Phone, DOB, Password, ProfilePhoto } = body;
             try {
                 const user = await UserModel.findOne({ UID: uid }).exec();
                 if (user) {
@@ -430,6 +430,9 @@ export const POST = async (request: NextRequest) => {
                     user.Gender = Gender;
                     user.Phone = Phone;
                     user.DOB = DOB;
+                    if (ProfilePhoto !== null)
+                        user.Image = ProfilePhoto;
+                    
                     const isValid = await isPasswordValid(Password, user.Password);
                     if (isValid) {
                         await user.save();
