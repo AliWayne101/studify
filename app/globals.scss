@@ -262,7 +262,7 @@ ul {
       background-color: transparent;
       height: 100%;
       cursor: pointer;
-      
+
       h1 {
         margin-left: 20px;
       }
@@ -303,8 +303,9 @@ select {
   border: none;
   color: var(--text);
   border-bottom: 1px solid var(--theme-accent);
-  
+
 }
+
 .border {
   border: 1px solid var(--theme-accent) !important;
 }
@@ -322,24 +323,37 @@ select {
 .notification {
   color: var(--text);
   font-family: var(--font-poppins) !important;
+
   &-title {
     color: var(--foreground) !important;
     font-size: 18px;
     margin-bottom: 5px;
     font-weight: bold;
   }
+
   &-body {
     font-size: 14px;
     margin-bottom: 5px;
   }
+
   &-footer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+
     &-in {
       &:nth-child(1) {
         color: var(--foreground) !important;
       }
+
       font-size: 11px;
     }
+  }
+}
+
+.img-cont {
+  position: relative;
+  img {
+    object-fit: cover;
+    object-position: center;
   }
 }

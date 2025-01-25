@@ -82,7 +82,7 @@ const Login = () => {
               <div className="login">
                 <div className="login-in">
                   <input onChange={handleChange} type="text" name="uid" id="uid" />
-                  <label htmlFor="uid">UID</label>
+                  <label htmlFor="uid">UID / E-mail</label>
                 </div>
                 <div className="login-in">
                   <input onChange={handleChange} type="password" name="password" id="password" />

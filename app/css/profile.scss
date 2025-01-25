@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 30% 70%;
     margin-top: 100px;
+
     &-left {
         &-image {
             display: flex;
@@ -10,22 +11,27 @@
             text-align: center;
             margin: 20px 0;
 
-            img {
+            .img-cont {
                 height: 200px;
                 width: 200px;
-                border-radius: 100%;
+                img {
+                    border-radius: 100%;
+                }
             }
         }
+
         &-below {
             display: flex;
             justify-content: center;
             align-items: center;
         }
     }
+
     &-right {
         h2 {
             margin-bottom: 20px;
         }
+
         &-edit {
             width: 600px;
             display: flex;

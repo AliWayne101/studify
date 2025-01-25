@@ -19,6 +19,7 @@ const Profile = () => {
   const [changingPassword, setChangingPassword] = useState("");
   const [photo, setPhoto] = useState<File | null>();
   const { data: session } = useSession();
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (session)
@@ -55,16 +56,14 @@ const Profile = () => {
     }
   }
 
-  const UploadProfilePic = async() => {
+  const UploadProfilePic = async () => {
     if (photo === null || photo === undefined) return null;
     try {
       const formData = new FormData();
       formData.append('image', photo);
       const _url = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API}`;
       const response = await fetch(_url, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        method: "POST",
         body: formData
       });
       const data = await response.json();
@@ -72,19 +71,20 @@ const Profile = () => {
         return data.data.url;
       } else {
         return null;
-      }  
+      }
     } catch (error) {
+      console.log(error);
       ShowToast("Error", "There seems to be an error while uploading the image, please contact the developer if problem presists", null);
       return null;
     }
-    
+
   }
 
   const MakeChanges = async () => {
     setIsLoadingCompleted(false);
 
-    const imageLink = UploadProfilePic();
-
+    const imageLink = await UploadProfilePic();
+    console.log(imageLink);
     if (!profileData) return;
     const response = await sendRequest("/api/posts", {
       Request: "edituser",
@@ -98,7 +98,7 @@ const Profile = () => {
       Password: changingPassword
     });
     if (response.message === "OK") {
-      ShowToast("Success", "Profile updated successfully", null);
+      ShowToast("Success", "Profile has been updated successfully!", null);
       setBlockEdit(true);
       setSaveProfile(false);
       setProfileData(response.results.doc);
@@ -114,11 +114,17 @@ const Profile = () => {
         <div className="profile">
           <div className="profile-left">
             <div className="profile-left-image">
-              <Image src={getImageLink(profileData?.Image)} height={1024} width={1024} alt={profileData ? profileData.Name : "null"} />
+              <div className="img-cont">
+                <Image
+                  layout="fill"
+                  objectFit="cover"
+                  src={getImageLink(profileData?.Image)}
+                  alt={profileData ? profileData.Name : "null"} />
+              </div>
             </div>
             <div className="profile-left-below">
-              <Button onClick={() => console.log("Good")}>Upload</Button>
-              <input type="file" name="Profile" id="Profile" onChange={PhotoUpload} />
+              <Button onClick={() => fileInputRef.current?.click()}>Upload</Button>
+              <input type="file" name="Profile" id="Profile" onChange={PhotoUpload} ref={fileInputRef} style={{ display: 'none' }} />
             </div>
           </div>
           <div className="profile-right">
@@ -152,7 +158,7 @@ const Profile = () => {
                       <label htmlFor="Email">Email</label>
                     </div>
                     <div className="login-in">
-                      <select disabled={blockEdit} name="Gender" id="Gender" onChange={handleChange}>
+                      <select disabled={blockEdit} name="Gender" id="Gender" onChange={handleChange} value={profileData?.Gender || ''}>
                         <option className='bg' value="">Select Gender</option>
                         <option className='bg' value="Male">Male</option>
                         <option className='bg' value="Female">Female</option>
