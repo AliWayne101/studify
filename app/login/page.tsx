@@ -11,6 +11,7 @@ import Error from '../components/ErrorContainer';
 import Navbar from '../sections/Navbar';
 import { useRouter } from 'next/navigation';
 import Loading from '../components/Loading';
+import { ShowToast } from '../utilsjsx';
 
 const Login = () => {
   const [errorFill, setErrorFill] = useState<string | null>(null);
@@ -56,9 +57,10 @@ const Login = () => {
       email: loginDetails.uid,
       password: loginDetails.password
     }).then((response) => {
-      console.log(response);
-      //Under development
-      //if response.ok is false the show toast to show credentials are wrong
+      if (!response?.ok) {
+        ShowToast("Error", "Incorrect username/password, please try again", null);
+        setIsLoading(false);
+      }
       setErrorFill(null);
     }).catch((err) => {
       setIsLoading(false);
