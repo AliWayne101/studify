@@ -37,7 +37,10 @@ const authOptions: AuthOptions = {
             async authorize(credentials: any) {
                 // Check user exists
                 await Connect();
-                const user = await UserModel.findOne({ UID: credentials.email }).exec();
+                var user = await UserModel.findOne({ Email: credentials.email}).exec();
+                if (!user)
+                    user = await UserModel.findOne({ UID: credentials.email }).exec();
+                
                 if (!user) {
                     return null;
                 }
