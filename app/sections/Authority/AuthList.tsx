@@ -1,17 +1,43 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import "../../css/sections/Authority/basic.scss";
-import { SessionProps } from '@/interfaces';
+import { AttendanceStructProps, SessionProps } from '@/interfaces';
 import { IUserInfo } from '@/schema/userinfo';
-import "../../css/sections/Authority/list.scss";
+// import "../../css/sections/Authority/list.scss";
+import "../../css/sections/Authority/authlist.scss";
 import Image from 'next/image';
-import { getImageLink } from '@/utils';
+import { fillAttendanceData, getImageLink } from '@/utils';
+import Calender from '@/app/components/Calender';
+import { IAttendanceInfo } from '@/schema/attendanceinfo';
+
+interface DataStructure {
+    User: IUserInfo,
+    Attendance: IAttendanceInfo
+}
 
 const AuthList = ({ session }: SessionProps) => {
     const [isError, setIsError] = useState<string | null>(null);
-    const [userInfo, setUserInfo] = useState<IUserInfo[]|undefined>(undefined);
+    const [userInfo, setUserInfo] = useState<IUserInfo[] | undefined>(undefined);
+    const [uInfo, setUInfo] = useState<DataStructure|undefined>(undefined);
+    const [attInfo, setAttInfo] = useState<IAttendanceInfo>();
+    const [targetUser, setTargetUser] = useState<string|null>(null);
     const [listTitle, setListTitle] = useState("");
     const [tempTitle, setTempTitle] = useState("");
+
+    //Under Development
+    //get Attendance in getdashboarduinfo, and show the attendace through state relatively
+    //show more info about user under attendance section
+    //delete list.scss since its useless
+    //Add Media screen
+    //add ref to scroll to content
+
+    const data: AttendanceStructProps[] = [
+        { Day: 1, Status: "present" },
+        { Day: 2, Status: "leave" },
+        { Day: 3, Status: "present" },
+        { Day: 5, Status: "absent" },
+        { Day: 6, Status: "present" },
+    ];
+
     useEffect(() => {
         var requestBody = {
             Request: "getdashboarduinfo",
@@ -49,7 +75,7 @@ const AuthList = ({ session }: SessionProps) => {
                 }
                 const data = await response.json();
                 if (data.message === "OK") {
-                    const servData:IUserInfo[] = data.data;
+                    const servData: IUserInfo[] = data.data;
                     if (servData.length === 0)
                         setListTitle("");
                     else
@@ -66,26 +92,40 @@ const AuthList = ({ session }: SessionProps) => {
         sendRequest();
     }, [session])
 
+    const SelectedUser = (UID: string) => {
+        setTargetUser(UID);
+    }
+
     return (
-        <div className="list">
-            <h2>{listTitle}</h2>
-            <div className="list-cards">
-                {userInfo?.map((doc, index) => (
-                    <div className="list-cards-card" key={index}>
-                        <div className="list-cards-card-image">
-                            <Image height={1000} width={1000} src={getImageLink(doc.Image)} alt={doc.Name} />
+        <div className={`autlist ${targetUser === null ? 'max' : 'min'}`}>
+            <div className="authlist-left">
+                <h2>{listTitle}</h2>
+                <div className={`cards ${targetUser === null ? 'fourprow' : 'threeprow'}`}>
+                    {userInfo?.map((data, index) => (
+                        <div className="cards-card" key={index} onClick={() => SelectedUser(data.UID)}>
+                            <div className="cards-card-img">
+                                <div className="img-cont">
+                                    <Image
+                                        layout="fill"
+                                        objectFit="cover"
+                                        src={getImageLink(data.Image)}
+                                        alt={data.Name}
+                                    />
+                                </div>
+                            </div>
+                            <div className="cards-card-details">
+                                <ul>
+                                    <li>{data.Name}</li>
+                                    <li>{data.Role}</li>
+                                </ul>
+                            </div>
                         </div>
-                        <ul>
-                            <li><span>Name:</span> {doc.Name}</li>
-                            <li><span>Role:</span> {doc.Role}</li>
-                            <li><span>CNIC:</span> {doc.CNIC}</li>
-                            <li><span>Phone:</span> {doc.Phone}</li>
-                            <li><span>DOB:</span> {new Date(doc.DOB.toString()).toLocaleDateString('en-GB')}</li>
-                            <li><span>Joining Date:</span> {new Date(doc.JoinedOn.toString()).toLocaleDateString('en-GB')}</li>
-                            <li>Address <br /> <small>{doc.Address}</small></li>
-                        </ul>
-                    </div>
-                ))}
+                    ))}
+                </div>
+            </div>
+            <div className="authlist-right">
+                <h2>Attendance Information</h2>
+                <Calender data={fillAttendanceData(data)} />
             </div>
         </div>
     );

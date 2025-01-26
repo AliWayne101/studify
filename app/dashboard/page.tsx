@@ -21,8 +21,8 @@ const Dashboard = () => {
             <h1>Hi, {session?.user.name}</h1>
             <small><span>{session?.user.role}</span> of <b>{session?.user.schoolName}</b></small>
           </div>
-          <Basic session={session} />
           <Menu session={session} />
+          <Basic session={session} />
           <AuthList session={session} />
         </div>
       </LoadingScreen>

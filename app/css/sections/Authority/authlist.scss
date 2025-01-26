@@ -1,0 +1,91 @@
+.authlist {
+    display: grid;
+    transition: grid 300ms ease-in-out;
+    &-left {
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+
+            &-card {
+                cursor: pointer;
+                border-bottom: 1px solid var(--theme-accent);
+                padding: 10px 0;
+
+                &-img {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    margin: 20px 0;
+
+                    .img-cont {
+                        height: 150px;
+                        width: 150px;
+
+                        img {
+                            border-radius: 100% !important;
+                        }
+                    }
+                }
+
+                &-details {
+                    ul {
+                        list-style-type: none;
+
+                        li {
+                            font-weight: bold;
+                            color: var(--foreground);
+                            text-align: center;
+                        }
+                    }
+                }
+
+                &:hover {
+                    ul {
+                        li {
+                            transform: scale(1.1);
+                            transition: transform 0.3s ease;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &-right {
+        padding-top: 60px;
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        // background-color: green;
+    }
+}
+
+.max {
+    grid-template-columns: 100% 0;
+    .authlist-right {
+        display: none;
+    }
+}
+
+.min {
+    display: grid;
+    grid-template-columns: 60% 40% !important;
+    transition: grid 300ms ease-in-out;
+}
+
+.threeprow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    transition: grid 300ms ease-in-out;
+}
+
+.fourprow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    transition: grid 300ms ease-in-out;
+}
