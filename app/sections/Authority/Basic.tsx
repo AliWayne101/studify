@@ -5,18 +5,7 @@ import { motion } from 'framer-motion';
 import { TbActivityHeartbeat } from 'react-icons/tb';
 import { BasicInfoProps, SessionProps } from '@/interfaces';
 import { isAuthorized } from '@/utils';
-
-const boxVariants = {
-    hidden: { opacity: 0, x: 400 },
-    visible: (i: number) => ({
-        opacity: 1,
-        x: 0,
-        transition: {
-            delay: i * 0.1,
-            duration: 0.3
-        }
-    })
-};
+import { boxVariants } from '@/configs';
 
 const Basic = ({ session }: SessionProps) => {
     const [basicInfo, setBasicInfo] = useState<BasicInfoProps[] | undefined>(undefined);

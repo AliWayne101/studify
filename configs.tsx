@@ -73,5 +73,17 @@ export const SALT_LENGTH = 12;
 export const SESSION_AGE = 60 * 60 * 24; // 24 hours
 export const AVATAR_LINK = "/img/avatar.png";
 
+export const boxVariants = {
+    hidden: { opacity: 0, x: 400 },
+    visible: (i: number) => ({
+        opacity: 1,
+        x: 0,
+        transition: {
+            delay: i * 0.1,
+            duration: 0.3
+        }
+    })
+};
+
 //Testing
 //mongodb://alimalik:xjXG0IYgxf0ilkwd@studify-shard-00-00.84ytz.mongodb.net:27017,studify-shard-00-01.84ytz.mongodb.net:27017,studify-shard-00-02.84ytz.mongodb.net:27017/studify?ssl=true&replicaSet=atlas-vq1m0t-shard-0&authSource=admin&retryWrites=true&w=majority&appName=studify

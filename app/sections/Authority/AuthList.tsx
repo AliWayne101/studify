@@ -1,24 +1,20 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AttendanceStructProps, ProperUserInterface, SessionProps } from '@/interfaces';
-// import "../../css/sections/Authority/list.scss";
 import "../../css/sections/Authority/authlist.scss";
 import Image from 'next/image';
 import { fillAttendanceData, getImageLink, sendRequest } from '@/utils';
 import Calender from '@/app/components/Calender';
 import { ShowToast } from '@/app/utilsjsx';
+import { motion } from 'framer-motion';
+import { IUserInfo } from '@/schema/userinfo';
 
 const AuthList = ({ session }: SessionProps) => {
     const [uInfo, setUInfo] = useState<ProperUserInterface[] | undefined>(undefined);
     const [attInfo, setAttInfo] = useState<AttendanceStructProps[] | undefined>(undefined);
-    const [targetUser, setTargetUser] = useState<string | null>(null);
+    const [targetUser, setTargetUser] = useState<IUserInfo | undefined>(undefined);
 
-    //Under Development
-    //show more info about user under attendance section
-    //delete list.scss since its useless
-    //Add Media screen
-    //add ref to scroll to content
-    //listTitle is glitching
+    const atRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         var requestBody = {
@@ -57,16 +53,31 @@ const AuthList = ({ session }: SessionProps) => {
         const specUI = uInfo?.find(x => x.User.UID === UID);
         const specAt = specUI?.Attendance?.Attendance;
         setAttInfo(specAt);
-        setTargetUser(UID);
+        setTargetUser(specUI?.User);
+        if (atRef !== null && atRef.current !== null)
+            atRef.current.scrollIntoView({ behavior: 'smooth' });
     }
 
     return (
-        <div className={`autlist ${targetUser === null ? 'max' : 'min'}`}>
+        <div className={`autlist ${targetUser === undefined ? 'max' : 'min'}`}>
             <div className="authlist-left">
                 <h2>User Information</h2>
-                <div className={`cards ${targetUser === null ? 'fourprow' : 'threeprow'}`}>
+                <div className={`cards ${targetUser === undefined ? 'fourprow' : 'threeprow'}`}>
                     {uInfo?.map((data, index) => (
-                        <div className="cards-card" key={index} onClick={() => SelectUser(data.User.UID)}>
+                        <motion.div
+                            className={`cards-card ${targetUser?.UID === data.User.UID && 'selected'}`}
+                            key={index}
+                            onClick={() => SelectUser(data.User.UID)}
+                            custom={index}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.3 }}
+                            variants={{
+                                visible: { opacity: 1, scale: 1 },
+                                hidden: { opacity: 0, scale: 0 }
+                            }}
+                        >
                             <div className="cards-card-img">
                                 <div className="img-cont">
                                     <Image
@@ -83,13 +94,24 @@ const AuthList = ({ session }: SessionProps) => {
                                     <li>{data.User.Role}</li>
                                 </ul>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
-            <div className="authlist-right">
+            <div className="authlist-right" ref={atRef} id='attendance-ref'>
                 <h2>Attendance Information</h2>
                 <Calender data={fillAttendanceData(attInfo)} />
+                <div className="authlist-right-ui">
+                    <h2>User Information</h2>
+                    <ul>
+                        <li>Email: <span>{targetUser?.Email}</span></li>
+                        <li>Gender: <span>{targetUser?.Gender}</span></li>
+                        <li>Phone: <span>{targetUser?.Phone}</span></li>
+                        <li>CNIC: <span>{targetUser?.CNIC}</span></li>
+                        <li>DOB: <span>{targetUser && (new Date(targetUser.DOB)).toLocaleDateString()}</span></li>
+                        <li>DOJ: <span>{targetUser && (new Date(targetUser.JoinedOn)).toLocaleDateString()}</span></li>
+                    </ul>
+                </div>
             </div>
         </div>
     );
