@@ -147,13 +147,22 @@ export const ServResponse = (body: Object) => {
     NextResponse.json(body, { status: 200 });
 }
 
-export const fillAttendanceData = (data: AttendanceStructProps[]): AttendanceStructProps[] => {
+export const fillAttendanceData = (data: AttendanceStructProps[] | undefined): AttendanceStructProps[] => {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
-    const daysInMonth = new Date(currentMonth, currentYear, 0).getDate();
+    const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
     const filledData: AttendanceStructProps[] = [];
     let currentDay = 1;
+
+    if (data === undefined) {
+        // Fill all days with 'unfilled' if data is undefined
+        while (currentDay <= daysInMonth) {
+            filledData.push({ Day: currentDay, Status: 'unfilled' });
+            currentDay++;
+        }
+        return filledData;
+    }
 
     for (const entry of data) {
         while (currentDay < entry.Day) {

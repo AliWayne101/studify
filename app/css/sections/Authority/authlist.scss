@@ -1,11 +1,18 @@
 .authlist {
     display: grid;
     transition: grid 300ms ease-in-out;
+    h2 {
+        color: var(--foreground) !important; 
+    }
     &-left {
+        h2 {
+            padding-top: 50px;
+            margin-bottom: 10px;
+        }
         .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
+            background-color: var(--background-sec);
+            padding: 10px;
 
             &-card {
                 cursor: pointer;
@@ -17,7 +24,7 @@
                     align-items: center;
                     justify-content: center;
                     text-align: center;
-                    margin: 20px 0;
+                    margin: 0 0 20px 0;
 
                     .img-cont {
                         height: 150px;
@@ -60,8 +67,6 @@
             text-align: center;
             margin-bottom: 20px;
         }
-
-        // background-color: green;
     }
 }
 
@@ -74,7 +79,7 @@
 
 .min {
     display: grid;
-    grid-template-columns: 60% 40% !important;
+    grid-template-columns: 60% 40%;
     transition: grid 300ms ease-in-out;
 }
 

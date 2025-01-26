@@ -1,42 +1,26 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { AttendanceStructProps, SessionProps } from '@/interfaces';
-import { IUserInfo } from '@/schema/userinfo';
+import { AttendanceStructProps, ProperUserInterface, SessionProps } from '@/interfaces';
 // import "../../css/sections/Authority/list.scss";
 import "../../css/sections/Authority/authlist.scss";
 import Image from 'next/image';
-import { fillAttendanceData, getImageLink } from '@/utils';
+import { fillAttendanceData, getImageLink, sendRequest } from '@/utils';
 import Calender from '@/app/components/Calender';
-import { IAttendanceInfo } from '@/schema/attendanceinfo';
-
-interface DataStructure {
-    User: IUserInfo,
-    Attendance: IAttendanceInfo
-}
+import { ShowToast } from '@/app/utilsjsx';
 
 const AuthList = ({ session }: SessionProps) => {
-    const [isError, setIsError] = useState<string | null>(null);
-    const [userInfo, setUserInfo] = useState<IUserInfo[] | undefined>(undefined);
-    const [uInfo, setUInfo] = useState<DataStructure|undefined>(undefined);
-    const [attInfo, setAttInfo] = useState<IAttendanceInfo>();
-    const [targetUser, setTargetUser] = useState<string|null>(null);
-    const [listTitle, setListTitle] = useState("");
+    const [uInfo, setUInfo] = useState<ProperUserInterface[] | undefined>(undefined);
+    const [attInfo, setAttInfo] = useState<AttendanceStructProps[] | undefined>(undefined);
+    const [targetUser, setTargetUser] = useState<string | null>(null);
+    const [listTitle, setListTitle] = useState("Information");
     const [tempTitle, setTempTitle] = useState("");
 
     //Under Development
-    //get Attendance in getdashboarduinfo, and show the attendace through state relatively
     //show more info about user under attendance section
     //delete list.scss since its useless
     //Add Media screen
     //add ref to scroll to content
-
-    const data: AttendanceStructProps[] = [
-        { Day: 1, Status: "present" },
-        { Day: 2, Status: "leave" },
-        { Day: 3, Status: "present" },
-        { Day: 5, Status: "absent" },
-        { Day: 6, Status: "present" },
-    ];
+    //listTitle is glitching
 
     useEffect(() => {
         var requestBody = {
@@ -58,41 +42,30 @@ const AuthList = ({ session }: SessionProps) => {
             setTempTitle("Children Information");
         }
 
-        const sendRequest = async () => {
+        const sendRequests = async () => {
             try {
-
-                const response = await fetch('/api/posts', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody)
-                });
-
-                if (!response.ok) {
-                    setIsError("Network response was not okay, please refresh the page");
-                    return;
-                }
-                const data = await response.json();
-                if (data.message === "OK") {
-                    const servData: IUserInfo[] = data.data;
-                    if (servData.length === 0)
+                const response = await sendRequest('/api/posts', requestBody);
+                if (response.message === "OK") {
+                    const servUserDetails: ProperUserInterface[] = response.results.docs;
+                    if (servUserDetails.length === 0)
                         setListTitle("");
                     else
                         setListTitle(tempTitle);
-                    setUserInfo(servData);
+                    setUInfo(servUserDetails);
                 } else {
-                    setIsError(data.error);
+                    ShowToast("Error", response.error, null);
                 }
             } catch (err) {
-                setIsError("Seems to be an error, please refresh the page");
-                console.log(err);
+                ShowToast("Error", "Seems to be an error, please refresh the page", null);
             }
         }
-        sendRequest();
+        sendRequests();
     }, [session])
 
-    const SelectedUser = (UID: string) => {
+    const SelectUser = (UID: string) => {
+        const specUI = uInfo?.find(x => x.User.UID === UID);
+        const specAt = specUI?.Attendance?.Attendance;
+        setAttInfo(specAt);
         setTargetUser(UID);
     }
 
@@ -101,22 +74,22 @@ const AuthList = ({ session }: SessionProps) => {
             <div className="authlist-left">
                 <h2>{listTitle}</h2>
                 <div className={`cards ${targetUser === null ? 'fourprow' : 'threeprow'}`}>
-                    {userInfo?.map((data, index) => (
-                        <div className="cards-card" key={index} onClick={() => SelectedUser(data.UID)}>
+                    {uInfo?.map((data, index) => (
+                        <div className="cards-card" key={index} onClick={() => SelectUser(data.User.UID)}>
                             <div className="cards-card-img">
                                 <div className="img-cont">
                                     <Image
                                         layout="fill"
                                         objectFit="cover"
-                                        src={getImageLink(data.Image)}
-                                        alt={data.Name}
+                                        src={getImageLink(data.User.Image)}
+                                        alt={data.User.Name}
                                     />
                                 </div>
                             </div>
                             <div className="cards-card-details">
                                 <ul>
-                                    <li>{data.Name}</li>
-                                    <li>{data.Role}</li>
+                                    <li>{data.User.Name}</li>
+                                    <li>{data.User.Role}</li>
                                 </ul>
                             </div>
                         </div>
@@ -125,7 +98,7 @@ const AuthList = ({ session }: SessionProps) => {
             </div>
             <div className="authlist-right">
                 <h2>Attendance Information</h2>
-                <Calender data={fillAttendanceData(data)} />
+                <Calender data={fillAttendanceData(attInfo)} />
             </div>
         </div>
     );

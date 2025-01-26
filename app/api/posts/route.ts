@@ -28,6 +28,8 @@ export const POST = async (request: NextRequest) => {
             break;
         case "getdashboarduinfo":
             var { uid, clause, targetRoll, schoolName } = body;
+            var docs: IUserInfo[] = [];
+            var isCorrect = false;
             if (clause === "all") {
                 var searchParams = {};
                 if (targetRoll === "Employees") {
@@ -35,21 +37,43 @@ export const POST = async (request: NextRequest) => {
                 } else if (targetRoll === "Student") {
                     searchParams = { Role: "Student", SchoolName: schoolName }
                 }
-                const docs = await UserModel.find(searchParams);
-                return NextResponse.json({ message: "OK", data: docs }, { status: 200 });
+                docs = await UserModel.find(searchParams);
+                isCorrect = true;
             } else if (clause === "class") {
                 const classData = await ClassModel.findOne({ TeacherUID: uid });
-                var students: IUserInfo[] = [];
                 if (classData)
-                    students = await UserModel.find({ UID: { $in: classData.StudentUIDs } });
-
-                return NextResponse.json({ message: "OK", data: students }, { status: 200 });
+                    docs = await UserModel.find({ UID: { $in: classData.StudentUIDs } });
+                isCorrect = true;
             } else if (clause === "children") {
-                const docs = await UserModel.find({ ParentUID: uid });
-                return NextResponse.json({ message: "OK", data: docs });
-            } else {
-                return NextResponse.json({ message: "ERROR", error: "Invalid request.." }, { status: 200 });
+                docs = await UserModel.find({ ParentUID: uid });
+                isCorrect = true;
             }
+
+            //Execute if the none of the conditions are matched
+            if (!isCorrect)
+                return NextResponse.json({ message: "ERROR", error: "Invalid request.." }, { status: 200 });
+
+            const ids = [];
+            for (const user of docs) {
+                ids.push(user.UID);
+            }
+
+            //get attendance
+            const _date = getDate();
+            const atts = await AttendanceModel.find({
+                Role: { $in: ids },
+                Month: _date.Month,
+                Year: _date.Year
+            });
+            const uList: ProperUserInterface[] = [];
+            for (const user of docs) {
+                const att = atts.find(x => x.UID === user.UID);
+                uList.push({
+                    User: user,
+                    Attendance: att
+                });
+            }
+            return NextResponse.json({ message: "OK", docs: uList }, { status: 200 });
             break;
         case "basic": {
             const { Role, SchoolName, uID } = body;
@@ -432,7 +456,7 @@ export const POST = async (request: NextRequest) => {
                     user.DOB = DOB;
                     if (ProfilePhoto !== null)
                         user.Image = ProfilePhoto;
-                    
+
                     const isValid = await isPasswordValid(Password, user.Password);
                     if (isValid) {
                         await user.save();
