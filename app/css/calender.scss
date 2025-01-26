@@ -1,0 +1,55 @@
+.calender {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .header,
+    .body {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+    }
+
+    .day,
+    .cell,
+    .empty {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid transparent;
+        background-color: transparent;
+        span {
+            pointer-events: none;
+        }
+    }
+
+    .day, .cell {
+        background-color: var(--background-sec);
+    }
+
+    .header {
+        .day {
+            color: var(--foreground);
+            height: 30px;
+            background-color: transparent;
+        }
+    }
+
+    .present {
+        background-color: var(--theme-main);
+    }
+
+    .absent {
+        background-color: var(--warning);
+    }
+
+    .leave {
+        background-color: var(--theme-bg);
+    }
+
+    .unfilled {
+        background-color: transparent;
+        border: 1px solid var(--background-sec);
+    }
+}

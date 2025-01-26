@@ -146,3 +146,29 @@ export const CreateNotification = async (title: string, text: string, from: stri
 export const ServResponse = (body: Object) => {
     NextResponse.json(body, { status: 200 });
 }
+
+export const fillAttendanceData = (data: AttendanceStructProps[]): AttendanceStructProps[] => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const daysInMonth = new Date(currentMonth, currentYear, 0).getDate();
+
+    const filledData: AttendanceStructProps[] = [];
+    let currentDay = 1;
+
+    for (const entry of data) {
+        while (currentDay < entry.Day) {
+            filledData.push({ Day: currentDay, Status: 'unfilled' });
+            currentDay++;
+        }
+        filledData.push(entry);
+        currentDay++;
+    }
+
+    // Fill remaining days
+    while (currentDay <= daysInMonth) {
+        filledData.push({ Day: currentDay, Status: 'unfilled' });
+        currentDay++;
+    }
+
+    return filledData;
+}
