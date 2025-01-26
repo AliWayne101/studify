@@ -12,8 +12,6 @@ const AuthList = ({ session }: SessionProps) => {
     const [uInfo, setUInfo] = useState<ProperUserInterface[] | undefined>(undefined);
     const [attInfo, setAttInfo] = useState<AttendanceStructProps[] | undefined>(undefined);
     const [targetUser, setTargetUser] = useState<string | null>(null);
-    const [listTitle, setListTitle] = useState("Information");
-    const [tempTitle, setTempTitle] = useState("");
 
     //Under Development
     //show more info about user under attendance section
@@ -33,13 +31,10 @@ const AuthList = ({ session }: SessionProps) => {
 
         if (session?.user.role === "Owner" || session?.user.role === "Admin") {
             requestBody.targetRoll = "Employees";
-            setTempTitle("Employee Information");
         } else if (session?.user.role === "Teacher") {
             requestBody.clause = "class";
-            setTempTitle("Student Information");
         } else if (session?.user.role === "Parent") {
             requestBody.clause = "children";
-            setTempTitle("Children Information");
         }
 
         const sendRequests = async () => {
@@ -47,16 +42,12 @@ const AuthList = ({ session }: SessionProps) => {
                 const response = await sendRequest('/api/posts', requestBody);
                 if (response.message === "OK") {
                     const servUserDetails: ProperUserInterface[] = response.results.docs;
-                    if (servUserDetails.length === 0)
-                        setListTitle("");
-                    else
-                        setListTitle(tempTitle);
                     setUInfo(servUserDetails);
                 } else {
                     ShowToast("Error", response.error, null);
                 }
             } catch (err) {
-                ShowToast("Error", "Seems to be an error, please refresh the page", null);
+                ShowToast("Error - User Info", "Seems to be an error, please refresh the page", null);
             }
         }
         sendRequests();
@@ -72,7 +63,7 @@ const AuthList = ({ session }: SessionProps) => {
     return (
         <div className={`autlist ${targetUser === null ? 'max' : 'min'}`}>
             <div className="authlist-left">
-                <h2>{listTitle}</h2>
+                <h2>User Information</h2>
                 <div className={`cards ${targetUser === null ? 'fourprow' : 'threeprow'}`}>
                     {uInfo?.map((data, index) => (
                         <div className="cards-card" key={index} onClick={() => SelectUser(data.User.UID)}>

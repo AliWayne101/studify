@@ -61,7 +61,7 @@ export const POST = async (request: NextRequest) => {
             //get attendance
             const _date = getDate();
             const atts = await AttendanceModel.find({
-                Role: { $in: ids },
+                UID: { $in: ids },
                 Month: _date.Month,
                 Year: _date.Year
             });

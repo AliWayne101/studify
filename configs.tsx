@@ -33,7 +33,6 @@ export const NavLinks: MenuLinks[] = [
     { text: "Profile", url: "/profile", isProtected: true, IsVisible: false },
     { text: "Dashboard", url: "/dashboard", isProtected: true, IsVisible: true },
     { text: "Contact School", url: "/actions/contact", isProtected: true, IsVisible: true },
-    { text: "Home", url: "/", isProtected: false, IsVisible: true },
 ]
 
 //SU - SuperUser | HU = HighUser | SG = Special Guest | User = User
@@ -51,7 +50,7 @@ export const TeacherLinks: MenuLinks[] = [
 ]
 
 export const AdminLinks: MenuLinks[] = [
-    { text: "Mark Attendance", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner, Admin"] },
+    { text: "Mark Attendance", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Create User", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Subjects Info", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
 ]
