@@ -79,3 +79,8 @@ export interface UpdateParentInterface {
     Students: ClasswiseStudents[],
     Parents: IUserInfo[]
 }
+
+export interface UnassignedStudentsProps {
+    Students: IUserInfo[],
+    Classes: IClassInfo[]
+}

@@ -53,6 +53,7 @@ export const AdminLinks: MenuLinks[] = [
     { text: "Mark Attendance", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Subjects Info", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Create User", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Unassigned Students", url: "/actions/update/unassigned", isProtected: true, ProtectionLevel: ["Owner", "Admin"]},
     { text: "Update Parent", url: "/actions/update/parent", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
 ]
 
@@ -61,6 +62,7 @@ export const OwnerLinks: MenuLinks[] = [
     { text: "Class Info", url: "/actions/create/class", isProtected: true, ProtectionLevel: ["Owner"] },
     { text: "Subjects Info", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Create User", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Unassigned Students", url: "/actions/update/unassigned", isProtected: true, ProtectionLevel: ["Owner", "Admin"]},
     { text: "Update Parent", url: "/actions/update/parent", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
 ]
 

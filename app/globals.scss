@@ -98,7 +98,8 @@ main {
   grid-template-columns: 20% 70% 10%;
   padding: 20px;
   background-color: var(--background-sec);
-  z-index: 2;
+  z-index: 4;
+
   &-logo {
     font-size: 24px;
   }
@@ -352,8 +353,159 @@ select {
 
 .img-cont {
   position: relative;
+
   img {
     object-fit: cover;
     object-position: center;
   }
+}
+
+
+input,
+select {
+  min-width: 400px;
+  background-color: transparent;
+  border: none;
+  padding: 5px 10px 5px 100px;
+  border-bottom: 4px solid transparent;
+  color: var(--foreground);
+  transition: all 300ms ease-in-out;
+
+  &:focus,
+  &:active {
+    border-bottom: 4px solid var(--theme-main);
+    outline: none;
+  }
+
+  &:focus {
+    padding: 5px 10px;
+  }
+
+  &:focus+label {
+    transform: translateY(-20px);
+  }
+
+}
+
+select option {
+  color: var(--foreground);
+  outline: none;
+  background-color: var(--background);
+}
+
+.roundcards {
+  &-card {
+    border-bottom: 1px solid var(--theme-bg);
+    transition: border 0.3s ease;
+    cursor: pointer;
+    &-img {
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+
+      .img-cont {
+        height: 150px;
+        width: 150px;
+
+        img {
+          border-radius: 100%;
+        }
+      }
+    }
+
+    &-details {
+      margin-bottom: 10px;
+
+      ul {
+        list-style-type: none;
+
+        li {
+          text-align: center;
+
+          span {
+            color: var(--foreground);
+          }
+        }
+      }
+      select {
+        min-width: 100%;
+        padding: 5px 10px 5px 5px;
+      }
+      .buttons {
+        div {
+          margin-top: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+      }
+    }
+
+    &:hover {
+      border-bottom: 1px solid var(--theme-accent);
+    }
+  }
+}
+
+.grid {
+  display: grid;
+
+  &-four {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &-five {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  &-six {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.ov {
+  z-index: 1;
+
+  &-body {
+    position: relative;
+    z-index: 2;
+
+    &-in {
+      z-index: 3;
+    }
+
+    &:hover .ov-mock {
+      height: 100%;
+      width: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+    }
+
+    &:hover .ov-body-in {
+      z-index: 3;
+    }
+  }
+
+  &-mock {
+    background-color: var(--overlay-color) !important;
+    height: 0px;
+    width: 0px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    transition: height 0.3s ease, width 0.4s ease;
+  }
+}
+
+.pt-4 {
+  padding-top: 40px;
 }

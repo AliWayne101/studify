@@ -3,7 +3,7 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { AttStatusDay, Connect, getDate, hashPassword, isPasswordValid, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ClasswiseStudents, ProperUserInterface, SubjectDetail, UpdateParentInterface } from "@/interfaces";
+import { BasicInfoProps, ClasswiseStudents, ProperUserInterface, SubjectDetail, UnassignedStudentsProps, UpdateParentInterface } from "@/interfaces";
 import ClassModel from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
@@ -303,7 +303,6 @@ export const POST = async (request: NextRequest) => {
                     return NextResponse.json({ message: "ERROR", error: "Class does not exists, please refresh the page.." }, { status: 200 });
                 }
             } catch (err) {
-                console.log(err);
                 return NextResponse.json({ message: "ERROR", error: "There was an error trying to connect to server, please refresh the page.." }, { status: 200 });
             }
             break;
@@ -411,7 +410,7 @@ export const POST = async (request: NextRequest) => {
                             });
                             if (cf) isNotified = true;
                         }
-                        console.log(isNotified);
+                        
                     }
                     rVal.message = "OK";
                 } else {
@@ -522,6 +521,40 @@ export const POST = async (request: NextRequest) => {
                     Parents: parents,
                 }
                 return NextResponse.json({ message: "OK", doc: sendRes }, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "unassignedStudents":
+            var { SchoolName } = body;
+            try {
+                var students = await UserModel.find({ SchoolName: SchoolName, isActive: true, Role: "Student" });
+                const _classes = await ClassModel.find({ SchoolName: SchoolName });
+                const stuUIDsInClass = new Set(_classes.flatMap(cls => cls.StudentUIDs));
+                const unassignedStudents = students.filter(student => !stuUIDsInClass.has(student.UID));
+
+                console.log(stuUIDsInClass);
+                const rVal: UnassignedStudentsProps = {
+                    Classes: _classes,
+                    Students: unassignedStudents
+                }
+                return NextResponse.json({ message: "OK", doc: rVal }, { status: 200 });
+
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "assignstudent":
+            var { UID, ClassName, SchoolName } = body;
+            try {
+                const _class = await ClassModel.findOne({ SchoolName: SchoolName, Name: ClassName });
+                if (_class) {
+                    _class.StudentUIDs.push(UID);
+                    await _class.save();
+                    return NextResponse.json({ message: "OK", doc: _class }, { status: 200 });
+                } else
+                    return NextResponse.json({ message: "ERROR", error: "No Class exists with such name" }, { status: 200 });
+
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
             }
