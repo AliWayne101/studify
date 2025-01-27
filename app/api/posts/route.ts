@@ -3,7 +3,7 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { AttStatusDay, Connect, getDate, hashPassword, isPasswordValid, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ProperUserInterface, SubjectDetail } from "@/interfaces";
+import { BasicInfoProps, ClasswiseStudents, ProperUserInterface, SubjectDetail, UpdateParentInterface } from "@/interfaces";
 import ClassModel from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
@@ -481,22 +481,47 @@ export const POST = async (request: NextRequest) => {
                     const user = await UserModel.findOne({ UID: voucher.FillerUID });
                     var guardian: IUserInfo | null = null;
                     if (user)
-                        guardian = await UserModel.findOne({ UID: { $in: user.ParentUID }});
-                    
+                        guardian = await UserModel.findOne({ UID: { $in: user.ParentUID } });
+
                     return NextResponse.json(
-                        { 
+                        {
                             message: "OK",
                             doc: {
                                 user: user,
                                 guardian: guardian,
                                 voucher: voucher
                             }
-                        }, 
+                        },
                         { status: 200 }
                     );
                 }
                 else
                     return NextResponse.json({ message: "ERROR", error: "There is no document with such ID" }, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "parentdetailview":
+            var { SchoolName, Role } = body;
+            try {
+                if (Role !== "Admin" && Role !== "Owner")
+                    return NextResponse.json({ message: "ERROR", error: "You are not allowed to access this information" }, { status: 200 });
+
+                const _classes = await ClassModel.find({ SchoolName: SchoolName });
+                const classDetails: ClasswiseStudents[] = [];
+                for (const _class of _classes) {
+                    const students = await UserModel.find({ UID: { $in: _class.StudentUIDs } });
+                    classDetails.push({
+                        Class: _class.Name,
+                        Students: students
+                    });
+                }
+                const parents = await UserModel.find({ Role: "Parent", isActive: true, SchoolName: SchoolName });
+                const sendRes: UpdateParentInterface = {
+                    Students: classDetails,
+                    Parents: parents,
+                }
+                return NextResponse.json({ message: "OK", doc: sendRes }, { status: 200 });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
             }

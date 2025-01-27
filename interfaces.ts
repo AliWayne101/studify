@@ -69,3 +69,13 @@ export interface SubjectDetail {
     SubjectName: string;
     SubjectTeacherUID: string;
 }
+
+export interface ClasswiseStudents {
+    Class: string,
+    Students: IUserInfo[]
+}
+
+export interface UpdateParentInterface {
+    Students: ClasswiseStudents[],
+    Parents: IUserInfo[]
+}
