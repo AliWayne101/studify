@@ -46,7 +46,7 @@ export const POST = async (request: NextRequest) => {
                     docs = await UserModel.find({ UID: { $in: classData.StudentUIDs }, isActive: true });
                 isCorrect = true;
             } else if (clause === "children") {
-                docs = await UserModel.find({ ParentUID: uid,  isActive: true });
+                docs = await UserModel.find({ ParentUID: uid, isActive: true });
                 isCorrect = true;
             }
 
@@ -475,13 +475,30 @@ export const POST = async (request: NextRequest) => {
         case "voucherbyid":
             const { DocID } = body;
             try {
-                const voucher = await VoucherModel.find({ DocID: DocID });
-                if (voucher)
-                    return NextResponse.json({ message: "OK", doc: voucher });
+                //Get User and Guardian
+                const voucher = await VoucherModel.findOne({ DocID: DocID });
+                if (voucher) {
+                    const user = await UserModel.findOne({ UID: voucher.FillerUID });
+                    var guardian: IUserInfo | null = null;
+                    if (user)
+                        guardian = await UserModel.findOne({ UID: { $in: user.ParentUID }});
+                    
+                    return NextResponse.json(
+                        { 
+                            message: "OK",
+                            doc: {
+                                user: user,
+                                guardian: guardian,
+                                voucher: voucher
+                            }
+                        }, 
+                        { status: 200 }
+                    );
+                }
                 else
-                    return NextResponse.json({ message: "ERROR", error: "There is no document with such ID" });
+                    return NextResponse.json({ message: "ERROR", error: "There is no document with such ID" }, { status: 200 });
             } catch (error) {
-                return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" });
+                return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
             }
             break;
         default:
