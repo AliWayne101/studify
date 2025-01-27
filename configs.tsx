@@ -56,10 +56,14 @@ export const AdminLinks: MenuLinks[] = [
 ]
 
 export const OwnerLinks: MenuLinks[] = [
-    { text: "Mark Attendance", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner","Admin"] },
+    { text: "Mark Attendance", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Class Info", url: "/actions/create/class", isProtected: true, ProtectionLevel: ["Owner"] },
     { text: "Subjects Info", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Create User", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+]
+
+export const ParentLinks: MenuLinks[] = [
+    { text: "Pay Fee", url: '/actions/pay/', isProtected: true, ProtectionLevel: ["Parent"] },
 ]
 
 export const OverallMenu = [
@@ -67,6 +71,7 @@ export const OverallMenu = [
     AdminLinks,
     OwnerLinks,
     NavLinks,
+    ParentLinks,
 ]
 
 export const SALT_LENGTH = 12;

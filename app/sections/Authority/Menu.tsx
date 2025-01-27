@@ -3,7 +3,7 @@ import { MenuLinks, SessionProps } from '@/interfaces'
 import React, { useEffect, useState } from 'react'
 import "../../css/sections/Authority/menu.scss"
 import Link from 'next/link'
-import { AdminLinks, OwnerLinks, TeacherLinks } from '@/configs'
+import { AdminLinks, OwnerLinks, ParentLinks, TeacherLinks } from '@/configs'
 
 const Menu = ({ session }: SessionProps) => {
     const [links, setLinks] = useState<MenuLinks[]>([]);
@@ -18,6 +18,9 @@ const Menu = ({ session }: SessionProps) => {
                 break;
             case "Admin":
                 setLinks(AdminLinks);
+                break;
+            case "Parent":
+                setLinks(ParentLinks);
                 break;
         }
     }, [session])

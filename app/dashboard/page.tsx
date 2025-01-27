@@ -19,7 +19,10 @@ const Dashboard = () => {
         <div className="dash">
           <div className="dash-intro">
             <h1>Hi, {session?.user.name}</h1>
-            <small><span>{session?.user.role}</span> of <b>{session?.user.schoolName}</b></small>
+            {session?.user.role !== "Parent" &&
+              <small><span>{session?.user.role}</span> of <b>{session?.user.schoolName}</b></small>
+            }
+
           </div>
           <Menu session={session} />
           <Basic session={session} />
