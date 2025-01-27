@@ -5,4 +5,16 @@
             margin-top: 40px;
         }
     }
+    &-right {
+        label {
+            transform: translateY(2px);
+        }
+        input {
+            min-width: 100%;
+            padding: 5px 10px 5px 55px !important;
+            &:focus {
+                padding: 5px 10px !important;
+            }
+        }
+    }
 }

@@ -410,7 +410,7 @@ export const POST = async (request: NextRequest) => {
                             });
                             if (cf) isNotified = true;
                         }
-                        
+
                     }
                     rVal.message = "OK";
                 } else {
@@ -555,6 +555,26 @@ export const POST = async (request: NextRequest) => {
                 } else
                     return NextResponse.json({ message: "ERROR", error: "No Class exists with such name" }, { status: 200 });
 
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "updateparent":
+            var { ParentUID, StudentUID, Role, SchoolName } = body;
+            try {
+                if (Role !== "Admin" && Role !== "Owner")
+                    return NextResponse.json({ message: "error", error: "You are restricted to perform this action" }, { status: 200 });
+
+                const doc = await UserModel.findOne({ SchoolName: SchoolName, UID: StudentUID, isActive: true });
+                if (!doc)
+                    return NextResponse.json({ message: "error", error: "No Student exists with the given information" }, { status: 200 });
+
+                if (doc.ParentUID.includes(ParentUID))
+                    return NextResponse.json({ message: "error", error: "Selected Guardian is already assigned to the specified student" }, { status: 200 });
+
+                doc.ParentUID.push(ParentUID);
+                await doc.save();
+                return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
             }

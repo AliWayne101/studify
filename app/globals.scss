@@ -452,7 +452,8 @@ select option {
 
 .grid {
   display: grid;
-
+  gap: 15px;
+  transition: grid 300ms ease-in-out;
   &-four {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -503,9 +504,54 @@ select option {
     transform: translate(-50%, -50%);
     z-index: 0;
     transition: height 0.3s ease, width 0.4s ease;
+    &-selected {
+      height: 100%;
+      width: 100%;
+    }
   }
 }
 
 .pt-4 {
   padding-top: 40px;
+}
+
+.screen {
+  display: grid;
+  transition: grid 300ms ease-in-out;
+  &-max {
+    grid-template-columns: 100%;
+    .second {
+      background-color: green;
+      display: none;
+    }
+  }
+  &-min {
+    grid-template-columns: 70% 30%;
+    .second {
+      display: block;
+    }
+  }
+}
+
+.entrybar {
+  padding: 10px;
+  border: 1px solid var(--theme-bg);
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: all 300ms ease;
+  &:hover {
+    border: 1px solid var(--theme-accent);
+    padding: 10px 15px;
+  }
+}
+
+p {
+  span {
+    font-weight: bold;
+    color: var(--foreground);
+  }
+}
+
+.buttons {
+  margin-top: 20px;
 }
