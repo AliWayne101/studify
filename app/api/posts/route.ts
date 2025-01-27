@@ -33,19 +33,19 @@ export const POST = async (request: NextRequest) => {
             if (clause === "all") {
                 var searchParams = {};
                 if (targetRoll === "Employees") {
-                    searchParams = { Role: { $in: ["Teacher", "Admin"] }, SchoolName: schoolName };
+                    searchParams = { Role: { $in: ["Teacher", "Admin"] }, SchoolName: schoolName, isActive: true };
                 } else if (targetRoll === "Student") {
-                    searchParams = { Role: "Student", SchoolName: schoolName }
+                    searchParams = { Role: "Student", SchoolName: schoolName, isActive: true }
                 }
                 docs = await UserModel.find(searchParams);
                 isCorrect = true;
             } else if (clause === "class") {
                 const classData = await ClassModel.findOne({ TeacherUID: uid });
                 if (classData)
-                    docs = await UserModel.find({ UID: { $in: classData.StudentUIDs } });
+                    docs = await UserModel.find({ UID: { $in: classData.StudentUIDs }, isActive: true });
                 isCorrect = true;
             } else if (clause === "children") {
-                docs = await UserModel.find({ ParentUID: uid });
+                docs = await UserModel.find({ ParentUID: uid,  isActive: true });
                 isCorrect = true;
             }
 
