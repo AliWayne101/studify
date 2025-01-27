@@ -7,6 +7,7 @@ import { BasicInfoProps, ProperUserInterface, SubjectDetail } from "@/interfaces
 import ClassModel from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
+import VoucherModel from "@/schema/pvinfo";
 
 interface getUsersByRoleInterface {
     Role: string;
@@ -469,6 +470,18 @@ export const POST = async (request: NextRequest) => {
                 }
             } catch (err) {
                 return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
+            }
+            break;
+        case "voucherbyid":
+            const { DocID } = body;
+            try {
+                const voucher = await VoucherModel.find({ DocID: DocID });
+                if (voucher)
+                    return NextResponse.json({ message: "OK", doc: voucher });
+                else
+                    return NextResponse.json({ message: "ERROR", error: "There is no document with such ID" });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" });
             }
             break;
         default:
