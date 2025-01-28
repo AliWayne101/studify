@@ -408,9 +408,15 @@ select option {
       .img-cont {
         height: 150px;
         width: 150px;
-
+        transition: all 300ms ease;
         img {
           border-radius: 100%;
+        }
+      }
+      @media screen and (max-width: 900px) {
+        .img-cont {
+          height: 100px;
+          width: 100px;
         }
       }
     }
@@ -464,6 +470,18 @@ select option {
 
   &-six {
     grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media screen and (max-width: 920px) {
+  .grid-six, .grid-four, .grid-five {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .grid-six, .grid-four, .grid-five {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

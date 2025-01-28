@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import Struct from '@/app/Struct';
 import LoadingScreen from '@/app/components/LoadingScreen';
 import Button from '@/app/components/Button';
+import { motion } from 'framer-motion';
 
 const UnassignedStudents = () => {
     const [UnassignedStudents, setUnassignedStudents] = useState<UnassignedStudentsProps>();
@@ -30,7 +31,7 @@ const UnassignedStudents = () => {
         if (session) getData();
     }, [session])
 
-    const AssignClass = async(UID: string) => {
+    const AssignClass = async (UID: string) => {
         const selectedClass = (document.getElementById(`selectedClass-${UID}`) as HTMLSelectElement).value;
         setIsLoadingCompleted(false);
         const response = await sendRequest('/api/posts', {
@@ -56,7 +57,19 @@ const UnassignedStudents = () => {
                     <small>List of unassigned students, who are not yet assigned to any class yet</small>
                     <div className="roundcards grid grid-six ov pt-4">
                         {UnassignedStudents?.Students.map((user, index) => (
-                            <div className="roundcards-card ov-body" key={index}>
+                            <motion.div
+                                className="roundcards-card ov-body"
+                                key={index}
+                                custom={index}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.3, delay: 0.2 * index }}
+                                variants={{
+                                    visible: { opacity: 1, scale: 1 },
+                                    hidden: { opacity: 0, scale: 0 }
+                                }}
+                            >
                                 <div className="ov-mock"></div>
                                 <div className="ov-body-in">
                                     <div className="roundcards-card-img">
@@ -90,7 +103,7 @@ const UnassignedStudents = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>

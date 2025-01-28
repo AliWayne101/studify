@@ -73,9 +73,9 @@ const Signup = () => {
       if (response.message === "OK") {
         console.log(response.results);
       } else {
-        setFillError("Network response was not okay, please try again");
+        setFillError(response.error);
       }
-      setIsLoadingCompleted(false);
+      setIsLoadingCompleted(true);
     } catch (error) {
       setFillError("There seems to be an unknown issues, please refresh the page and try again");
       setIsLoadingCompleted(false);

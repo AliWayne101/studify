@@ -62,6 +62,7 @@ const AuthList = ({ session }: SessionProps) => {
         <div className={`autlist ${targetUser === undefined ? 'max' : 'min'}`}>
             <div className="authlist-left">
                 <h2>User Information</h2>
+                <small>View Basic information along with attendance</small>
                 <div className={`cards ${targetUser === undefined ? 'fourprow' : 'threeprow'}`}>
                     {uInfo?.map((data, index) => (
                         <motion.div
@@ -72,7 +73,7 @@ const AuthList = ({ session }: SessionProps) => {
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true }}
-                            transition={{ duration: 0.3 }}
+                            transition={{ duration: 0.3, delay: 0.2 * index }}
                             variants={{
                                 visible: { opacity: 1, scale: 1 },
                                 hidden: { opacity: 0, scale: 0 }

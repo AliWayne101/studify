@@ -113,10 +113,10 @@ export const POST = async (request: NextRequest) => {
                     if (attStatus === true) presents++;
                 }
 
-                returnData.push({ Title: "Students", Info: students.length.toString() });
-                returnData.push({ Title: "Teachers", Info: teachers.length.toString() });
-                returnData.push({ Title: "Adm. month", Info: newAdmissions.length.toString() });
-                returnData.push({ Title: "Present Teachers", Info: presents + "/" + docs.length });
+                returnData.push({ Info: "Students", Title: students.length.toString() });
+                returnData.push({ Info: "Teachers", Title: teachers.length.toString() });
+                returnData.push({ Info: "Adm. month", Title: newAdmissions.length.toString() });
+                returnData.push({ Info: "Present Teachers", Title: presents + "/" + docs.length });
             } else if (Role === "Teacher") {
                 const classInfo = await ClassModel.findOne({ TeacherUID: uID }).exec();
                 var studentsLength, presentStudents = 0, absentStudents = 0, leaveStudents = 0;
@@ -171,7 +171,7 @@ export const POST = async (request: NextRequest) => {
                 });
                 return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
             } catch (err) {
-                return NextResponse.json({ message: "ERROR", error: err }, { status: 200 });
+                return NextResponse.json({ message: "ERROR", error: "Network response was not okay, please try again" }, { status: 200 });
             }
             break;
         case "getusers":
