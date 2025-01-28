@@ -1,20 +1,36 @@
 .parentform {
     padding-top: 50px;
+    display: grid;
+    grid-template-columns: 70% 30%;
+    transition: grid 300ms ease-in-out;
+
     &-left {
         .roundcards {
             margin-top: 40px;
         }
     }
+
     &-right {
+        transition: display 300ms ease-in-out;
         label {
             transform: translateY(2px);
         }
+
         input {
             min-width: 100%;
             padding: 5px 10px 5px 55px !important;
+
             &:focus {
                 padding: 5px 10px !important;
             }
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        display: flex;
+        flex-direction: column-reverse;
+        .parentform-right {
+            margin-bottom: 50px;
         }
     }
 }

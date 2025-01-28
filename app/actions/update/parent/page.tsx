@@ -74,7 +74,7 @@ const UpdateParent = () => {
     return (
         <Struct LoadingCompleted={setIsLoadingCompleted}>
             <LoadingScreen IsLoadingCompleted={isLoadingCompleted}>
-                <div className={`parentform screen ${targetUser === undefined ? 'screen-max' : 'screen-min'}`}>
+                <div className={`parentform`}>
                     <div className="parentform-left">
                         <h2>Students</h2>
                         <small>List of students categorized by Class</small>
@@ -128,36 +128,40 @@ const UpdateParent = () => {
 
                         </div>
                     </div>
-                    <div className="parentform-right second">
-                        {
-                            selectedParent === undefined ?
-                                <>
-                                    <h2>Parents</h2>
-                                    <small>List of registered guardians in your school</small>
-                                    <div className="login">
-                                        <div className="login-in">
-                                            <input onChange={(e) => nestList(e.target.value)} type="text" name="uid" id="uid" />
-                                            <label htmlFor="uid">Search</label>
+                    {
+                        targetUser &&
+                        <div className={`parentform-right`}>
+                            {
+                                selectedParent === undefined ?
+                                    <>
+                                        <h2>Parents</h2>
+                                        <small>List of registered guardians in your school</small>
+                                        <div className="login">
+                                            <div className="login-in">
+                                                <input onChange={(e) => nestList(e.target.value)} type="text" name="uid" id="uid" />
+                                                <label htmlFor="uid">Search</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    {parentList.map((parent, index) => (
-                                        <div className="entrybar" key={index} onClick={() => setSelectedParent(parent)}>
-                                            {parent.Name}
+                                        {parentList.map((parent, index) => (
+                                            <div className="entrybar" key={index} onClick={() => setSelectedParent(parent)}>
+                                                {parent.Name}
+                                            </div>
+                                        ))}
+                                    </>
+                                    :
+                                    <>
+                                        <h2>Confirmation</h2>
+                                        <p>Do you want to assign <span>{selectedParent.Name}</span> to be guardian of <span>{targetUser?.Name}</span></p>
+                                        <div className="buttons">
+                                            <Button onClick={AssignParent}>Confirm</Button>
+                                            <Button onClick={() => setSelectedParent(undefined)}>Cancel</Button>
                                         </div>
-                                    ))}
-                                </>
-                                :
-                                <>
-                                    <h2>Confirmation</h2>
-                                    <p>Do you want to assign <span>{selectedParent.Name}</span> to be guardian of <span>{targetUser?.Name}</span></p>
-                                    <div className="buttons">
-                                        <Button onClick={AssignParent}>Confirm</Button>
-                                        <Button onClick={() => setSelectedParent(undefined)}>Cancel</Button>
-                                    </div>
-                                </>
-                        }
+                                    </>
+                            }
 
-                    </div>
+                        </div>
+                    }
+
                 </div>
             </LoadingScreen>
         </Struct>
