@@ -116,7 +116,7 @@ export const POST = async (request: NextRequest) => {
                 returnData.push({ Info: "Students", Title: students.length.toString() });
                 returnData.push({ Info: "Teachers", Title: teachers.length.toString() });
                 returnData.push({ Info: "Adm. month", Title: newAdmissions.length.toString() });
-                returnData.push({ Info: "Present Teachers", Title: presents + "/" + docs.length });
+                returnData.push({ Info: "Present Staff", Title: presents + "/" + docs.length });
             } else if (Role === "Teacher") {
                 const classInfo = await ClassModel.findOne({ TeacherUID: uID }).exec();
                 var studentsLength, presentStudents = 0, absentStudents = 0, leaveStudents = 0;
