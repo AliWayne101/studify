@@ -1,13 +1,13 @@
 import { compare, genSalt, hash } from 'bcryptjs';
 import mongoose from 'mongoose';
-import { AVATAR_LINK, RolesWithAuthority } from './configs';
+import { AVATAR_LINK, RolesWithAuthority, SALT_LENGTH } from './configs';
 import { AttendanceStructProps } from './interfaces';
 import { IUserInfo } from './schema/userinfo';
 import { IClassInfo } from './schema/classinfo';
 import { NextResponse } from 'next/server';
 
 export const hashPassword = async (password: string) => {
-    const _salt = await genSalt(10);
+    const _salt = await genSalt(SALT_LENGTH);
     const hashedPassword = await hash(password.toString(), _salt);
     return hashedPassword;
 }

@@ -1,7 +1,7 @@
 "use client"
 import "../../../css/login.scss"
 import React, { useState } from 'react'
-import { hashPassword, sendRequest } from '@/utils'
+import { sendRequest } from '@/utils'
 import { useSession } from 'next-auth/react'
 import { RolesWithAuthority } from '@/configs'
 import Struct from "@/app/Struct"
@@ -53,7 +53,6 @@ const Signup = () => {
       return;
     }
 
-    const hashedPassword = hashPassword(Password);
     setIsLoadingCompleted(false);
     //start register
     try {
@@ -64,7 +63,7 @@ const Signup = () => {
         Role,
         SchoolName: session ? session.user.schoolName : SchoolName,
         Gender,
-        Password: hashedPassword,
+        Password,
         Phone,
         CNIC,
         Address,
