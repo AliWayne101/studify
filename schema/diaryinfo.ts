@@ -15,13 +15,29 @@ const Diary = new Schema<IDiaryInfo>({
     _id: mongoose.Schema.Types.ObjectId,
     ClassName: String,
     SchoolName: String,
-    DiaryFor: Date,
-    IsAuthorized: Boolean,
-    AuthorizedBy: String,
-    Diaries: [{ 
-        Subject: String, 
-        Diary: String 
-    }]
+    DiaryFor: {
+        type: Date,
+        default: () => {
+            const date = new Date();
+            date.setDate(date.getDate() + 1);
+            return date;
+        }
+    },
+    IsAuthorized: {
+        type: Boolean,
+        default: false
+    },
+    AuthorizedBy: {
+        type: String,
+        default: 'none'
+    },
+    Diaries: {
+        type: [{
+            Subject: String,
+            Diary: String
+        }],
+        default: []
+    }
 })
 
 let DiaryModel: Model<IDiaryInfo>;
