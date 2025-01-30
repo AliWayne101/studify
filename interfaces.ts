@@ -85,3 +85,8 @@ export interface UnassignedStudentsProps {
     Students: IUserInfo[],
     Classes: IClassInfo[]
 }
+
+export interface DiaryDetail {
+    Subject: string,
+    Diary: string,
+}
