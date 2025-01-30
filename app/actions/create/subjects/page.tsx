@@ -94,6 +94,11 @@ const Subjects = () => {
       }
   }, [targetSubject])
 
+  useEffect(() => {
+    if (session)
+      LoadData();
+  }, [session])
+
   const AssignTeacher = async (assign: boolean) => {
     setIsLoadingCompleted(false);
     const response = await sendRequest('/api/posts', {
