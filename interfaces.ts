@@ -7,6 +7,7 @@ import React from "react";
 export interface ButtonProps {
     onClick: () => void;
     Disabled?: boolean;
+    SingleUse?: boolean;
     children: React.ReactNode;
 }
 

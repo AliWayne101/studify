@@ -7,8 +7,8 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import Struct from '@/app/Struct';
 import LoadingScreen from '@/app/components/LoadingScreen';
-import Button from '@/app/components/Button';
 import { motion } from 'framer-motion';
+import Button from '@/app/components/Button';
 
 const UnassignedStudents = () => {
     const [UnassignedStudents, setUnassignedStudents] = useState<UnassignedStudentsProps>();
@@ -33,20 +33,16 @@ const UnassignedStudents = () => {
 
     const AssignClass = async (UID: string) => {
         const selectedClass = (document.getElementById(`selectedClass-${UID}`) as HTMLSelectElement).value;
-        setIsLoadingCompleted(false);
         const response = await sendRequest('/api/posts', {
             Request: "assignstudent",
             SchoolName: session?.user.schoolName,
             ClassName: selectedClass,
             UID: UID
         });
-        if (response.message !== "OK") {
-            setIsLoadingCompleted(true);
+        if (response.message !== "OK")
             ShowToast("Assigning Student", response.error, null);
-            return;
-        }
+        
         await getData();
-        setIsLoadingCompleted(true);
     }
 
     return (
@@ -98,7 +94,7 @@ const UnassignedStudents = () => {
                                                 </select>
                                             </div>
                                             <div>
-                                                <Button onClick={() => AssignClass(user.UID)} >Assign</Button>
+                                                <Button SingleUse={true} onClick={() => AssignClass(user.UID)} >Assign</Button>
                                             </div>
                                         </div>
                                     </div>

@@ -533,7 +533,6 @@ export const POST = async (request: NextRequest) => {
                 const stuUIDsInClass = new Set(_classes.flatMap(cls => cls.StudentUIDs));
                 const unassignedStudents = students.filter(student => !stuUIDsInClass.has(student.UID));
 
-                console.log(stuUIDsInClass);
                 const rVal: UnassignedStudentsProps = {
                     Classes: _classes,
                     Students: unassignedStudents
