@@ -1,5 +1,5 @@
 "use client"
-import { NavLinks, OverallMenu, WebDetails } from '@/configs'
+import { DashboardLinks, NavLinks, WebDetails } from '@/configs'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -7,11 +7,10 @@ import { useSession } from 'next-auth/react'
 import { SignOut } from '../auth'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { GrFormClose } from 'react-icons/gr'
-import { Bounce, toast, ToastContainer } from 'react-toastify'
+import { Bounce, ToastContainer } from 'react-toastify'
 import { sendRequest } from '@/utils'
 import { INotifInfo } from '@/schema/notifinfo'
 import { usePathname, useRouter } from 'next/navigation'
-import { MenuLinks } from '@/interfaces'
 import { ShowToast } from '../utilsjsx'
 
 interface NavbarProps {
@@ -22,7 +21,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) => {
     const [isNavToggle, setIsNavToggle] = useState(false);
     const [navSolidBG, setNavSolidBG] = useState(false);
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     const router = useRouter();
     const pathname = usePathname();
@@ -38,16 +37,11 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
     }
 
     useEffect(() => {
-        const OverallLinks: MenuLinks[] = [];
-        for (const Links of OverallMenu) {
-            for (const mLinks of Links) {
-                const linkExists = OverallLinks.find(x => x.url === mLinks.url);
-                if (!linkExists)
-                    OverallLinks.push(mLinks);
-            }
-        }
+        var findAddress = DashboardLinks.find(x => x.url === pathname);
+        //Check NavLinks if Address is not located
+        if (findAddress === undefined)
+            findAddress = NavLinks.find(x => x.url === pathname);
 
-        const findAddress = OverallLinks.find(x => x.url === pathname);
         if (findAddress) {
             if (findAddress.isProtected) {
                 if (session === null || session === undefined) {

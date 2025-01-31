@@ -3,25 +3,15 @@ import { MenuLinks, SessionProps } from '@/interfaces'
 import React, { useEffect, useState } from 'react'
 import "../../css/sections/Authority/menu.scss"
 import Link from 'next/link'
-import { AdminLinks, OwnerLinks, ParentLinks, TeacherLinks } from '@/configs'
+import { DashboardLinks } from '@/configs'
 
 const Menu = ({ session }: SessionProps) => {
     const [links, setLinks] = useState<MenuLinks[]>([]);
 
     useEffect(() => {
-        switch(session?.user.role) {
-            case "Teacher":
-                setLinks(TeacherLinks);
-                break;
-            case "Owner":
-                setLinks(OwnerLinks);
-                break;
-            case "Admin":
-                setLinks(AdminLinks);
-                break;
-            case "Parent":
-                setLinks(ParentLinks);
-                break;
+        if (session) {
+            var _links = DashboardLinks.filter(x => x.ProtectionLevel?.includes(session.user.role));
+            setLinks(_links);
         }
     }, [session])
     return (
