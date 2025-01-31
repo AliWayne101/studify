@@ -636,3 +636,10 @@ p {
   filter: blur(2px);
   opacity: 0.3;
 }
+
+.right {
+  display: flex;
+  text-align: right;
+  align-items: right;
+  justify-content: right;
+}

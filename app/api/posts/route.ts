@@ -8,6 +8,7 @@ import ClassModel, { IClassInfo } from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
 import VoucherModel from "@/schema/pvinfo";
+import DiaryModel from "@/schema/diaryinfo";
 
 interface getUsersByRoleInterface {
     Role: string;
@@ -578,6 +579,27 @@ export const POST = async (request: NextRequest) => {
                 return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "There seems to be an issue on server side, please refresh the page or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "getdiary":
+            try {
+                const { SchoolName } = body;
+                const _date = new Date();
+                _date.setDate(_date.getDate() + 1);
+
+                const startOfDay = new Date(_date.setHours(0, 0, 0, 0));
+                const endOfDay = new Date(_date.setHours(23, 59, 59, 999));
+
+                const diaries = await DiaryModel.find({
+                    SchoolName: SchoolName,
+                    DiaryFor: {
+                        $gte: startOfDay,
+                        $lte: endOfDay
+                    }
+                });
+                return NextResponse.json({ message: "OK", docs: diaries }, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "There seems to be an error on server side, please refresh the page or contact the developer" }, { status: 200 });
             }
             break;
         default:
