@@ -1,11 +1,16 @@
 .footer {
+    position: relative;
     margin-top: 40px;
     display: grid;
     grid-template-columns: 50% 25% 25%;
     min-height: 200px;
+    overflow: hidden;
 
     &-section {
-        background-color: var(--background-sec);
+        z-index: 2;
+        // background-color: var(--background-sec);
+        backdrop-filter: blur(10px);
+        -moz-backdrop-filter: blur(10px);
         padding: 20px 0;
 
         p {
@@ -13,7 +18,7 @@
         }
 
         &:nth-child(1) {
-            border-top-left-radius: 100px;
+            // border-top-left-radius: 100px;
             padding-top: 40px;
             padding-left: 60px;
         }
@@ -22,6 +27,7 @@
             list-style-type: none;
             margin-top: 15px;
             margin-left: 10px;
+
             li {
                 font-size: 14px;
                 margin-bottom: 5px;
@@ -48,11 +54,29 @@
 
         &-section {
             padding-left: 20px;
+
             &:nth-child(1) {
                 border-top-left-radius: 0px;
                 padding-top: 20px;
                 padding-left: 20px;
             }
         }
+    }
+
+    .circle-bg-footer {
+        background-color: var(--theme-main);
+        border-radius: 100%;
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transform: translate(-50%, 50%);
+        z-index: 1;
+        //   filter: blur(2px);
+        opacity: 0.3;
+
+        // backdrop-filter: blur(10px);
+        // -moz-backdrop-filter: blur(10px);
     }
 }

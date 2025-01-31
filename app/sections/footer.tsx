@@ -2,7 +2,6 @@ import React from 'react'
 import "../css/sections/footer.scss";
 import Link from 'next/link';
 import { footerLinksMore, footerLinksAbout, WebDetails, socialDetails } from '../../configs';
-import { RiFacebookBoxFill } from 'react-icons/ri';
 
 const Footer = () => {
   return (
@@ -36,6 +35,7 @@ const Footer = () => {
           ))}
         </ul>
       </div>
+      <div className="circle-bg-footer"></div>
     </div>
   )
 }

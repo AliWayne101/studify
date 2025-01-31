@@ -21,7 +21,9 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) => {
     const [isNavToggle, setIsNavToggle] = useState(false);
+    const [navSolidBG, setNavSolidBG] = useState(false);
     const { data: session, status } = useSession();
+
     const router = useRouter();
     const pathname = usePathname();
 
@@ -83,9 +85,16 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
             getNotifs();
     }, [pathname, session])
 
+    useEffect(() => {
+        window.addEventListener("scroll", () => {
+            if (!isNavToggle)
+                window.pageYOffset >= 80 ? setNavSolidBG(true) : setNavSolidBG(false);
+        })
+    }, []);
+
     return (
         <>
-            <div className={`navbar`}>
+            <div className={`navbar ${navSolidBG ? 'nav-solid box-shadow' : ''}`}>
                 <div className="navbar-logo">
                     <Link href={'/'}>{WebDetails.webName}</Link>
                 </div>

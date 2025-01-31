@@ -110,7 +110,6 @@ main {
   display: grid;
   grid-template-columns: 20% 70% 10%;
   padding: 20px;
-  background-color: var(--background-sec);
   z-index: 4;
 
   &-logo {
@@ -179,7 +178,6 @@ main {
     }
   }
 
-
   @media screen and (max-width: 720px) {
     grid-template-columns: 80% 20%;
 
@@ -197,6 +195,15 @@ main {
       padding: 10px;
     }
   }
+}
+.box-shadow {
+  box-shadow: 0 10px 30px -10px rgba(28, 32, 28, 0.7);
+}
+.nav-solid {
+  // background-color: var(--background-sec) !important;
+  backdrop-filter: blur(10px);
+  -moz-backdrop-filter: blur(10px);
+  transition: 0.3s ease-in-out;
 }
 
 .bg {
@@ -411,6 +418,7 @@ select option {
     border-bottom: 1px solid var(--theme-bg);
     transition: border 0.3s ease;
     cursor: pointer;
+
     &-img {
       display: flex;
       text-align: center;
@@ -422,10 +430,12 @@ select option {
         height: 150px;
         width: 150px;
         transition: all 300ms ease;
+
         img {
           border-radius: 100%;
         }
       }
+
       @media screen and (max-width: 900px) {
         .img-cont {
           height: 100px;
@@ -448,10 +458,12 @@ select option {
           }
         }
       }
+
       select {
         min-width: 100%;
         padding: 5px 10px 5px 5px;
       }
+
       .buttons {
         div {
           margin-top: 10px;
@@ -473,6 +485,7 @@ select option {
   display: grid;
   gap: 15px;
   transition: grid 300ms ease-in-out;
+
   &-four {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -487,13 +500,19 @@ select option {
 }
 
 @media screen and (max-width: 920px) {
-  .grid-six, .grid-four, .grid-five {
+
+  .grid-six,
+  .grid-four,
+  .grid-five {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media screen and (max-width: 720px) {
-  .grid-six, .grid-four, .grid-five {
+
+  .grid-six,
+  .grid-four,
+  .grid-five {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -535,6 +554,7 @@ select option {
     transform: translate(-50%, -50%);
     z-index: 0;
     transition: height 0.3s ease, width 0.4s ease;
+
     &-selected {
       height: 100%;
       width: 100%;
@@ -549,14 +569,18 @@ select option {
 .screen {
   display: grid;
   transition: grid 300ms ease-in-out;
+
   &-max {
     grid-template-columns: 100%;
+
     .second {
       display: none;
     }
   }
+
   &-min {
     grid-template-columns: 70% 30%;
+
     .second {
       display: block;
     }
@@ -577,6 +601,7 @@ select option {
   cursor: pointer;
   margin-bottom: 5px;
   transition: all 300ms ease;
+
   &:hover {
     border: 1px solid var(--theme-accent);
     padding: 10px 15px;
@@ -592,4 +617,18 @@ p {
 
 .buttons {
   margin-top: 20px;
+}
+
+.circle-bg {
+  background-color: var(--theme-bg);
+  border-radius: 100%;
+  width: 800px;
+  height: 800px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(20%, -30%);
+  z-index: -1;
+  filter: blur(2px);
+  opacity: 0.3;
 }
