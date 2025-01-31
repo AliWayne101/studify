@@ -91,7 +91,7 @@ const AuthList = ({ session }: SessionProps) => {
                             </div>
                             <div className="cards-card-details">
                                 <ul>
-                                    <li>{data.User.Name}</li>
+                                    <li><span>{data.User.Name}</span></li>
                                     <li>{data.User.Role}</li>
                                 </ul>
                             </div>
