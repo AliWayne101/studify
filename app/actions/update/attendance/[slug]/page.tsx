@@ -18,7 +18,7 @@ const UpdateAttendance = ({ params }: SlugProps) => {
   const [userProfiles, setUserProfiles] = useState<ProperUserInterface[]>([]);
   const [isError, setIsError] = useState<string | null>(null);
   const [isLoadingCompleted, setIsLoadingCompleted] = useState(false);
-  
+
   useEffect(() => {
     const getSlug = async () => {
       const _slug = (await params).slug;
@@ -47,12 +47,11 @@ const UpdateAttendance = ({ params }: SlugProps) => {
         const response = await sendRequest('/api/posts', reqBody);
         if (response.message === "OK") {
           setUserProfiles(response.results.docs);
-          setIsLoadingCompleted(true);
           setIsError(null);
         } else {
           setIsError(response.error);
-          setIsLoadingCompleted(true);
         }
+        setIsLoadingCompleted(true);
       } catch (error) {
         setIsLoadingCompleted(true);
         setIsError("Seems to be an error while loading the data, please refresh the page..");
@@ -100,12 +99,13 @@ const UpdateAttendance = ({ params }: SlugProps) => {
         <ErrorContainer error={isError} />
         <div className="upattendance">
           <h2>List of all {slug}</h2>
-          <div className="upattendance-cards">
+          <div className="upattendance-cards ov">
+
 
             {userProfiles.map((profile, index) => (
-              <div className="upattendance-cards-card" key={index}>
-                <div className="upattendance-cards-mock"></div>
-                <div className="upattendance-cards-card">
+              <div className="upattendance-cards-card ov-body" key={index}>
+                <div className="ov-mock"></div>
+                <div className="ov-body-in">
                   <div className="upattendance-cards-card-inside">
                     <ul>
                       <li>Name: <span>{profile.User.Name}</span></li>

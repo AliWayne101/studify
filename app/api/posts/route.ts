@@ -4,7 +4,7 @@ import { AttStatusDay, Connect, getDate, hashPassword, isPasswordValid, UniqueID
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
 import { BasicInfoProps, ClasswiseStudents, ProperUserInterface, SubjectDetail, UnassignedStudentsProps, UpdateParentInterface } from "@/interfaces";
-import ClassModel from "@/schema/classinfo";
+import ClassModel, { IClassInfo } from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
 import VoucherModel from "@/schema/pvinfo";
@@ -206,10 +206,11 @@ export const POST = async (request: NextRequest) => {
             } else if (Case === "students") {
                 var docs: IUserInfo[] = [];
                 var proper: ProperUserInterface[] = [];
+                var _class: IClassInfo | null = null;
                 if (CasterRole === "Admin") {
                     docs = await UserModel.find({ SchoolName: SchoolName, Role: "Student" });
                 } else if (CasterRole === "Teacher") {
-                    const _class = await ClassModel.findOne({ TeacherUID: uID }).exec();
+                    _class = await ClassModel.findOne({ TeacherUID: uID }).exec();
                     if (_class)
                         docs = await UserModel.find({ UID: { $in: _class.StudentUIDs } });
                 }
@@ -220,7 +221,8 @@ export const POST = async (request: NextRequest) => {
                     proper.push({
                         User: doc,
                         Parent: parent,
-                        Attendance: attendance
+                        Attendance: attendance,
+                        Class: _class
                     })
                 }));
                 return NextResponse.json({ message: "OK", docs: proper }, { status: 200 });
