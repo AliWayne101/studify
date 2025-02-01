@@ -10,8 +10,10 @@ const Struct: React.FC<StructProps> = ({ children, LoadingCompleted }) => {
     const [addBlur, setAddBlur] = useState(false);
     return (
         <>
-            <Navbar updateParentState={setAddBlur} LoadingCompleted={LoadingCompleted}/>
-            <div className="circle-bg"></div>
+            <Navbar updateParentState={setAddBlur} LoadingCompleted={LoadingCompleted} />
+            <div className="circle-cont">
+                <div className="circle-bg"></div>
+            </div>
             <main className={`${addBlur && "blur"}`}>
                 <Logo />
                 <Body>

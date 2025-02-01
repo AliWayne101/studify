@@ -2,6 +2,7 @@
     margin-top: 20px;
     margin-bottom: 10px;
     display: flex;
+    position: relative;
 
     label {
         position: absolute;
@@ -45,7 +46,6 @@
         outline: none;
     }
 }
-
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

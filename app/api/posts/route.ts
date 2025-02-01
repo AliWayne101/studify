@@ -3,10 +3,10 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { AttStatusDay, Connect, getDate, hashPassword, isPasswordValid, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ClasswiseStudents, DiaryDetail, ProperUserInterface, SubjectDetail, UnassignedStudentsProps, UpdateParentInterface } from "@/interfaces";
+import { BasicInfoProps, ClasswiseStudents, DiaryDetail, ProperUserInterface, SubjectDetail, TeacherClass, UnassignedStudentsProps, UpdateParentInterface } from "@/interfaces";
 import ClassModel, { IClassInfo } from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
-import SubjectsModel from "@/schema/subjectsinfo";
+import SubjectsModel, { ISubjectsInfo } from "@/schema/subjectsinfo";
 import VoucherModel from "@/schema/pvinfo";
 import DiaryModel from "@/schema/diaryinfo";
 
@@ -643,8 +643,83 @@ export const POST = async (request: NextRequest) => {
                 }
                 return NextResponse.json({ message: "OK" }, { status: 200 });
             } catch (error) {
-                console.log(error);
                 return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please try again or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "getdiaries":
+            try {
+                const { SchoolName, tDate, Caster } = body;
+                if (Caster !== "Admin" && Caster !== "Owner")
+                    return NextResponse.json({ message: "ERROR", error: "You are not allowed to see this data" }, { status: 200 });
+                const nDate = new Date(tDate);
+                const endDate = new Date(tDate);
+                endDate.setDate(endDate.getDate() + 1);
+                const diaries = await DiaryModel.find({
+                    SchoolName: SchoolName,
+                    DiaryFor: {
+                        $gte: nDate,
+                        $lte: endDate
+                    }
+                });
+
+                return NextResponse.json({ message: "OK", docs: diaries }, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please try again or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "teacherswithclasses":
+            try {
+                const { SchoolName } = body;
+                const _classes = await ClassModel.find({ SchoolName: SchoolName });
+                var tids: TeacherClass[] = [];
+                var _tids = [];
+                for (const c of _classes) {
+                    if (c.TeacherUID !== "unassigned") {
+                        _tids.push(c.TeacherUID);
+                        tids.push({
+                            Class: c.Name,
+                            TeacherName: "",
+                            UID: c.TeacherUID
+                        });
+                    }
+                }
+                const subjects: ISubjectsInfo | null = await SubjectsModel.findOne({ SchoolName: SchoolName });
+                const teachers = await UserModel.find({ UID: { $in: _tids } });
+                for (const teacher of teachers) {
+                    if (tids.find(t => t.UID === teacher.UID) !== undefined)
+                        tids.find(x => x.UID === teacher.UID)!.TeacherName = teacher.Name;
+                }
+
+                if (subjects) {
+                    for (const sub of subjects.SubjectList) {
+                        if (sub.SubjectTeacherUID !== "unassigned") {
+                            if (tids.find(t => t.UID === sub.SubjectTeacherUID) !== undefined)
+                                tids.find(x => x.UID === sub.SubjectTeacherUID)!.Subject = sub.SubjectName;
+                        }
+                    }
+                }
+                return NextResponse.json({ message: "OK", docs: tids }, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please try again or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "postdiary":
+            try {
+                const { Caster, SchoolName, tDate, Authorizer, Class } = body;
+                if (Caster !== "Admin" && Caster !== "Owner")
+                    return NextResponse.json({ message: "ERROR", error: "You are not allowed to see this data" }, { status: 200 });
+
+                const diary = await DiaryModel.findOne({ DiaryFor: tDate, SchoolName: SchoolName, ClassName: Class });
+                if (diary) {
+                    diary.IsAuthorized = true;
+                    diary.AuthorizedBy = Authorizer;
+                    await diary.save();
+                    return NextResponse.json({ message: "OK" }, { status: 200 });
+                } else {
+                    return NextResponse.json({ message: "error", error: "Unable to locate the selected diary, please contact the developer" }, { status: 200 });
+                }
+            } catch (error) {
+                return NextResponse.json({ message: "error", error: "Seems to be an error on server side, please contact the developer" }, { status: 200 });
             }
             break;
         default:

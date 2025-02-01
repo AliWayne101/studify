@@ -90,3 +90,10 @@ export interface DiaryDetail {
     Subject: string,
     Diary: string,
 }
+
+export interface TeacherClass {
+    TeacherName: string,
+    Class: string,
+    UID: string,
+    Subject?: string
+}

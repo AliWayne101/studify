@@ -1,0 +1,51 @@
+.forms {
+    width: 400px;
+}
+
+.diary {
+    &-classes {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 20px;
+
+        &-class {
+            text-align: center;
+            padding: 10px 0;
+            cursor: pointer;
+            &-details {
+                pointer-events: none;
+                h2 {
+                    padding: 20px 0;
+                }
+                &:nth-child(3) {
+                    padding-top: 10px;
+                    color: var(--theme-main);
+                }
+            }
+        }
+    }
+    &-view {
+        &-teacher {
+            margin-bottom: 30px;
+        }
+        &-entry {
+            display: grid;
+            grid-template-columns: 20% 80%;
+            border-bottom: 1px solid var(--theme-main);
+            &-in {
+                padding: 20px;
+                &:nth-child(1) {
+                    color: white;
+                    background-color: var(--theme-main);
+                }
+            }
+        }
+        .button {
+            margin-top: 20px !important;
+        }
+    }
+}
+
+.authorized {
+    background-color: var(--theme-bg);
+}

@@ -181,3 +181,18 @@ export const fillAttendanceData = (data: AttendanceStructProps[] | undefined): A
 
     return filledData;
 }
+
+export const getLast30Days = (): { Date: string, Value: string }[] => {
+    const dates: { Date: string, Value: string }[] = [];
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
+
+    for (let i = 0; i < 30; i++) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        const valueStr = `${currentDate.getDate()} of ${currentDate.toLocaleString('default', { month: 'long' })}`;
+        dates.push({ Date: dateStr, Value: valueStr });
+        currentDate.setDate(currentDate.getDate() - 1);
+    }
+
+    return dates;
+}

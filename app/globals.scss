@@ -385,37 +385,37 @@ select {
 }
 
 
-input,
-select {
-  min-width: 400px;
-  background-color: transparent;
-  border: none;
-  padding: 5px 10px 5px 100px;
-  border-bottom: 4px solid transparent;
-  color: var(--foreground);
-  transition: all 300ms ease-in-out;
+// input,
+// select {
+//   min-width: 400px;
+//   background-color: transparent;
+//   border: none;
+//   padding: 5px 10px 5px 100px;
+//   border-bottom: 4px solid transparent;
+//   color: var(--foreground);
+//   transition: all 300ms ease-in-out;
 
-  &:focus,
-  &:active {
-    border-bottom: 4px solid var(--theme-main);
-    outline: none;
-  }
+//   &:focus,
+//   &:active {
+//     border-bottom: 4px solid var(--theme-main);
+//     outline: none;
+//   }
 
-  &:focus {
-    padding: 5px 10px;
-  }
+//   &:focus {
+//     padding: 5px 10px;
+//   }
 
-  &:focus+label {
-    transform: translateY(-20px);
-  }
+//   &:focus+label {
+//     transform: translateY(-20px);
+//   }
 
-}
+// }
 
-select option {
-  color: var(--foreground);
-  outline: none;
-  background-color: var(--background);
-}
+// select option {
+//   color: var(--foreground);
+//   outline: none;
+//   background-color: var(--background);
+// }
 
 .roundcards {
   &-card {
@@ -622,7 +622,9 @@ p {
 .buttons {
   margin-top: 20px;
 }
-
+.circle-cont {
+  position: relative;
+}
 .circle-bg {
   background-color: var(--theme-bg);
   border-radius: 100%;
@@ -635,6 +637,11 @@ p {
   z-index: -1;
   filter: blur(2px);
   opacity: 0.3;
+  @media screen and (max-width: 800px) {
+    width: 600px;
+    height: 600px;
+    transform: translate(50%, -30%);
+  }
 }
 
 .right {
