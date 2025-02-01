@@ -35,6 +35,9 @@
             transform: translateY(-20px);
         }
 
+        &:disabled {
+            color: var(--theme-main);
+        }
     }
 
     select option {

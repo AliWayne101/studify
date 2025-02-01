@@ -3,7 +3,7 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { AttStatusDay, Connect, getDate, hashPassword, isPasswordValid, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ClasswiseStudents, ProperUserInterface, SubjectDetail, UnassignedStudentsProps, UpdateParentInterface } from "@/interfaces";
+import { BasicInfoProps, ClasswiseStudents, DiaryDetail, ProperUserInterface, SubjectDetail, UnassignedStudentsProps, UpdateParentInterface } from "@/interfaces";
 import ClassModel, { IClassInfo } from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel from "@/schema/subjectsinfo";
@@ -600,6 +600,51 @@ export const POST = async (request: NextRequest) => {
                 return NextResponse.json({ message: "OK", docs: diaries }, { status: 200 });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "There seems to be an error on server side, please refresh the page or contact the developer" }, { status: 200 });
+            }
+            break;
+        case "uploaddiary":
+            try {
+                const { SchoolName, Subject, Diary, ClassName } = body;
+                const _date = new Date();
+                _date.setDate(_date.getDate() + 1);
+                const startOfDay = new Date(_date.setHours(0, 0, 0, 0));
+                const endOfDay = new Date(_date.setHours(23, 59, 59, 999));
+                const diary = await DiaryModel.findOne({
+                    SchoolName: SchoolName,
+                    ClassName: ClassName,
+                    DiaryFor: {
+                        $gte: startOfDay,
+                        $lte: endOfDay
+                    }
+                });
+                if (diary) {
+                    const diaryIndex = diary.Diaries.findIndex(item => item.Subject === Subject);
+                    if (diaryIndex !== -1) {
+                        diary.Diaries[diaryIndex].Diary = Diary;
+                    } else {
+                        diary.Diaries.push({
+                            Subject: Subject,
+                            Diary: Diary
+                        });
+                    }
+                    await diary.save();
+                } else {
+                    const diaries: DiaryDetail[] = [];
+                    diaries.push({
+                        Subject: Subject,
+                        Diary: Diary
+                    });
+                    const nDiary = await DiaryModel.create({
+                        _id: new mongoose.Types.ObjectId(),
+                        ClassName: ClassName,
+                        SchoolName: SchoolName,
+                        Diaries: diaries
+                    });
+                }
+                return NextResponse.json({ message: "OK" }, { status: 200 });
+            } catch (error) {
+                console.log(error);
+                return NextResponse.json({ message: "ERROR", error: "Seems to be an error on server side, please try again or contact the developer" }, { status: 200 });
             }
             break;
         default:
