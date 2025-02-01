@@ -9,6 +9,7 @@ import NotifModel from "@/schema/notifinfo";
 import SubjectsModel, { ISubjectsInfo } from "@/schema/subjectsinfo";
 import VoucherModel from "@/schema/pvinfo";
 import DiaryModel from "@/schema/diaryinfo";
+import { TIMEZONE_OFFSET } from "@/configs";
 
 interface getUsersByRoleInterface {
     Role: string;
@@ -634,11 +635,21 @@ export const POST = async (request: NextRequest) => {
                         Subject: Subject,
                         Diary: Diary
                     });
+                    const cDate = new Date();
+                    cDate.setHours(0, 0, 0, 0);
+                    cDate.setDate(cDate.getDate() + 1);
+
+                    // Adjust for timezone offset to ensure it logs correctly
+                    const timeZoneOffset = cDate.getTimezoneOffset() * TIMEZONE_OFFSET;
+                    const adjustedDate = new Date(cDate.getTime() - timeZoneOffset);
+
+                    
                     const nDiary = await DiaryModel.create({
                         _id: new mongoose.Types.ObjectId(),
                         ClassName: ClassName,
                         SchoolName: SchoolName,
-                        Diaries: diaries
+                        Diaries: diaries,
+                        DiaryFor: adjustedDate
                     });
                 }
                 return NextResponse.json({ message: "OK" }, { status: 200 });

@@ -61,6 +61,7 @@ export const DashboardLinks: MenuLinks[] =[
 
 export const SALT_LENGTH = 12;
 export const SESSION_AGE = 60 * 60 * 24; // 24 hours
+export const TIMEZONE_OFFSET = 60000;
 export const AVATAR_LINK = "/img/avatar.png";
 
 export const boxVariants = {

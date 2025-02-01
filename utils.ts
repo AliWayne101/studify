@@ -181,14 +181,16 @@ export const fillAttendanceData = (data: AttendanceStructProps[] | undefined): A
 
     return filledData;
 }
-
 export const getLast30Days = (): { Date: string, Value: string }[] => {
     const dates: { Date: string, Value: string }[] = [];
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 1);
 
-    for (let i = 0; i < 30; i++) {
-        const dateStr = currentDate.toISOString().split('T')[0];
+    for (let i = 0; i < 15; i++) {
+        const year = currentDate.getFullYear();
+        const month = (currentDate.getMonth() + 1).toString(); // No padding
+        const day = currentDate.getDate().toString(); // No padding
+        const dateStr = `${year}-${month}-${day}`;
         const valueStr = `${currentDate.getDate()} of ${currentDate.toLocaleString('default', { month: 'long' })}`;
         dates.push({ Date: dateStr, Value: valueStr });
         currentDate.setDate(currentDate.getDate() - 1);
