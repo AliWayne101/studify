@@ -56,6 +56,7 @@ export const DashboardLinks: MenuLinks[] =[
     { text: "Pay Fee", url: '/actions/pay/', isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Diaries", url: "/actions/create/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin", "Teacher"] },
     { text: "Post Diaries", url: "/actions/update/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Diaries", url: "/view/diary", isProtected: true, ProtectionLevel: ["Parent", "Student"] },
 ]
 
 export const SALT_LENGTH = 12;
