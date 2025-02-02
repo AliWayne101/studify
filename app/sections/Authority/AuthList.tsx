@@ -13,6 +13,7 @@ const AuthList = ({ session }: SessionProps) => {
     const [uInfo, setUInfo] = useState<ProperUserInterface[] | undefined>(undefined);
     const [attInfo, setAttInfo] = useState<AttendanceStructProps[] | undefined>(undefined);
     const [targetUser, setTargetUser] = useState<IUserInfo | undefined>(undefined);
+    const [isAllowed, setIsAllowed] = useState(true);
 
     const atRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +32,9 @@ const AuthList = ({ session }: SessionProps) => {
             requestBody.clause = "class";
         } else if (session?.user.role === "Parent") {
             requestBody.clause = "children";
+        } else {
+            setIsAllowed(false);
+            return;
         }
 
         const sendRequests = async () => {
@@ -59,62 +63,65 @@ const AuthList = ({ session }: SessionProps) => {
     }
 
     return (
-        <div className={`autlist ${targetUser === undefined ? 'max' : 'min'}`}>
-            <div className="authlist-left">
-                <h2>User Information</h2>
-                <small>View Basic information along with attendance</small>
-                <div className={`cards ${targetUser === undefined ? 'fourprow' : 'threeprow'}`}>
-                    {uInfo?.map((data, index) => (
-                        <motion.div
-                            className={`cards-card ${targetUser?.UID === data.User.UID && 'selected'}`}
-                            key={index}
-                            onClick={() => SelectUser(data.User.UID)}
-                            custom={index}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.3, delay: 0.2 * index }}
-                            variants={{
-                                visible: { opacity: 1, scale: 1 },
-                                hidden: { opacity: 0, scale: 0 }
-                            }}
-                        >
-                            <div className="cards-card-img">
-                                <div className="img-cont">
-                                    <Image
-                                        layout="fill"
-                                        objectFit="cover"
-                                        src={getImageLink(data.User.Image)}
-                                        alt={data.User.Name}
-                                    />
-                                </div>
-                            </div>
-                            <div className="cards-card-details">
-                                <ul>
-                                    <li><span>{data.User.Name}</span></li>
-                                    <li>{data.User.Role}</li>
-                                </ul>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-            <div className="authlist-right" ref={atRef} id='attendance-ref'>
-                <h2>Attendance Information</h2>
-                <Calender data={fillAttendanceData(attInfo)} />
-                <div className="authlist-right-ui">
+        <>{
+            isAllowed &&
+            <div className={`autlist ${targetUser === undefined ? 'max' : 'min'}`}>
+                <div className="authlist-left">
                     <h2>User Information</h2>
-                    <ul>
-                        <li>Email: <span>{targetUser?.Email}</span></li>
-                        <li>Gender: <span>{targetUser?.Gender}</span></li>
-                        <li>Phone: <span>{targetUser?.Phone}</span></li>
-                        <li>CNIC: <span>{targetUser?.CNIC}</span></li>
-                        <li>DOB: <span>{targetUser && (new Date(targetUser.DOB)).toLocaleDateString()}</span></li>
-                        <li>DOJ: <span>{targetUser && (new Date(targetUser.JoinedOn)).toLocaleDateString()}</span></li>
-                    </ul>
+                    <small>View Basic information along with attendance</small>
+                    <div className={`cards ${targetUser === undefined ? 'fourprow' : 'threeprow'}`}>
+                        {uInfo?.map((data, index) => (
+                            <motion.div
+                                className={`cards-card ${targetUser?.UID === data.User.UID && 'selected'}`}
+                                key={index}
+                                onClick={() => SelectUser(data.User.UID)}
+                                custom={index}
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.3, delay: 0.2 * index }}
+                                variants={{
+                                    visible: { opacity: 1, scale: 1 },
+                                    hidden: { opacity: 0, scale: 0 }
+                                }}
+                            >
+                                <div className="cards-card-img">
+                                    <div className="img-cont">
+                                        <Image
+                                            layout="fill"
+                                            objectFit="cover"
+                                            src={getImageLink(data.User.Image)}
+                                            alt={data.User.Name}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="cards-card-details">
+                                    <ul>
+                                        <li><span>{data.User.Name}</span></li>
+                                        <li>{data.User.Role}</li>
+                                    </ul>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+                <div className="authlist-right" ref={atRef} id='attendance-ref'>
+                    <h2>Attendance Information</h2>
+                    <Calender data={fillAttendanceData(attInfo)} />
+                    <div className="authlist-right-ui">
+                        <h2>User Information</h2>
+                        <ul>
+                            <li>Email: <span>{targetUser?.Email}</span></li>
+                            <li>Gender: <span>{targetUser?.Gender}</span></li>
+                            <li>Phone: <span>{targetUser?.Phone}</span></li>
+                            <li>CNIC: <span>{targetUser?.CNIC}</span></li>
+                            <li>DOB: <span>{targetUser && (new Date(targetUser.DOB)).toLocaleDateString()}</span></li>
+                            <li>DOJ: <span>{targetUser && (new Date(targetUser.JoinedOn)).toLocaleDateString()}</span></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        }</>
     );
 };
 

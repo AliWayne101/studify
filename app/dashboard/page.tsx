@@ -4,7 +4,6 @@ import "../css/dashboard.scss"
 import AuthList from '../sections/Authority/AuthList'
 import { useSession } from 'next-auth/react'
 import Basic from '../sections/Authority/Basic'
-import Loading from '../components/Loading'
 import Menu from '../sections/Authority/Menu'
 import Struct from '../Struct'
 import LoadingScreen from '../components/LoadingScreen'
