@@ -3,7 +3,7 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { AttStatusDay, Connect, getDate, hashPassword, isPasswordValid, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ClasswiseStudents, DiaryDetail, ProperUserInterface, SubjectDetail, TeacherClass, UnassignedStudentsProps, UpdateParentInterface, UserDiary } from "@/interfaces";
+import { BasicInfoProps, ClasswiseStudents, CompleteUserData, DiaryDetail, ProperUserInterface, SubjectDetail, TeacherClass, UnassignedStudentsProps, UpdateParentInterface, UserDiary } from "@/interfaces";
 import ClassModel, { IClassInfo } from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel, { ISubjectsInfo } from "@/schema/subjectsinfo";
@@ -794,6 +794,51 @@ export const POST = async (request: NextRequest) => {
                     return NextResponse.json({ message: "OK", docs: students }, { status: 200 });
                 } else
                     return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" });
+            }
+            break;
+
+        case "userprofile":
+            try {
+                var { UID } = body;
+                const doc = await UserModel.findOne({ UID: UID });
+                
+                const _date = getDate();
+                const atts = await AttendanceModel.findOne({
+                    UID: UID,
+                    Month: _date.Month,
+                    Year: _date.Year
+                });
+
+                const children = await UserModel.find({ ParentUID: UID });
+                const guardians = await UserModel.find({ UID: { $in: doc?.ParentUID } });
+                const _class = await ClassModel.findOne({ StudentUIDs: UID });
+                const teacher = await UserModel.findOne({ UID: _class?.TeacherUID });
+
+                if (doc)
+                    doc.Password = "undefined";
+
+                if (teacher)
+                    teacher.Password = "undefined";
+
+                children.forEach(child => {
+                    child.Password = "undefined";
+                });
+
+                guardians.forEach(guardian => {
+                    guardian.Password = "undefined";
+                });
+
+                const rData: CompleteUserData = {
+                    Attendance: atts,
+                    Children: children,
+                    Class: _class,
+                    Guardians: guardians,
+                    Teacher: teacher,
+                    User: doc
+                };
+                return NextResponse.json({ message: "OK", doc: rData });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" });
             }

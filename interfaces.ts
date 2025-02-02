@@ -103,3 +103,12 @@ export interface UserDiary {
     User: IUserInfo,
     Diary?: IDiaryInfo | null | undefined
 }
+
+export interface CompleteUserData {
+    User: IUserInfo | undefined | null,
+    Attendance: IAttendanceInfo | undefined | null,
+    Children: IUserInfo[],
+    Guardians: IUserInfo[],
+    Class: IClassInfo | undefined | null,
+    Teacher: IUserInfo | undefined | null
+}
