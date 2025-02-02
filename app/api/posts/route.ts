@@ -3,7 +3,7 @@ import AttendanceModel from "@/schema/attendanceinfo";
 import { AttStatusDay, Connect, getDate, hashPassword, isPasswordValid, UniqueID } from "@/utils";
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from 'next/server';
-import { BasicInfoProps, ClasswiseStudents, DiaryDetail, ProperUserInterface, SubjectDetail, TeacherClass, UnassignedStudentsProps, UpdateParentInterface } from "@/interfaces";
+import { BasicInfoProps, ClasswiseStudents, DiaryDetail, ProperUserInterface, SubjectDetail, TeacherClass, UnassignedStudentsProps, UpdateParentInterface, UserDiary } from "@/interfaces";
 import ClassModel, { IClassInfo } from "@/schema/classinfo";
 import NotifModel from "@/schema/notifinfo";
 import SubjectsModel, { ISubjectsInfo } from "@/schema/subjectsinfo";
@@ -643,7 +643,7 @@ export const POST = async (request: NextRequest) => {
                     const timeZoneOffset = cDate.getTimezoneOffset() * TIMEZONE_OFFSET;
                     const adjustedDate = new Date(cDate.getTime() - timeZoneOffset);
 
-                    
+
                     const nDiary = await DiaryModel.create({
                         _id: new mongoose.Types.ObjectId(),
                         ClassName: ClassName,
@@ -731,6 +731,58 @@ export const POST = async (request: NextRequest) => {
                 }
             } catch (error) {
                 return NextResponse.json({ message: "error", error: "Seems to be an error on server side, please contact the developer" }, { status: 200 });
+            }
+            break;
+        case "loaddiaries":
+            try {
+                const { UID, Role } = body;
+                if (Role === "Parent") {
+                    const children = await UserModel.find({ ParentUID: UID });
+                    if (children) {
+                        const rData: UserDiary[] = await Promise.all(children.map(async (child) => {
+                            const _class = await ClassModel.findOne({ StudentUIDs: child.UID });
+                            const diaries = await DiaryModel.findOne({
+                                SchoolName: child.SchoolName,
+                                ClassName: _class?.Name,
+                                DiaryFor: {
+                                    $gte: new Date(),
+                                    $lte: new Date(new Date().setDate(new Date().getDate() + 1))
+                                }
+                            });
+
+                            return {
+                                Diary: diaries,
+                                User: child
+                            }
+                        }));
+                        return NextResponse.json({ message: "OK", docs: rData }, { status: 200 });
+                    } else {
+                        return NextResponse.json({ message: "ERROR", error: "You have no children registered at our school yet" });
+                    }
+                } else if (Role === "Student") {
+                    const student = await UserModel.findOne({ UID: UID });
+                    if (student) {
+                        const _class = await ClassModel.findOne({ StudentUIDs: UID });
+                        const diaries = await DiaryModel.findOne({
+                            SchoolName: student.SchoolName,
+                            ClassName: _class?.Name,
+                            DiaryFor: {
+                                $gte: new Date(),
+                                $lte: new Date(new Date().setDate(new Date().getDate() + 1))
+                            }
+                        });
+                        const rData: UserDiary[] = [];
+                        rData.push({
+                            User: student,
+                            Diary: diaries
+                        });
+                        return NextResponse.json({ message: "OK", docs: rData }, { status: 200 });
+                    } else {
+                        return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" });
+                    }
+                }
+            } catch (error) {
+
             }
             break;
         default:

@@ -3,6 +3,7 @@ import { IUserInfo } from "./schema/userinfo";
 import { IAttendanceInfo } from "./schema/attendanceinfo";
 import { IClassInfo } from "./schema/classinfo";
 import React from "react";
+import { IDiaryInfo } from "./schema/diaryinfo";
 
 export interface ButtonProps {
     onClick: () => void;
@@ -96,4 +97,9 @@ export interface TeacherClass {
     Class: string,
     UID: string,
     Subject?: string
+}
+
+export interface UserDiary {
+    User: IUserInfo,
+    Diary?: IDiaryInfo | null | undefined
 }

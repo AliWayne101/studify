@@ -31,6 +31,7 @@
         &-entry {
             display: grid;
             grid-template-columns: 20% 80%;
+            margin-bottom: 10px;
             border-bottom: 1px solid var(--theme-main);
             &-in {
                 padding: 20px;
@@ -42,6 +43,21 @@
         }
         .button {
             margin-top: 20px !important;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .diary {
+        &-view {
+            &-entry {
+                display: flex;
+                flex-direction: column-reverse; // Change to column-reverse
+                &-in {
+                    display: block;
+                    width: 100%;
+                }
+            }
         }
     }
 }

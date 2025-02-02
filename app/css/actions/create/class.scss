@@ -94,6 +94,10 @@
                     border: 1px solid transparent;
                     transition: border 300ms ease-in;
 
+                    small {
+                        color: var(--theme-main);
+                    }
+
                     &:hover {
                         border: 1px solid var(--theme-accent);
                     }

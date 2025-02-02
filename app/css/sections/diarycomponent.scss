@@ -1,0 +1,14 @@
+.diaryc {
+    h1 {
+        margin-bottom: 20px;
+    }
+    &-detail {
+        span {
+            font-weight: bold;
+            color: var(--theme-main);
+        }
+    }
+    .diary-view {
+        margin-top: 30px;
+    }
+}
