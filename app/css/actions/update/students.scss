@@ -1,0 +1,19 @@
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 200px;
+    gap: 10px;
+
+    @media screen and (max-width: 480px) {
+        padding: 0px;
+        grid-template-columns: repeat(1, 1fr);
+
+        .options-option {
+            min-height: 200px;
+        }
+    }
+}
+.forms {
+    width: 350px;
+}

@@ -782,7 +782,20 @@ export const POST = async (request: NextRequest) => {
                     }
                 }
             } catch (error) {
-
+                return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" });
+            }
+            break;
+        case "getusersbyclass":
+            try {
+                const { SchoolName, ClassName } = body;
+                const _class = await ClassModel.findOne({ SchoolName: SchoolName, Name: ClassName });
+                if (_class) {
+                    const students = await UserModel.find({ UID: { $in: _class.StudentUIDs } });
+                    return NextResponse.json({ message: "OK", docs: students }, { status: 200 });
+                } else
+                    return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" });
             }
             break;
         default:

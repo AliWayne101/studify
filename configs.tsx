@@ -51,7 +51,7 @@ export const DashboardLinks: MenuLinks[] =[
     { text: "Class Info", url: "/actions/create/class", isProtected: true, ProtectionLevel: ["Owner"] },
     { text: "Subjects Info", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Create User", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
-    { text: "Unassigned Students", url: "/actions/update/unassigned", isProtected: true, ProtectionLevel: ["Owner", "Admin"]},
+    { text: "Students", url: "/actions/update/students", isProtected: true, ProtectionLevel: ["Owner", "Admin"]},
     { text: "Update Parent", url: "/actions/update/parent", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Pay Fee", url: '/actions/pay/', isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Diaries", url: "/actions/create/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin", "Teacher"] },
