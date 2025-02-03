@@ -803,7 +803,9 @@ export const POST = async (request: NextRequest) => {
             try {
                 var { UID } = body;
                 const doc = await UserModel.findOne({ UID: UID });
-                
+                if (!doc)
+                    return NextResponse.json({ message: "ERROR", error: "User does not exists" }, { status: 200 });
+
                 const _date = getDate();
                 const atts = await AttendanceModel.findOne({
                     UID: UID,
