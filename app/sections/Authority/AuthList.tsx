@@ -8,6 +8,7 @@ import Calender from '@/app/components/Calender';
 import { ShowToast } from '@/app/utilsjsx';
 import { motion } from 'framer-motion';
 import { IUserInfo } from '@/schema/userinfo';
+import Link from 'next/link';
 
 const AuthList = ({ session }: SessionProps) => {
     const [uInfo, setUInfo] = useState<ProperUserInterface[] | undefined>(undefined);
@@ -71,41 +72,41 @@ const AuthList = ({ session }: SessionProps) => {
                     <small>View Basic information along with attendance</small>
                     <div className={`cards ${targetUser === undefined ? 'fourprow' : 'threeprow'}`}>
                         {uInfo?.map((data, index) => (
-                            <motion.div
-                                className={`cards-card ${targetUser?.UID === data.User.UID && 'selected'}`}
-                                key={index}
-                                onClick={() => SelectUser(data.User.UID)}
-                                custom={index}
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.3, delay: 0.2 * index }}
-                                variants={{
-                                    visible: { opacity: 1, scale: 1 },
-                                    hidden: { opacity: 0, scale: 0 }
-                                }}
-                            >
-                                <div className="cards-card-img">
-                                    <div className="img-cont">
-                                        <Image
-                                            layout="fill"
-                                            objectFit="cover"
-                                            src={getImageLink(data.User.Image)}
-                                            alt={data.User.Name}
-                                        />
+                            <Link href={`/user/${data.User.UID}`} key={index}>
+                                <motion.div
+                                    className={`cards-card ${targetUser?.UID === data.User.UID && 'selected'}`}
+                                    custom={index}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.3, delay: 0.2 * index }}
+                                    variants={{
+                                        visible: { opacity: 1, scale: 1 },
+                                        hidden: { opacity: 0, scale: 0 }
+                                    }}
+                                >
+                                    <div className="cards-card-img">
+                                        <div className="img-cont">
+                                            <Image
+                                                layout="fill"
+                                                objectFit="cover"
+                                                src={getImageLink(data.User.Image)}
+                                                alt={data.User.Name}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="cards-card-details">
-                                    <ul>
-                                        <li><span>{data.User.Name}</span></li>
-                                        <li>{data.User.Role}</li>
-                                    </ul>
-                                </div>
-                            </motion.div>
+                                    <div className="cards-card-details">
+                                        <ul>
+                                            <li><span>{data.User.Name}</span></li>
+                                            <li>{data.User.Role}</li>
+                                        </ul>
+                                    </div>
+                                </motion.div>
+                            </Link>
                         ))}
                     </div>
                 </div>
-                <div className="authlist-right" ref={atRef} id='attendance-ref'>
+                {/* <div className="authlist-right" ref={atRef} id='attendance-ref'>
                     <h2>Attendance Information</h2>
                     <Calender data={fillAttendanceData(attInfo)} />
                     <div className="authlist-right-ui">
@@ -119,7 +120,7 @@ const AuthList = ({ session }: SessionProps) => {
                             <li>DOJ: <span>{targetUser && (new Date(targetUser.JoinedOn)).toLocaleDateString()}</span></li>
                         </ul>
                     </div>
-                </div>
+                </div> */}
             </div>
         }</>
     );
