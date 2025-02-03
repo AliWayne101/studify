@@ -106,9 +106,12 @@ const ViewUser = ({ params }: SlugProps) => {
                                     ))}
                                 </ul>
                             </>}
-                            <h3>Attendance Information</h3>
-                            <p>Basic Attendance Information</p>
-                            <Calender data={fillAttendanceData(userData?.Attendance?.Attendance)} />
+
+                            {userData.User?.Role !== "Parent" && <>
+                                <h3>Attendance Information</h3>
+                                <p>Basic Attendance Information</p>
+                                <Calender data={fillAttendanceData(userData?.Attendance?.Attendance)} />
+                            </>}
                         </div>
                     </div>
                 }
