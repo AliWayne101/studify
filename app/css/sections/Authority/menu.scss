@@ -1,5 +1,5 @@
 .menu {
-    margin: 20px 0;
+    margin: 20px 0 40px 0;
 
     &-items {
         display: grid;
@@ -7,20 +7,39 @@
         gap: 10px;
 
         &-item {
-            min-height: 40px;
+            // min-height: 40px;
+            // display: flex;
+            align-items: center;
+            justify-content: center;
+            // height: 40px;
+            border-bottom: 1px solid var(--theme-accent);
+            transition: all 200ms ease-in;
+            color: var(--text);
+            padding: 10px 0;
 
-            a {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 40px;
-                border: 1px solid var(--theme-accent);
-                color: var(--text);
-                transition: all 200ms ease-in;
+            &-in {
+                text-align: center;
+                transition: all 300ms ease-in;
+                &:nth-child(1) {
+                    // color: var(--theme-main);
+                    font-weight: bold;
+                    font-size: 18px;
+                }
 
-                &:hover {
-                    background-color: var(--theme-main);
-                    color: var(--foreground);
+                &:nth-child(2) {
+                    font-size: 12px;
+                    padding: 0 8px;
+                    color: var(--text) !important;
+                }
+            }
+
+            &:hover {
+                background-color: var(--theme-bg);
+                .menu-items-item-in {
+                    &:nth-child(1) {
+                        color: var(--theme-main);
+                        scale: 1.1;
+                    }
                 }
             }
         }

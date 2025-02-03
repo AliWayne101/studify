@@ -46,17 +46,17 @@ export const RolesWithAuthority = [
 ];
 
 export const DashboardLinks: MenuLinks[] =[
-    { text: "Attendance", url: '/actions/update/attendance/students', isProtected: true, ProtectionLevel: ["Admin", "Teacher"] },
-    { text: "Attendance", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
-    { text: "Class Info", url: "/actions/create/class", isProtected: true, ProtectionLevel: ["Owner"] },
-    { text: "Subjects Info", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
-    { text: "Create User", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
-    { text: "Students", url: "/actions/update/students", isProtected: true, ProtectionLevel: ["Owner", "Admin"]},
-    { text: "Update Parent", url: "/actions/update/parent", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Attendance", Description: "Mark attendance of your students", url: '/actions/update/attendance/students', isProtected: true, ProtectionLevel: ["Admin", "Teacher"] },
+    { text: "Attendance", Description: "Mark attendance of your staff", url: '/actions/update/attendance/staff', isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Class", Description: "Create class or assign teachers to your class", url: "/actions/create/class", isProtected: true, ProtectionLevel: ["Owner"] },
+    { text: "Subjects", Description: "Create subjects or assign subjects to teachers", url: "/actions/create/subjects", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Create User", Description: "Create a new user for your school", url: "/actions/create/user", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Students", Description: "View students or assign students to class", url: "/actions/update/students", isProtected: true, ProtectionLevel: ["Owner", "Admin"]},
+    { text: "Update Parent", Description: "Assign parents to your students", url: "/actions/update/parent", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Pay Fee", url: '/actions/pay/', isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
-    { text: "Diaries", url: "/actions/create/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin", "Teacher"] },
-    { text: "Post Diaries", url: "/actions/update/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
-    { text: "Diaries", url: "/view/diary", isProtected: true, ProtectionLevel: ["Parent", "Student"] },
+    { text: "Diaries", Description: "Create diaries for your students", url: "/actions/create/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin", "Teacher"] },
+    { text: "Post Diaries", Description: "Post the created diaries, to be shown to students", url: "/actions/update/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
+    { text: "Diaries", Description: "View posted diaries", url: "/view/diary", isProtected: true, ProtectionLevel: ["Parent", "Student"] },
 ]
 
 export const SALT_LENGTH = 12;

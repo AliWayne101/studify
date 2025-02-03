@@ -46,6 +46,7 @@ const Basic = ({ session }: SessionProps) => {
         isAuthorized(session?.user.role, ["SU", "HU", "SG"]) ? (
             <div className="basic">
                 <h2>Basic Information</h2>
+                <p>Some basic information of your {session?.user.role === "Admin" || session?.user.role === "Owner" ? "school" : session?.user.role === "Teacher" ? "students" : "children"}</p>
                 { isError && <><div className="error">{isError}</div></>}
                 <div className="basic-boxes">
                     {basicInfo?.map(({Title, Info}, index) => (

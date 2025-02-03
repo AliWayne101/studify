@@ -16,12 +16,13 @@ const Menu = ({ session }: SessionProps) => {
     }, [session])
     return (
         <div className="menu">
-            <h2>Actions</h2>
+            <h2>Menu</h2>
             <div className="menu-items">
                 {links.map((link, index) => (
-                    <div className="menu-items-item" key={index}>
-                        <Link href={link.url}>{link.text}</Link>
-                    </div>
+                    <Link href={link.url} className="menu-items-item" key={index}>
+                        <div className="menu-items-item-in">{link.text}</div>
+                        <div className="menu-items-item-in">{link.Description}</div>
+                    </Link>
                 ))}
             </div>
         </div>
