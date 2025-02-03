@@ -7,11 +7,8 @@
         gap: 10px;
 
         &-item {
-            // min-height: 40px;
-            // display: flex;
             align-items: center;
             justify-content: center;
-            // height: 40px;
             border-bottom: 1px solid var(--theme-accent);
             transition: all 200ms ease-in;
             color: var(--text);
@@ -21,7 +18,6 @@
                 text-align: center;
                 transition: all 300ms ease-in;
                 &:nth-child(1) {
-                    // color: var(--theme-main);
                     font-weight: bold;
                     font-size: 18px;
                 }
