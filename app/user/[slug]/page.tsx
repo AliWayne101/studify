@@ -69,9 +69,11 @@ const ViewUser = ({ params }: SlugProps) => {
                             <ul>
                                 <li>Name: <b>{userData?.User?.Name}</b></li>
                                 <li>Email: <b>{userData?.User?.Email}</b></li>
-                                <li>CNIC: <b>{userData?.User?.CNIC}</b></li>
-                                <li>Gender: <b>{userData?.User?.Gender}</b></li>
-                                <li>Phone: <b>{userData?.User?.Phone}</b></li>
+                                {session?.user.role === "Owner" || session?.user.role === "Admin" && <>
+                                    <li>CNIC: <b>{userData?.User?.CNIC}</b></li>
+                                    <li>Gender: <b>{userData?.User?.Gender}</b></li>
+                                    <li>Phone: <b>{userData?.User?.Phone}</b></li>
+                                </>}
                                 <li>Role: <b>{userData?.User?.Role}</b></li>
                                 <li>Date of Birth: <b>{userData?.User && new Date(userData.User.DOB).toLocaleDateString()}</b></li>
                                 <li>Date of Joining: <b>{userData?.User && new Date(userData.User.JoinedOn).toLocaleDateString()}</b></li>

@@ -454,10 +454,9 @@ select {
 
       ul {
         list-style-type: none;
-
         li {
           text-align: center;
-
+          color: var(--text);
           span {
             color: var(--foreground);
           }

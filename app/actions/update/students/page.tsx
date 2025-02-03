@@ -4,7 +4,7 @@ import "../../../css/forms.scss";
 import { ShowToast } from '@/app/utilsjsx';
 import { UnassignedStudentsProps } from '@/interfaces'
 import { getImageLink, sendRequest } from '@/utils';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import Struct from '@/app/Struct';
@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 import Button from '@/app/components/Button';
 import { IClassInfo } from "@/schema/classinfo";
 import { IUserInfo } from "@/schema/userinfo";
+import Link from "next/link";
 
 
 const UnassignedStudents = () => {
@@ -169,7 +170,7 @@ const UnassignedStudents = () => {
                                         }}
                                     >
                                         <div className="ov-mock"></div>
-                                        <div className="ov-body-in">
+                                        <Link href={`/user/${user.UID}`} className="ov-body-in">
                                             <div className="roundcards-card-img">
                                                 <div className="img-cont">
                                                     <Image
@@ -187,7 +188,7 @@ const UnassignedStudents = () => {
                                                     <li>{user.FeeOrSalary.toLocaleString()} PKR Fee</li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </motion.div>
                                 ))}
                             </div>
