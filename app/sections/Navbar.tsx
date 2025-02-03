@@ -37,6 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
     }
 
     useEffect(() => {
+        console.log(pathname);
         var findAddress = DashboardLinks.find(x => x.url === pathname);
         //Check NavLinks if Address is not located
         if (findAddress === undefined)
@@ -59,7 +60,9 @@ const Navbar: React.FC<NavbarProps> = ({ updateParentState, LoadingCompleted }) 
                             LoadingCompleted(true);
                 }
             }
-        }
+        } else
+            if (LoadingCompleted)
+                LoadingCompleted(true);
 
 
         const getNotifs = async () => {
