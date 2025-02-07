@@ -113,3 +113,10 @@ export interface CompleteUserData {
     Class: IClassInfo | undefined | null,
     Teacher: IUserInfo | undefined | null
 }
+
+export interface ISubjectItem {
+    ObtainedMarks: number,
+    TotalMarks: number,
+    Date: Date,
+    Position: number
+}
