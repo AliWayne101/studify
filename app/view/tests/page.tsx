@@ -16,6 +16,10 @@ const Tests = () => {
                     <div className="tests-menu-item">Monthly</div>
                     <div className="tests-menu-item">Date</div>
                 </div>
+                <div className="tests-card">
+                    <div className="tests-card-in">Left </div>
+                    <div className="tests-card-in">Right </div>
+                </div>
             </div>
         </LoadingScreen>
     </Struct>
