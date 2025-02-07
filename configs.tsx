@@ -57,6 +57,7 @@ export const DashboardLinks: MenuLinks[] =[
     { text: "Diaries", Description: "Create diaries for your students", url: "/actions/create/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin", "Teacher"] },
     { text: "Post Diaries", Description: "Post the created diaries, to be shown to students", url: "/actions/update/diary", isProtected: true, ProtectionLevel: ["Owner", "Admin"] },
     { text: "Diaries", Description: "View posted diaries", url: "/view/diary", isProtected: true, ProtectionLevel: ["Parent", "Student"] },
+    { text: "Monthly Tests", Description: "Get Summary of tests throughout month", url: "/view/tests", isProtected: true, ProtectionLevel: ["Parent", "Student"] },
 ]
 
 export const SALT_LENGTH = 12;
