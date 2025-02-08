@@ -6,9 +6,10 @@ export interface IMonthlyTestInfo {
     UID: string;
     Month: string;
     Year: string;
-    Subjects: {
-        [key: string]: ISubjectItem[];
-    };
+    Subjects: Map<string, ISubjectItem[]>;
+    // Subjects: {
+    //     [key: string]: ISubjectItem[];
+    // };
 }
 
 const MonthlyTest = new Schema<IMonthlyTestInfo>({

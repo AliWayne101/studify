@@ -10,6 +10,7 @@ import SubjectsModel, { ISubjectsInfo } from "@/schema/subjectsinfo";
 import VoucherModel from "@/schema/pvinfo";
 import DiaryModel from "@/schema/diaryinfo";
 import { TIMEZONE_OFFSET } from "@/configs";
+import MonthlyTestModel from "@/schema/monthlytestinfo";
 
 interface getUsersByRoleInterface {
     Role: string;
@@ -843,6 +844,40 @@ export const POST = async (request: NextRequest) => {
                 return NextResponse.json({ message: "OK", doc: rData });
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" });
+            }
+            break;
+        case "getmonthlytests":
+            try {
+                const { UID, Target } = body;
+                const _date = getDate();
+                var tarMonth = _date.Month;
+                const dateElem = new Date();
+                if (Target === "monthly") {
+                    dateElem.setMonth(dateElem.getMonth() - 1);
+                    tarMonth = dateElem.toLocaleString('default', { month: 'long' })
+                }
+                const doc = await MonthlyTestModel.findOne({ UID: UID, Month: tarMonth, Year: _date.Year });
+                console.log(doc);
+                return NextResponse.json({ message: "OK", doc: doc }, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" }, { status: 200 });
+            }
+            break;
+        case "properuserdetail":
+            try {
+                const { UID, SchoolName } = body;
+                const user = await UserModel.findOne({ UID: UID, SchoolName: SchoolName });
+                if (user) {
+                    const _class = await ClassModel.findOne({ StudentUIDs: UID});
+                    const rVal:ProperUserInterface = {
+                        User: user,
+                        Class: _class
+                    }
+                    return NextResponse.json({ message: "OK", doc: rVal }, { status: 200 });
+                } else
+                    return NextResponse.json({ message: "ERROR", error: "User does not exists" }, { status: 200 });
+            } catch (error) {
+                return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" }, { status: 200 });
             }
             break;
         default:

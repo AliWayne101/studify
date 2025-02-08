@@ -5,6 +5,7 @@
         padding: 0 40px;
         gap: 20px;
         margin-bottom: 20px;
+
         &-item {
             border: 1px solid var(--theme-bg);
             min-height: 80px;
@@ -22,18 +23,114 @@
 
         }
     }
+
     &-card {
         display: grid;
         grid-template-columns: 30% 70%;
         gap: 10px;
+
         &-in {
             min-height: 500px;
-            padding: 20px;
+
+            .detail {
+                display: flex;
+                flex-direction: column;
+
+                span {
+                    color: var(--theme-main);
+                    transform: translate(2px, 7px);
+                    font-size: 12px;
+                }
+            }
+
+            .subjects {
+                &-subject {
+                    margin-top: 20px;
+                    padding: 10px;
+                    background-color: var(--theme-bg);
+
+                    h2 {
+                        color: var(--theme-main);
+                    }
+
+                    &-boxes {
+                        display: grid;
+                        gap: 10px;
+                        grid-template-columns: repeat(7, 1fr);
+                        padding: 10px 20px;
+
+                        &-box {
+                            background-color: var(--theme-main) !important;
+                            position: relative;
+                            overflow: hidden;
+                            text-overflow: hidden;
+                            transition: transform 300ms ease-in-out;
+                            border: 1px solid var(--theme-main);
+                            color: var(--background);
+
+                            .outside {
+                                text-overflow: hidden;
+                                overflow: hidden;
+                                position: absolute;
+                                background-color: var(--theme-main);
+                                width: 100%;
+                                text-align: center;
+                                transition: transform 300ms ease-in-out;
+                                pointer-events: none;
+                            }
+
+                            .top {
+                                position: absolute;
+                                background-color: var(--theme-main);
+                                transform: translateY(-50px);
+                                transition: transform 300ms ease-in-out;
+                                font-size: 14px;
+                                text-align: center;
+                                pointer-events: none;
+                                width: 100%;
+                            }
+
+                            .inside {
+                                pointer-events: none;
+                                span {
+                                    display: block;
+                                    margin: 0 10px;
+                                    text-align: center;
+
+                                    &:first-child {
+                                        border-bottom: 1px solid var(--background);
+                                        font-size: 22px;
+                                    }
+                                }
+                            }
+
+                            &:hover {
+                                .outside {
+                                    transform: translateY(-22px);
+                                }
+                                .top {
+                                    transform: translateY(8px);
+                                }
+
+                                .inside {
+                                    span:first-child {
+                                        border-bottom: 1px solid var(--theme-main);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             &:first-child {
+                padding: 20px;
                 border-right: 1px solid var(--theme-bg);
                 border-top: 1px solid var(--theme-main);
             }
+
             &:last-child {
+                // padding: 20px 0;
                 border-left: 1px solid var(--theme-main);
                 border-top: 1px solid var(--theme-bg);
             }
