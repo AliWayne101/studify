@@ -198,3 +198,38 @@ export const getLast30Days = (): { Date: string, Value: string }[] => {
 
     return dates;
 }
+
+export const getCompleteWeekDays = () => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const daysSinceMonday = (dayOfWeek + 6) % 7; // Days since last Monday (0 for Monday)
+
+    // Calculate the dates
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - daysSinceMonday - 7); // Last Monday
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Following Sunday
+
+    // Collect the dates in an array
+    const dates = [];
+    for (let d = new Date(startOfWeek); d <= endOfWeek; d.setDate(d.getDate() + 1)) {
+        dates.push(new Date(d));
+    }
+
+    return dates;
+}
+
+// const lastWeekDates = getLastWeekDates();
+// const lastWeekDateStrings = lastWeekDates.map(date => date.toISOString().split('T')[0]);
+
+// const filteredSubjects = new Map<string, ISubjectItem[]>();
+
+// user.subjects.forEach((items, subject) => {
+//     const filteredItems = items.filter(item => lastWeekDateStrings.includes(new Date(item.Date).toISOString().split('T')[0]));
+//     if (filteredItems.length > 0) {
+//         filteredSubjects.set(subject, filteredItems);
+//     }
+// });
+
+// console.log(filteredSubjects);
