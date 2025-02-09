@@ -858,7 +858,6 @@ export const POST = async (request: NextRequest) => {
             break;
         case "properuserdetail":
             try {
-                console.log("Got request");
                 const { UID, SchoolName } = body;
                 const user = await UserModel.findOne({ UID: UID, SchoolName: SchoolName });
                 if (user) {
@@ -870,8 +869,6 @@ export const POST = async (request: NextRequest) => {
                     return NextResponse.json({ message: "OK", doc: rVal }, { status: 200 });
                 } else
                     return NextResponse.json({ message: "ERROR", error: "User does not exists" }, { status: 200 });
-                    
-                console.log("filled request");
             } catch (error) {
                 return NextResponse.json({ message: "ERROR", error: "Seems an error on server side, please contact the developer" }, { status: 200 });
             }
