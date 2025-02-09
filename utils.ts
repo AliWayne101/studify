@@ -47,7 +47,7 @@ export const Connect = async () => {
     mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_ACCESS!);
 }
 
-export const getDate = () => {
+export const getDate = (): { Month: string, Year: number, Day: number } => {
     const currentDate = new Date();
     return {
         Month: currentDate.toLocaleString('default', { month: 'long' }),
@@ -146,11 +146,28 @@ export const CreateNotification = async (title: string, text: string, from: stri
 export const ServResponse = (body: Object) => {
     NextResponse.json(body, { status: 200 });
 }
+export type MonthNames = 'January' | 'February' | 'March' | 'April' | 'May' | 'June' | 'July' | 'August' | 'September' | 'October' | 'November' | 'December';
+export const monthIndices: Record<MonthNames, number> = {
+    January: 0,
+    February: 1,
+    March: 2,
+    April: 3,
+    May: 4,
+    June: 5,
+    July: 6,
+    August: 7,
+    September: 8,
+    October: 9,
+    November: 10,
+    December: 11
+};
 
-export const fillAttendanceData = (data: AttendanceStructProps[] | undefined): AttendanceStructProps[] => {
+export const fillAttendanceData = (data: AttendanceStructProps[] | undefined, month?: string, year?: number): AttendanceStructProps[] => {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1;
-    const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+    var _year = year ? year : currentYear;
+    var _month = month ? monthIndices[month as MonthNames] : currentMonth;
+    const daysInMonth = new Date(_year, _month, 0).getDate();
 
     const filledData: AttendanceStructProps[] = [];
     let currentDay = 1;

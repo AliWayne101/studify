@@ -36,8 +36,9 @@
         }
     }
 
-    .present {
+    .present, .filled {
         background-color: var(--theme-main);
+        color: var(--background);
     }
 
     .absent {
@@ -50,6 +51,6 @@
 
     .unfilled {
         background-color: transparent;
-        border: 1px solid var(--background-sec);
+        border: 1px solid var(--theme-bg);
     }
 }
